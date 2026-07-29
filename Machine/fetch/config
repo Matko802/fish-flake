@@ -1,0 +1,45 @@
+# fields – list to show, in this order
+# remove or comment out to hide
+os
+host
+kernel
+uptime
+packages
+shell
+display
+wm
+theme
+icons
+font
+terminal
+cpu
+gpu
+memory
+swap
+disk
+ip
+battery
+locale
+colors
+
+# extra disks (add more mount points)
+# disk=/home
+# disk=/data
+
+# appearance
+label_color=red
+separator=---
+shading=░▒▓█
+box=1
+
+# logo colors (override distro defaults)
+# logo_outer=magenta    (outer/heavy character color)
+# logo_inner=white      (inner/light character color)
+
+# 3d
+light=top-right
+spin=y
+speed=2.0
+size=2.0
+depth=2.0
+height=56
