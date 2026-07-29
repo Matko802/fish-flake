@@ -10,5 +10,9 @@ hl.config({
 
         -- Mouse
         sensitivity = 0.0,
+
+        -- Cursor
+        cursor_theme = "Adwaita",
+        cursor_size = 24,
     }
 })   
