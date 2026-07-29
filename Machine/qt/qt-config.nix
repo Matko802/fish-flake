@@ -29,11 +29,17 @@
       if test -d "$HM_PATH/qt-5.15.19/plugins"
           if not contains "$HM_PATH/qt-5.15.19/plugins" $QT_PLUGIN_PATH
               set -gx QT_PLUGIN_PATH "$HM_PATH/qt-5.15.19/plugins" $QT_PLUGIN_PATH
+              if set -q DBUS_SESSION_BUS_ADDRESS[1]
+                  systemctl --user set-environment QT_PLUGIN_PATH="$QT_PLUGIN_PATH" 2>/dev/null
+              end
           end
       end
       if test -d "$HM_PATH/qt-6/plugins"
           if not contains "$HM_PATH/qt-6/plugins" $QT_PLUGIN_PATH
               set -gx QT_PLUGIN_PATH "$HM_PATH/qt-6/plugins" $QT_PLUGIN_PATH
+              if set -q DBUS_SESSION_BUS_ADDRESS[1]
+                  systemctl --user set-environment QT_PLUGIN_PATH="$QT_PLUGIN_PATH" 2>/dev/null
+              end
           end
       end
     '';
