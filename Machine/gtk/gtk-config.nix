@@ -21,6 +21,11 @@
     theme.name = "adw-gtk3-dark";
     theme.package = pkgs.adw-gtk3;
     iconTheme.name = "Adwaita";
+    cursorTheme = {
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
+      size = 24;
+    };
   };
 
   dconf.settings = {
@@ -28,6 +33,7 @@
       color-scheme = "prefer-dark";
       gtk-theme = "adw-gtk3-dark";
       icon-theme = "Adwaita";
+      cursor-theme = "Adwaita";
       font-name = "JetBrainsMono Nerd Font 10";
     };
   };
