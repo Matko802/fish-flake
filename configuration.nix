@@ -189,6 +189,11 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  environment.sessionVariables = {
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+    QT_PLUGIN_PATH = "/home/matko/.local/lib/qt-5.15.19/plugins:/home/matko/.local/lib/qt-6/plugins";
+  };
+
   environment.systemPackages = with pkgs; [
     nemo
     satty
