@@ -18,7 +18,26 @@
 
   home.sessionVariables = {
     QT_QPA_PLATFORMTHEME = "qt5ct";
-    QT_PLUGIN_PATH = "${config.home.homeDirectory}/.local/lib/qt-5.15.19/plugins:${config.home.homeDirectory}/.local/lib/qt-6/plugins";
+  };
+
+  xdg.configFile."fish/conf.d/qt_env.fish" = {
+    text = ''
+      if not set -q QT_QPA_PLATFORMTHEME[1]
+          set -gx QT_QPA_PLATFORMTHEME qt5ct
+      end
+      set HM_PATH (readlink ~/.local/state/home-manager/gcroots/current-home)/home-path/lib
+      if test -d "$HM_PATH/qt-5.15.19/plugins"
+          if not contains "$HM_PATH/qt-5.15.19/plugins" $QT_PLUGIN_PATH
+              set -gx QT_PLUGIN_PATH "$HM_PATH/qt-5.15.19/plugins" $QT_PLUGIN_PATH
+          end
+      end
+      if test -d "$HM_PATH/qt-6/plugins"
+          if not contains "$HM_PATH/qt-6/plugins" $QT_PLUGIN_PATH
+              set -gx QT_PLUGIN_PATH "$HM_PATH/qt-6/plugins" $QT_PLUGIN_PATH
+          end
+      end
+    '';
+    force = true;
   };
 
   home.packages = with pkgs; [
