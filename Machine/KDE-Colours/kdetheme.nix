@@ -1,7 +1,6 @@
-{ pkgs, ... }:
-
-{
-  systemd.user.tmpfiles.rules = [
-    "L+ %h/.local/share/color-schemes - - - - ${toString ./config}"
-  ];
+{ pkgs, ... }: {
+  xdg.dataFile."color-schemes" = {
+    source = ./config;
+    recursive = true;
+  };
 }

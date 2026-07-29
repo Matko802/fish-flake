@@ -1,0 +1,115 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "spacing": 4,
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": ["hyprland/window"],
+
+"hyprland/workspaces": {
+    "disable-scroll": true,
+    "all-outputs": true,
+    "active-only": false,
+    "on-click": "activate",
+    "format": "{icon}",
+    "format-icons": {
+      "default": "",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "0"
+    },
+    "persistent-workspaces": {
+      "1": [],
+      "2": [],
+      "3": []
+    }
+  },
+
+    "hyprland/window": {
+        "format": "{title}",
+        "icon": true,
+        "icon-size": 16,
+        "max-length": 50,
+        "separate-outputs": true
+    },
+    "modules-right": ["group/systray", "pulseaudio", "network#ethernet","network#wifi", "cpu", "memory", "battery", "clock"],
+
+    "group/systray": {
+        "orientation": "horizontal",
+        "modules": ["custom/tray-toggle", "tray"], 
+        "drawer": {
+            "transition-duration": 300,
+            "children-class": "tray-expanded",
+            "transition-left-to-right": false, 
+            "click-to-reveal": true 
+        }
+    },
+
+    "custom/tray-toggle": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "tray": {
+        "icon-size": 14,
+        "spacing": 12
+    },
+    
+    "clock": {
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": " {:%H:%M}",
+        "format-alt": " {:%Y-%m-%d}"
+    },
+    "cpu": {
+        "format": " {usage}%",
+        "tooltip": false
+    },
+    "memory": {
+        "format": " {}%"
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "󰂄{icon} {capacity}%",
+        "format-plugged": "{capacity}%",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+    "network#wifi": {
+    "interface": "wlan*",
+    "format-wifi": "{icon}",
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "tooltip": false,
+    "on-click": "kitty --class gazelle-window -e gazelle"
+    
+    },
+
+    "network#ethernet": {
+    "interface": "enp*",
+    "format-ethernet": "",
+    "tooltip": false,
+    "on-click": "kitty --class gazelle-window -e gazelle"
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "󰂯{icon} {volume}%",
+        "scroll-step": 5,
+        "format-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "󱡒",
+            "headset": "󰋋",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    }
+}

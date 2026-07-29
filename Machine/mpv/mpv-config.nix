@@ -1,7 +1,6 @@
-{ pkgs, ... }:
-
-{
-  systemd.user.tmpfiles.rules = [
-    "L+ %h/.config/mpv - - - - ${toString ./config}"
-  ];
+{ pkgs, ... }: {
+  xdg.configFile."mpv" = {
+    source = ./config;
+    recursive = true;
+  };
 }

@@ -8,13 +8,6 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./Machine/KDE/plasma-fix.nix
-      ./Machine/fastfetch/fastfetch-config.nix
-      ./Machine/fish/fish-config.nix
-      ./Machine/Starship/starship-config.nix
-      ./Machine/kitty/kitty-config.nix
-      ./Machine/mpv/mpv-config.nix
-      ./Machine/KDE-Colours/kdetheme.nix
       inputs.gsr-ui-nix.nixosModules.default
     ];
     services.ollama = {
@@ -26,10 +19,13 @@
     enable = true;
     openFirewall = true;
     autoStart = true;
-  };
+  }; 
   hardware.enableRedistributableFirmware = true;
   programs.gamemode.enable = true;
   programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    glib 
+  ];
   programs.gamescope.enable = true;
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
@@ -43,6 +39,14 @@
         userServices = true; # Allows non-root user apps like WiVRn to broadcast mDNS services
       };
     };
+    
+    systemd.coredump = {
+  enable = true;
+  settings.Coredump = {
+    Storage = "none";
+    ProcessSizeMax = "0";
+  };
+};   
 
     virtualisation.virtualbox.host.enable = true;
     programs.gpu-screen-recorder = {
@@ -55,7 +59,6 @@
      enable = true;
      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
      dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-     extraPackages = with pkgs; [ kdePackages.breeze ];
    };
 
   services.flatpak.enable = true;
@@ -64,9 +67,7 @@
   # Bootloader.
   boot.loader.limine.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  # Use latest kernel.
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
-  
+  boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
 
   networking.hostName = "fishy"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -102,7 +103,7 @@
   
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  programs.hyprland.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -140,7 +141,7 @@
     isNormalUser = true;
     description = "Matko";
     shell = pkgs.fish;
-    extraGroups = [ "networkmanager" "wheel" "vboxusers" "i2c" ];
+    extraGroups = [ "networkmanager" "wheel" "i2c" "vboxusers" ];
     packages = with pkgs; [
       prismlauncher
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -159,14 +160,12 @@
       mpvScripts.visualizer
       equibop
       godot
-      litellm
-      python314Packages.kokoro
+      python313Packages.litellm
       kdePackages.filelight
       uv
       ffmpeg-full
       wayvr
       xrizer
-      vscode
       alcom
       unityhub
       mcpelauncher-ui-qt
@@ -186,10 +185,31 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.12" ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    nemo
+    satty
+    hyprshot
+    wl-clipboard
+    cliphist
+    hyprpicker
+    hyprlock
+    bemoji
+    awww
+    waypaper
+    hypridle
+    hyprshutdown
+    pavucontrol
+    fuzzel
+    waybar
+    mako
+    fuzzel
+    ventoy
+    usbutils
+    p7zip
     cargo
     rustc
     gcc
@@ -212,33 +232,21 @@
     setxkbmap
     mangohud
     mangojuice
+    android-tools
     adwaita-icon-theme
-    (kdePackages.spectacle.override {
-    tesseractLanguages = [
-      "eng"
-      "slk"
-    ];
-  })
   ];
-  programs.kdeconnect.enable = true;
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    konsole
-  ];
-
   fonts = {
     fontDir.enable = true;
     packages = with pkgs; [
       nerd-fonts.jetbrains-mono
     ];
   };
-  
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   services.udev.extraRules = ''
   # Grant WebHID access to MCHOSE Mix 87-III
   KERNEL=="hidraw*", ATTRS{idVendor}=="3837", ATTRS{idProduct}=="300d", MODE="0666", TAG+="uaccess"
 '';
   hardware.i2c.enable = true;
-  boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
   services.hardware.openrgb = {
     enable = true;
     package = pkgs.openrgb-with-all-plugins;
@@ -262,6 +270,19 @@
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
+  # Custom DNS
+services.resolved = {
+    enable = true;
+    settings = {
+      Resolve = {
+        DNS = "9.9.9.9 149.112.112.112";
+        DNSSEC = "true";
+        DNSOverTLS = "true";
+        Domains = "~.";
+        IgnoreCarrierDNS = "yes";
+      };
+    };
+  };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

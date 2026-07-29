@@ -1,0 +1,20 @@
+@media (prefers-color-scheme: dark) {
+  :root {
+    --window-bg-color: #000000;
+    --window-fg-color: #fcfcfc;
+    --view-bg-color: #000000;
+    --view-fg-color: #fcfcfc;
+    --headerbar-bg-color: #000000;
+    --headerbar-fg-color: #fcfcfc;
+    --sidebar-bg-color: #0a0a0a;
+    --sidebar-fg-color: #fcfcfc;
+    --card-bg-color: #181818;
+    --card-fg-color: #fcfcfc;
+    --popover-bg-color: #181818;
+    --popover-fg-color: #fcfcfc;
+    --dialog-bg-color: #000000;
+    --dialog-fg-color: #fcfcfc;
+    --accent-bg-color: #3daeeb;
+    --accent-fg-color: #000000;
+  }
+}

@@ -1,0 +1,100 @@
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background-color: #000000; /* Sleek, dark background */
+    color: #ffffff;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: #5c5c5c;
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+#workspaces button:hover {
+    color: #ffc2c2;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#workspaces button.active {
+    color: #ffffff; /* Clean highlight color for active workspace */
+    font-weight: bold;
+}
+
+#workspaces button.urgent {
+    color: #000000;
+    background-color: #ffffff;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#custom-tray-toggle, /* Added to keep margins clean */
+#tray {
+    padding: 0 8px;
+    margin: 2px 2px;
+    color: #ffffff;
+}
+
+/* Style the custom toggle arrow button */
+#custom-tray-toggle {
+    color: #ffffff;
+    font-weight: bold;
+    padding-right: 4px;
+}
+
+.tray-expanded {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    padding: 0 4px;
+}
+/* Tray context menus */
+menu {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #444444;
+    padding: 4px;
+}
+
+menuitem {
+    background-color: transparent;
+    color: #ffffff;
+    padding: 6px 12px;
+}
+
+menuitem:hover,
+menuitem:focus {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+separator {
+    background-color: #444444;
+    min-height: 1px;
+}
+
+/* GTK4 popovers */
+popover {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #444444;
+}
+
+popover contents {
+    padding: 4px;
+}
+
+modelbutton:hover,
+modelbutton:focus {
+    background-color: #ffffff;
+    color: #000000;
+}

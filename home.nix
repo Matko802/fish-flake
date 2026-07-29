@@ -1,27 +1,33 @@
 { config, pkgs, ... }:
-
 {
+  imports = [
+    ./Machine/fastfetch/fastfetch-config.nix
+    ./Machine/fish/fish-config.nix
+    ./Machine/Starship/starship-config.nix
+    ./Machine/kitty/kitty-config.nix
+    ./Machine/mpv/mpv-config.nix
+    ./Machine/KDE-Colours/kdetheme.nix
+    ./Machine/fetch/fetch-config.nix
+    ./Machine/hypr/hypr-config.nix
+    ./Machine/waybar/waybar-config.nix
+    ./Machine/mako/mako-config.nix
+    ./Machine/gtk/gtk-config.nix
+    ./Machine/qt/qt-config.nix
+  ];
+
   home.username = "matko";
   home.homeDirectory = "/home/matko";
   home.stateVersion = "26.05";
 
   home.packages = with pkgs; [
     libnotify
+    home-manager
+    adw-gtk3
   ];
 
-  xdg.configFile = {
-    "hypr/hyprland.lua".source = ./config/hypr/hyprland.lua;
-    "hypr/hyprlock.conf".source = ./config/hypr/hyprlock.conf;
-    "hypr/hypridle.conf".source = ./config/hypr/hypridle.conf;
-    "hypr/input.lua".source = ./config/hypr/input.lua;
-    "hypr/monitors.lua".source = ./config/hypr/monitors.lua;
-    "hypr/monitors.conf".source = ./config/hypr/monitors.conf;
-    "hypr/power_menu.lua".source = ./config/hypr/power_menu.lua;
-    "hypr/volume.sh".source = ./config/hypr/volume.sh;
-    "hypr/fuzzel-power.sh".source = ./config/hypr/fuzzel-power.sh;
-    "hypr/cliphist-fuzzel-img.sh".source = ./config/hypr/cliphist-fuzzel-img.sh;
-    "waybar/config.jsonc".source = ./config/waybar/config.jsonc;
-    "waybar/style.css".source = ./config/waybar/style.css;
+  home.sessionVariables = {
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+    QT_PLUGIN_PATH = "/home/matko/.local/lib/qt-5.15.19/plugins:/home/matko/.local/lib/qt-6/plugins";
   };
 
   programs.home-manager.enable = true;

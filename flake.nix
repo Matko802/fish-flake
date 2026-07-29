@@ -11,15 +11,34 @@
       url = "github:rPlakama/gsr-ui-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-
-  outputs = { nix-cachyos-kernel, self, nixpkgs, helium-flake, ... }@inputs: {
+  
+  nixConfig = {
+    extra-substituters = [
+      "https://attic.xuyh0120.win/lantian"
+    ];
+    extra-trusted-public-keys = [
+      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+    ];
+  };
+  
+  outputs = { nix-cachyos-kernel, self, nixpkgs, helium-flake, home-manager, ... }@inputs: {
     nixosConfigurations.matko = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
 
       modules = [
         ./configuration.nix
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.matko = import ./home.nix;
+        }
 
         (
           { pkgs, ... }:
@@ -32,7 +51,7 @@
 
             environment.systemPackages = [ pkgs.helium ];
 
-            boot.kernelPackages = inputs.nix-cachyos-kernel.legacyPackages.${pkgs.stdenv.hostPlatform.system}.linuxPackages-cachyos-latest-x86_64-v3;
+            boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3;
           }
         )
       ];

@@ -1,6 +1,7 @@
 { pkgs, ... }: {
-  xdg.configFile."kitty" = {
+  xdg.configFile."waybar" = {
     source = ./config;
     recursive = true;
+    force = true;
   };
 }
