@@ -28,6 +28,7 @@
       color-scheme = "prefer-dark";
       gtk-theme = "adw-gtk3-dark";
       icon-theme = "Adwaita";
+      font-name = "JetBrainsMono Nerd Font 10";
     };
   };
 }
