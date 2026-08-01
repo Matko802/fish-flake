@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       inputs.gsr-ui-nix.nixosModules.default
+      ./Machine/qtengine/qtengine-config.nix
     ];
     services.ollama = {
     enable = true;
@@ -20,6 +21,7 @@
     openFirewall = true;
     autoStart = true;
   }; 
+  services.udisks2.enable = true;
   hardware.enableRedistributableFirmware = true;
   programs.gamemode.enable = true;
   programs.nix-ld.enable = true;
@@ -103,7 +105,7 @@
   
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
-  programs.hyprland.enable = true;
+  programs.mango.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -160,7 +162,7 @@
       mpvScripts.visualizer
       equibop
       godot
-      python313Packages.litellm
+      litellm
       kdePackages.filelight
       uv
       ffmpeg-full
@@ -189,29 +191,16 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.sessionVariables = {
-    QT_QPA_PLATFORMTHEME = "qt5ct";
-    QT_PLUGIN_PATH = "/home/matko/.local/lib/qt-5.15.19/plugins:/home/matko/.local/lib/qt-6/plugins";
-  };
-
   environment.systemPackages = with pkgs; [
-    nemo
-    satty
-    hyprshot
-    wl-clipboard
-    cliphist
-    hyprpicker
-    hyprlock
-    bemoji
-    awww
-    waypaper
-    hypridle
-    hyprshutdown
+    fresh-editor
+    kdePackages.plasma-integration
+    kdePackages.dolphin
+    kdePackages.kio-extras
+    kdePackages.kdegraphics-thumbnailers
+    kdePackages.kimageformats
+    kdePackages.ffmpegthumbs
     pavucontrol
-    fuzzel
-    waybar
-    mako
-    fuzzel
+    networkmanagerapplet
     ventoy
     usbutils
     p7zip
@@ -239,6 +228,8 @@
     mangojuice
     android-tools
     adwaita-icon-theme
+    kdePackages.breeze-icons
+    sound-theme-freedesktop
   ];
   fonts = {
     fontDir.enable = true;
@@ -246,6 +237,8 @@
       nerd-fonts.jetbrains-mono
     ];
   };
+  programs.dconf.enable = true;
+  environment.etc."xdg/menus/applications.menu".source = "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   services.udev.extraRules = ''
   # Grant WebHID access to MCHOSE Mix 87-III

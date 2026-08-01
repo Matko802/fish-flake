@@ -8,25 +8,21 @@
     ./Machine/mpv/mpv-config.nix
     ./Machine/fetch/fetch-config.nix
     ./Machine/DEs/mango/mango-config.nix
+    ./Machine/DEs/mango/awww/awww-config.nix
+    ./Machine/DEs/mango/bemoji/bemoji-config.nix
+    ./Machine/DEs/mango/cliphist/cliphist-config.nix
+    ./Machine/DEs/mango/fuzzel/fuzzel-config.nix
+    ./Machine/DEs/mango/hypridle/hypridle-config.nix
+    ./Machine/DEs/mango/hyprlock/hyprlock-config.nix
+    ./Machine/DEs/mango/hyprpicker/hyprpicker-config.nix
+    ./Machine/DEs/mango/hyprpolkitagent/hyprpolkitagent-config.nix
+    ./Machine/DEs/mango/libnotify/libnotify-config.nix
+    ./Machine/DEs/mango/mako/mako-config.nix
+    ./Machine/DEs/mango/playerctl/playerctl-config.nix
+    ./Machine/DEs/mango/satty/satty-config.nix
+    ./Machine/DEs/mango/waypaper/waypaper-config.nix
+    ./Machine/DEs/mango/wl-clipboard/wl-clipboard-config.nix
     ./Machine/waybar/waybar-config.nix
-    ./Machine/DEs/hypr/hypr/hypr-config.nix
-    ./Machine/DEs/hypr/ironbar/ironbar-config.nix
-    ./Machine/DEs/hypr/mako/mako-config.nix
-    ./Machine/DEs/hypr/awww/awww-config.nix
-    ./Machine/DEs/hypr/bemoji/bemoji-config.nix
-    ./Machine/DEs/hypr/cliphist/cliphist-config.nix
-    ./Machine/DEs/hypr/fuzzel/fuzzel-config.nix
-    ./Machine/DEs/hypr/hypridle/hypridle-config.nix
-    ./Machine/DEs/hypr/hyprlock/hyprlock-config.nix
-    ./Machine/DEs/hypr/hyprpicker/hyprpicker-config.nix
-    ./Machine/DEs/hypr/hyprpolkitagent/hyprpolkitagent-config.nix
-    ./Machine/DEs/hypr/hyprshot/hyprshot-config.nix
-    ./Machine/DEs/hypr/hyprshutdown/hyprshutdown-config.nix
-    ./Machine/DEs/hypr/libnotify/libnotify-config.nix
-    ./Machine/DEs/hypr/playerctl/playerctl-config.nix
-    ./Machine/DEs/hypr/satty/satty-config.nix
-    ./Machine/DEs/hypr/waypaper/waypaper-config.nix
-    ./Machine/DEs/hypr/wl-clipboard/wl-clipboard-config.nix
   ];
 
   home.username = "matko";

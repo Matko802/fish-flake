@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   home.packages = [ pkgs.hyprlock ];
-  xdg.configFile."hyprlock/hyprlock.conf" = {
+  xdg.configFile."hypr/hyprlock.conf" = {
     source = ./hyprlock.conf;
     force = true;
   };

@@ -1,8 +1,0 @@
-/*
- * MatkosAmoled — GTK 3 dark variant.
- * Imported by GTK when prefers-color-scheme: dark is detected.
- * Inherits Adwaita's full widget CSS, which then uses the @define-color
- * tokens we set in gtk.css.
- */
-
-@import url("resource:///org/gnome/Adwaita/gtk-main-dark.css");
