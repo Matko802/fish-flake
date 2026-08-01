@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=MatkosAmoled
+Comment=Matko's AMOLED dark theme — pure black background with cyan accent
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=MatkosAmoled
+IconTheme=Adwaita
+CursorTheme=Adwaita
+ApplicationFont=JetBrains Mono Nerd Font 10
+MonospaceFont=JetBrains Mono Nerd Font 10

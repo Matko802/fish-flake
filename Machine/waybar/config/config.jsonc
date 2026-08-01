@@ -3,13 +3,14 @@
     "position": "top",
     "height": 30,
     "spacing": 4,
-    "modules-left": ["hyprland/workspaces"],
-    "modules-center": ["hyprland/window"],
+    "modules-left": ["ext/workspaces"],
+    "modules-center": [],
 
-"hyprland/workspaces": {
-    "disable-scroll": true,
+"ext/workspaces": {
     "all-outputs": true,
     "active-only": false,
+    "ignore-hidden": true,
+    "sort-by-id": true,
     "on-click": "activate",
     "format": "{icon}",
     "format-icons": {
@@ -24,21 +25,9 @@
       "8": "8",
       "9": "9",
       "10": "0"
-    },
-    "persistent-workspaces": {
-      "1": [],
-      "2": [],
-      "3": []
     }
   },
 
-    "hyprland/window": {
-        "format": "{title}",
-        "icon": true,
-        "icon-size": 16,
-        "max-length": 50,
-        "separate-outputs": true
-    },
     "modules-right": ["group/systray", "pulseaudio", "network#ethernet","network#wifi", "cpu", "memory", "battery", "clock"],
 
     "group/systray": {
@@ -89,7 +78,7 @@
     "format-wifi": "{icon}",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "tooltip": false,
-    "on-click": "kitty --class gazelle-window -e gazelle"
+    "on-click": "nm-connection-editor"
     
     },
 
@@ -97,7 +86,7 @@
     "interface": "enp*",
     "format-ethernet": "",
     "tooltip": false,
-    "on-click": "kitty --class gazelle-window -e gazelle"
+    "on-click": "nm-connection-editor"
     },
     "pulseaudio": {
         "format": "{icon} {volume}%",

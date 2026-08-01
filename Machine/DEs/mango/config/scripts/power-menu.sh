@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 OPTIONS="󰌾 Lock\n󰒲 Suspend\n Reboot\n󰐥 Shutdown\n󰠚 Log Out"
 SELECTION=$(printf "$OPTIONS" | fuzzel --dmenu --lines=5 --width=15)
 case "$SELECTION" in
@@ -14,6 +15,6 @@ case "$SELECTION" in
         systemctl poweroff
         ;;
     *"Log Out")
-        hyprctl dispatch exit
+        mmsg dispatch quit
         ;;
 esac
