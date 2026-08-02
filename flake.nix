@@ -15,8 +15,11 @@
       url = "github:kossLAN/qtengine";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+      waybar = {
+      url = "github:Alexays/Waybar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-
   nixConfig = {
     extra-substituters = [
       "https://attic.xuyh0120.win/lantian"
@@ -26,29 +29,35 @@
     ];
   };
 
-  outputs = { nix-cachyos-kernel, self, nixpkgs, helium-flake, ... }@inputs: {
+  outputs = 
+  { 
+    nix-cachyos-kernel, 
+    self, 
+    nixpkgs, 
+    helium-flake, 
+    waybar,
+    ... 
+  }@inputs: 
+  {
     nixosConfigurations.matko = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
+      specialArgs = {
+         inherit inputs; 
+        };
 
       modules = [
         ./configuration.nix
         ./user.nix
 
-        (
-          { pkgs, ... }:
-
-          {
-            nixpkgs.overlays = [
-              helium-flake.overlays.default
-              nix-cachyos-kernel.overlays.pinned
-            ];
-
-            environment.systemPackages = [ pkgs.helium ];
-
-            boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3;
-          }
-        )
+({ pkgs, ... }: {
+          nixpkgs.overlays = [
+            waybar.overlays.default
+            helium-flake.overlays.default
+            nix-cachyos-kernel.overlays.pinned
+          ];
+          environment.systemPackages = [ pkgs.helium ];
+          boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3;
+        })
       ];
     };
   };

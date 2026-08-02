@@ -3,37 +3,14 @@
     "position": "top",
     "height": 30,
     "spacing": 4,
-    "modules-left": ["ext/workspaces"],
-    "modules-center": [
-        "dwl/window"
+    "modules-left": [
+        "mango/workspaces"
     ],
 
-"ext/workspaces": {
-    "all-outputs": true,
-    "active-only": false,
-    "ignore-hidden": true,
-    "sort-by-id": true,
-    "on-click": "activate",
-    "format": "{icon}",
-    "format-icons": {
-      "default": "",
-      "1": "1",
-      "2": "2",
-      "3": "3",
-      "4": "4",
-      "5": "5",
-      "6": "6",
-      "7": "7",
-      "8": "8",
-      "9": "9",
-      "10": "0"
-    },
-    "persistent-workspaces": {
-      "1": [],
-      "2": [],
-      "3": []
-    }
-  },
+    "modules-center": [
+        "mango/window"
+    ],
+
     "modules-right": [
         "tray",
         "pulseaudio",
@@ -43,31 +20,38 @@
         "memory",
         "battery",
         "clock"
-        ],
+    ],
+
+  "mango/workspaces": {
+      "format": "{icon}",
+      "hide-empty": true,
+      "on-click": "activate",
+      "on-click-right": "toggle",
+      "overview-label": "OVERVIEW"
+  },
+
 
     "tray": {
         "icon-size": 14,
         "spacing": 12
     },
+    
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format": "{:%H:%M:%S}",
         "format-alt": "{:%Y-%m-%d}",
         "interval": 1
     },
+
     "cpu": {
         "format": " {usage}%",
         "tooltip": false
     },
+
     "memory": {
         "format": " {}%"
     },
-    "dwl/window": {
-    "format": "{title}",
-    "max-length": 50,
-    "icon": true,
-    "icon-size": 16
-},
+    
     "battery": {
         "states": {
             "warning": 30,
@@ -78,13 +62,13 @@
         "format-plugged": "{capacity}%",
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
     },
+
     "network#wifi": {
     "interface": "wlan*",
     "format-wifi": "{icon}",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "tooltip": false,
     "on-click": "nm-connection-editor"
-    
     },
 
     "network#ethernet": {
@@ -94,6 +78,11 @@
     "on-click": "nm-connection-editor"
     },
 
+    "mango/window": {
+    "format": "{}",
+	"icon-size": 20
+  },
+    
     "pulseaudio": {
         "format": "{icon} {volume}%",
         "format-bluetooth": "󰂯{icon} {volume}%",

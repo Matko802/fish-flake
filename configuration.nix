@@ -153,7 +153,7 @@
       git
       protonplus
       mpv
-      vscode
+      vscodium
       opencode-desktop
       yt-dlp
       kitty
