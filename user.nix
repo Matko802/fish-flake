@@ -24,6 +24,5 @@
     ./Machine/DEs/mango/wl-clipboard/wl-clipboard-config.nix
     ./Machine/waybar/waybar-config.nix
     ./Machine/qtengine/qtengine-config.nix
-    ./Machine/gtk/gtk-config.nix
   ];
 }
