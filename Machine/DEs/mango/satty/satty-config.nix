@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = [ pkgs.satty ];
+  environment.systemPackages = [ pkgs.satty ];
 }

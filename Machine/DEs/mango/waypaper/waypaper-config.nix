@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = [ pkgs.waypaper ];
+  environment.systemPackages = [ pkgs.waypaper ];
 }

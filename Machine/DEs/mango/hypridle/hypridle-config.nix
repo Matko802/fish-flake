@@ -1,7 +1,6 @@
-{ pkgs, ... }: {
-  home.packages = [ pkgs.hypridle ];
-  xdg.configFile."hypr/hypridle.conf" = {
-    source = ./hypridle.conf;
-    force = true;
-  };
+{ config, pkgs, ... }: {
+  environment.systemPackages = [ pkgs.hypridle ];
+  systemd.tmpfiles.rules = [
+    "L+ ${config.users.users.matko.home}/.config/hypr/hypridle.conf - - - - ${./hypridle.conf}"
+  ];
 }

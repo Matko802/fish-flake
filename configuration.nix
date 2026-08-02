@@ -9,7 +9,6 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       inputs.gsr-ui-nix.nixosModules.default
-      ./Machine/qtengine/qtengine-config.nix
     ];
     services.ollama = {
     enable = true;
@@ -21,7 +20,10 @@
     openFirewall = true;
     autoStart = true;
   }; 
+  programs.kdeconnect.enable = true;
   services.udisks2.enable = true;
+  services.gvfs.enable = true;
+  programs.dconf.enable = true;
   hardware.enableRedistributableFirmware = true;
   programs.gamemode.enable = true;
   programs.nix-ld.enable = true;
@@ -192,8 +194,10 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    libmtp
+    btop
     fresh-editor
-    kdePackages.plasma-integration
+    kdePackages.ark
     kdePackages.dolphin
     kdePackages.kio-extras
     kdePackages.kdegraphics-thumbnailers
@@ -228,7 +232,6 @@
     mangojuice
     android-tools
     adwaita-icon-theme
-    kdePackages.breeze-icons
     sound-theme-freedesktop
   ];
   fonts = {
@@ -237,7 +240,6 @@
       nerd-fonts.jetbrains-mono
     ];
   };
-  programs.dconf.enable = true;
   environment.etc."xdg/menus/applications.menu".source = "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   services.udev.extraRules = ''

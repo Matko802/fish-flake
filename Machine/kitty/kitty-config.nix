@@ -1,6 +1,5 @@
-{ pkgs, ... }: {
-  xdg.configFile."kitty" = {
-    source = ./config;
-    recursive = true;
-  };
+{ config, pkgs, ... }: {
+  systemd.tmpfiles.rules = [
+    "L+ ${config.users.users.matko.home}/.config/kitty - - - - ${./config}"
+  ];
 }

@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = [ pkgs.hyprpolkitagent ];
+  environment.systemPackages = [ pkgs.hyprpolkitagent ];
 }

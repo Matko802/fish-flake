@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = [ pkgs.awww ];
+  environment.systemPackages = [ pkgs.awww ];
 }

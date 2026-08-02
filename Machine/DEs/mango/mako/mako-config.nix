@@ -1,7 +1,6 @@
-{ pkgs, ... }: {
-  home.packages = [ pkgs.mako ];
-  xdg.configFile."mako/config" = {
-    source = ./config/config;
-    force = true;
-  };
+{ config, pkgs, ... }: {
+  environment.systemPackages = [ pkgs.mako ];
+  systemd.tmpfiles.rules = [
+    "L+ ${config.users.users.matko.home}/.config/mako/config - - - - ${./config/config}"
+  ];
 }

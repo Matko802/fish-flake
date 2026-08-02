@@ -1,8 +1,6 @@
-{ pkgs, ... }: {
-  home.packages = [ pkgs.waybar ];
-  xdg.configFile."waybar" = {
-    source = ./config;
-    recursive = true;
-    force = true;
-  };
+{ config, pkgs, ... }: {
+  environment.systemPackages = [ pkgs.waybar ];
+  systemd.tmpfiles.rules = [
+    "L+ ${config.users.users.matko.home}/.config/waybar - - - - ${./config}"
+  ];
 }

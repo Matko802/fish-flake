@@ -23,11 +23,7 @@
     ./Machine/DEs/mango/waypaper/waypaper-config.nix
     ./Machine/DEs/mango/wl-clipboard/wl-clipboard-config.nix
     ./Machine/waybar/waybar-config.nix
+    ./Machine/qtengine/qtengine-config.nix
+    ./Machine/gtk/gtk-config.nix
   ];
-
-  home.username = "matko";
-  home.homeDirectory = "/home/matko";
-  home.stateVersion = "26.05";
-
-  programs.home-manager.enable = true;
 }

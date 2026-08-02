@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = [ pkgs.fuzzel ];
+  environment.systemPackages = [ pkgs.fuzzel ];
 }

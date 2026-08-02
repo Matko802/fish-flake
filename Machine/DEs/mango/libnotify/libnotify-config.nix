@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = [ pkgs.libnotify ];
+  environment.systemPackages = [ pkgs.libnotify ];
 }

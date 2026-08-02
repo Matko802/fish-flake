@@ -1,8 +1,6 @@
-{ pkgs, ... }: {
-  home.packages = [ pkgs.grim pkgs.slurp ];
-  xdg.configFile."mango" = {
-    source = ./config;
-    recursive = true;
-    force = true;
-  };
+{ config, pkgs, ... }: {
+  environment.systemPackages = [ pkgs.grim pkgs.slurp ];
+  systemd.tmpfiles.rules = [
+    "L+ ${config.users.users.matko.home}/.config/mango - - - - ${./config}"
+  ];
 }

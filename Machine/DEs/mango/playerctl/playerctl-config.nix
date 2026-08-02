@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = [ pkgs.playerctl ];
+  environment.systemPackages = [ pkgs.playerctl ];
 }

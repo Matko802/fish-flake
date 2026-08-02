@@ -1,3 +1,5 @@
-{ pkgs, ... }: {
-  xdg.configFile."fetch/config".source = ./config;
+{ config, pkgs, ... }: {
+  systemd.tmpfiles.rules = [
+    "L+ ${config.users.users.matko.home}/.config/fetch/config - - - - ${./config}"
+  ];
 }

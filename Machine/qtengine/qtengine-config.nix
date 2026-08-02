@@ -14,7 +14,7 @@
 
     config = {
       theme = {
-        colorScheme = "~/fish-flake/Machine/KDE-Colours/config/MatkosAmoled.colors";
+        colorScheme = "${../KDE-Colours/config/MatkosAmoled.colors}";
         iconTheme = "breeze-dark";
         style = "breeze";
 

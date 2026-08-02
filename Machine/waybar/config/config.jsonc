@@ -25,36 +25,32 @@
       "8": "8",
       "9": "9",
       "10": "0"
+    },
+    "persistent-workspaces": {
+      "1": [],
+      "2": [],
+      "3": []
     }
   },
-
-    "modules-right": ["group/systray", "pulseaudio", "network#ethernet","network#wifi", "cpu", "memory", "battery", "clock"],
-
-    "group/systray": {
-        "orientation": "horizontal",
-        "modules": ["custom/tray-toggle", "tray"], 
-        "drawer": {
-            "transition-duration": 300,
-            "children-class": "tray-expanded",
-            "transition-left-to-right": false, 
-            "click-to-reveal": true 
-        }
-    },
-
-    "custom/tray-toggle": {
-        "format": "",
-        "tooltip": false
-    },
+    "modules-right": [
+        "pulseaudio",
+        "network#ethernet",
+        "network#wifi",
+        "cpu",
+        "memory",
+        "battery",
+        "clock"
+        ],
 
     "tray": {
         "icon-size": 14,
         "spacing": 12
     },
-    
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format": " {:%H:%M}",
-        "format-alt": " {:%Y-%m-%d}"
+        "format": "{:%H:%M:%S}",
+        "format-alt": "{:%Y-%m-%d}",
+        "interval": 1
     },
     "cpu": {
         "format": " {usage}%",
@@ -88,6 +84,7 @@
     "tooltip": false,
     "on-click": "nm-connection-editor"
     },
+    
     "pulseaudio": {
         "format": "{icon} {volume}%",
         "format-bluetooth": "󰂯{icon} {volume}%",

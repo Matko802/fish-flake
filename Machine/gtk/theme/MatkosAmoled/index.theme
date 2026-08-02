@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Matko's AMOLED
+Comment=Matko's pure-black AMOLED GTK theme
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=MatkosAmoled
+IconTheme=breeze-dark
+ButtonLayout=close,minimize,maximize

@@ -1,3 +1,5 @@
-{ pkgs, ... }: {
-  xdg.configFile."starship.toml".source = ./starship.toml;
+{ config, pkgs, ... }: {
+  systemd.tmpfiles.rules = [
+    "L+ ${config.users.users.matko.home}/.config/starship.toml - - - - ${./starship.toml}"
+  ];
 }

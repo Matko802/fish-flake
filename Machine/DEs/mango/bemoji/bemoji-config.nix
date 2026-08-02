@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = [ pkgs.bemoji ];
+  environment.systemPackages = [ pkgs.bemoji ];
 }

@@ -1,0 +1,35 @@
+# Matko's AMOLED GTK2 theme - pure black
+
+gtk-color-scheme = "bg_color:#000000\nfg_color:#fcfcfc\nbase_color:#000000\ntext_color:#fcfcfc\nselected_bg_color:#181818\nselected_fg_color:#fcfcfc\ntooltip_bg_color:#000000\ntooltip_fg_color:#fcfcfc"
+
+gtk-font-name = "JetBrainsMono Nerd Font 11"
+gtk-button-images = 1
+gtk-menu-images = 1
+gtk-toolbar-style = GTK_TOOLBAR_BOTH
+gtk-enable-event-sounds = 0
+gtk-enable-input-feedback-sounds = 0
+
+style "amoled" {
+    bg[NORMAL] = "#000000"
+    bg[PRELIGHT] = "#181818"
+    bg[ACTIVE] = "#181818"
+    bg[SELECTED] = "#181818"
+    bg[INSENSITIVE] = "#0a0a0a"
+    fg[NORMAL] = "#fcfcfc"
+    fg[PRELIGHT] = "#ffffff"
+    fg[ACTIVE] = "#fcfcfc"
+    fg[SELECTED] = "#fcfcfc"
+    fg[INSENSITIVE] = "#4a4a4a"
+    text[NORMAL] = "#fcfcfc"
+    text[PRELIGHT] = "#ffffff"
+    text[ACTIVE] = "#fcfcfc"
+    text[SELECTED] = "#fcfcfc"
+    text[INSENSITIVE] = "#4a4a4a"
+    base[NORMAL] = "#000000"
+    base[PRELIGHT] = "#000000"
+    base[ACTIVE] = "#000000"
+    base[SELECTED] = "#181818"
+    base[INSENSITIVE] = "#0a0a0a"
+}
+
+widget_class "*" style "amoled"

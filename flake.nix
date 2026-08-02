@@ -11,16 +11,12 @@
       url = "github:rPlakama/gsr-ui-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    home-manager = {
-      url = "github:nix-community/home-manager";
+    qtengine = {
+      url = "github:kossLAN/qtengine";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    qtengine = {
-  url = "github:kossLAN/qtengine";
-  inputs.nixpkgs.follows = "nixpkgs";
-};
   };
-  
+
   nixConfig = {
     extra-substituters = [
       "https://attic.xuyh0120.win/lantian"
@@ -29,28 +25,23 @@
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
     ];
   };
-  
-  outputs = { nix-cachyos-kernel, self, nixpkgs, helium-flake, home-manager, ... }@inputs: {
+
+  outputs = { nix-cachyos-kernel, self, nixpkgs, helium-flake, ... }@inputs: {
     nixosConfigurations.matko = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
 
       modules = [
         ./configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.matko = import ./home.nix;
-        }
+        ./user.nix
 
         (
           { pkgs, ... }:
 
           {
-            nixpkgs.overlays = [ 
+            nixpkgs.overlays = [
               helium-flake.overlays.default
-              nix-cachyos-kernel.overlays.pinned 
+              nix-cachyos-kernel.overlays.pinned
             ];
 
             environment.systemPackages = [ pkgs.helium ];

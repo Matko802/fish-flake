@@ -1,6 +1,5 @@
-{ pkgs, ... }: {
-  xdg.configFile."fastfetch" = {
-    source = ./config;
-    recursive = true;
-  };
+{ config, pkgs, ... }: {
+  systemd.tmpfiles.rules = [
+    "L+ ${config.users.users.matko.home}/.config/fastfetch - - - - ${./config}"
+  ];
 }

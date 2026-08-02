@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = [ pkgs.wl-clipboard ];
+  environment.systemPackages = [ pkgs.wl-clipboard ];
 }
