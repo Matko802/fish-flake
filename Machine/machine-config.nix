@@ -34,12 +34,19 @@
     inputs.gsr-ui-nix.nixosModules.default
   ];
 
+  nixpkgs.overlays = [
+    inputs.nix-cachyos-kernel.overlays.pinned
+  ];
+
+  nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];
+  nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
+
   networking.hostName = "fishy";
 
   boot.loader.limine.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
   services.ollama = {
     enable = true;
@@ -269,9 +276,9 @@ fonts = {
     fontconfig = {
       enable = true;
       defaultFonts = {
-        monospace = [ "JetBrainsMono NF" ];
-        sansSerif = [ "JetBrainsMono NF" ];
-        serif     = [ "JetBrainsMono NF" ];
+        monospace = [ "JetBrainsMono Nerd Font" ];
+        sansSerif = [ "JetBrainsMono Nerd Font" ];
+        serif     = [ "JetBrainsMono Nerd Font" ];
       };
     };
   };
