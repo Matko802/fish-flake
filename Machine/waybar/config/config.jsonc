@@ -4,7 +4,8 @@
     "height": 30,
     "spacing": 4,
     "modules-left": [
-        "mango/workspaces"
+        "mango/workspaces",
+        "mango/layout"
     ],
 
     "modules-center": [
@@ -13,6 +14,7 @@
 
     "modules-right": [
         "tray",
+        "mango/language",
         "pulseaudio",
         "network#ethernet",
         "network#wifi",
@@ -30,6 +32,13 @@
       "overview-label": "OVERVIEW"
   },
 
+    "mango/layout": {
+      "format": "{}"
+  },
+
+  "mango/language": {
+  "format": "{short}"
+  },
 
     "tray": {
         "icon-size": 14,
