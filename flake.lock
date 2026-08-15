@@ -215,11 +215,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786815666,
-        "narHash": "sha256-+EJco/7U0NtIIsof4fIsXQrToenlLu5wnMuDiEzR+l0=",
+        "lastModified": 1786816210,
+        "narHash": "sha256-cOS4acahTxQpPtMtevsQi5lhecdyi59Fh2/8EbB4QD0=",
         "owner": "Matko802",
         "repo": "SharkVis",
-        "rev": "91be897121cf35e22c29fbfbf0cfed32a78358d9",
+        "rev": "b5a5c9c7e96211569ce7a6a57b55989a3b41e041",
         "type": "github"
       },
       "original": {
