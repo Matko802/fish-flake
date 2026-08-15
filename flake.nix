@@ -5,7 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     helium-flake.url = "github:oxcl/nix-flake-helium-browser";
     helium-flake.inputs.nixpkgs.follows = "nixpkgs";
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
     gsr-ui-nix = {
       url = "github:rPlakama/gsr-ui-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,6 +29,22 @@
       ...
     }@inputs:
     let
+      # cavis: cava-inspired terminal spectrum analyzer (C, pulseaudio input)
+      cavisOverlay = final: prev: {
+        cavis = prev.stdenv.mkDerivation {
+          pname = "cavis";
+          version = "0.1.0";
+          src = ./cavis;
+          nativeBuildInputs = [ prev.pkg-config ];
+          buildInputs = [ prev.libpulseaudio ];
+          makeFlags = [ "PREFIX=$(out)" ];
+          meta = {
+            mainProgram = "cavis";
+            description = "Terminal audio spectrum analyzer";
+          };
+        };
+      };
+
       sharedModules = [
 
         ({ pkgs, ... }: {
@@ -41,6 +56,7 @@
           nixpkgs.overlays = [
             waybar.overlays.default
             helium-flake.overlays.default
+            cavisOverlay
           ];
 
           environment.systemPackages = [ pkgs.helium ];
@@ -58,5 +74,9 @@
     {
       nixosConfigurations.machine1 = mkHost ./Machine/machine-config.nix;
       nixosConfigurations.machine2 = mkHost ./Machine2/machine-config.nix;
+      packages.x86_64-linux.cavis = (import nixpkgs {
+        system = "x86_64-linux";
+        overlays = [ cavisOverlay ];
+      }).cavis;
     };
 }
