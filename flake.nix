@@ -18,6 +18,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    sharkvis = {
+      url = "github:Matko802/sharkvis";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -26,24 +30,11 @@
       nixpkgs,
       helium-flake,
       waybar,
+      sharkvis,
       ...
     }@inputs:
     let
-      # cavis: cava-inspired terminal spectrum analyzer (C, pulseaudio input)
-      cavisOverlay = final: prev: {
-        cavis = prev.stdenv.mkDerivation {
-          pname = "cavis";
-          version = "0.1.0";
-          src = ./cavis;
-          nativeBuildInputs = [ prev.pkg-config ];
-          buildInputs = [ prev.libpulseaudio ];
-          makeFlags = [ "PREFIX=$(out)" ];
-          meta = {
-            mainProgram = "cavis";
-            description = "Terminal audio spectrum analyzer";
-          };
-        };
-      };
+      sharkvisOverlay = sharkvis.overlays.default;
 
       sharedModules = [
 
@@ -56,7 +47,7 @@
           nixpkgs.overlays = [
             waybar.overlays.default
             helium-flake.overlays.default
-            cavisOverlay
+            sharkvisOverlay
           ];
 
           environment.systemPackages = [ pkgs.helium ];
@@ -74,9 +65,6 @@
     {
       nixosConfigurations.machine1 = mkHost ./Machine/machine-config.nix;
       nixosConfigurations.machine2 = mkHost ./Machine2/machine-config.nix;
-      packages.x86_64-linux.cavis = (import nixpkgs {
-        system = "x86_64-linux";
-        overlays = [ cavisOverlay ];
-      }).cavis;
+      packages.x86_64-linux.sharkvis = inputs.sharkvis.packages.x86_64-linux.default;
     };
 }

@@ -215,16 +215,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1786819270,
-        "narHash": "sha256-7NcRW+/2f1uxxG9Y4jXs/0ayF7GHMD7QNJRgXAKjV4U=",
+        "lastModified": 1786819572,
+        "narHash": "sha256-h4i500gnf1+i15CXAs2/I6Za8QXsxKfK+4McrcH5+k0=",
         "owner": "Matko802",
-        "repo": "SharkVis",
-        "rev": "5f2193a74a32db7e1b62efc2d39bf2eb13c9017d",
+        "repo": "sharkvis",
+        "rev": "7e04510803741ff757f23f2b5bd2451347043fdd",
         "type": "github"
       },
       "original": {
         "owner": "Matko802",
-        "repo": "SharkVis",
+        "repo": "sharkvis",
         "type": "github"
       }
     },
