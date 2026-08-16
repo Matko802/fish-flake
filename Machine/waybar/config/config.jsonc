@@ -81,7 +81,6 @@
     },
 
     "network#ethernet": {
-    "interface": "enp*",
     "format-ethernet": "",
     "tooltip": false,
     "on-click": "nm-connection-editor"
