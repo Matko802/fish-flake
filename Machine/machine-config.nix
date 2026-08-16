@@ -3,13 +3,14 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./disk-config.nix
+    ./disk/disk-config.nix
     ./nh/nh-config.nix
     ./udev/udev-config.nix
     ./fastfetch/fastfetch-config.nix
     ./fish/fish-config.nix
     ./Starship/starship-config.nix
     ./kitty/kitty-config.nix
+    ./foot/foot-config.nix
     ./mpv/mpv-config.nix
     ./fetch/fetch-config.nix
     ./dolphin/dolphin-config.nix
@@ -78,6 +79,7 @@
 
   programs.kdeconnect.enable = true;
   services.udisks2.enable = true;
+  services.gnome.gnome-keyring.enable = true;
   programs.dconf.enable = true;
 
   hardware.enableRedistributableFirmware = true;
@@ -185,18 +187,18 @@
       zapzap
       prismlauncher
       librewolf
-      inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       kdePackages.kate
       git
       protonplus
       mpv
-      vscodium
       opencode-desktop
       yt-dlp
       kitty
+      foot
       fuse
-      cavasik
       cava
+      cavasik
+      sharkvis
       pear-desktop
       mpvScripts.visualizer
       equibop
@@ -220,6 +222,7 @@
       fetch
       onlyoffice-desktopeditors
       itch
+      zed-editor
 
     ];
   };
@@ -235,7 +238,7 @@
     withOpenASAR = true;
   })
     bazaar
-    btop
+    mission-center
     fresh-editor
     pavucontrol
     networkmanagerapplet

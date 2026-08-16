@@ -11,7 +11,7 @@ in
   environment.etc."xdg/gtk-3.0/settings.ini".text = ''
     [Settings]
     gtk-theme-name=MatkosAmoled
-    gtk-icon-theme-name=breeze-dark
+    gtk-icon-theme-name=Adwaita
     gtk-font-name=JetBrainsMono Nerd Font
     gtk-application-prefer-dark-theme=1
   '';
@@ -44,7 +44,7 @@ in
       cat > "$HOME/.config/gtk-3.0/settings.ini" <<'EOF'
 [Settings]
 gtk-theme-name=MatkosAmoled
-gtk-icon-theme-name=breeze-dark
+gtk-icon-theme-name=Adwaita
 gtk-font-name=JetBrainsMono Nerd Font
 gtk-application-prefer-dark-theme=1
 EOF
@@ -54,11 +54,10 @@ EOF
       cat > "$HOME/.local/share/flatpak/overrides/global" <<'EOF'
 [Context]
 filesystems=xdg-config/gtk-3.0:ro;xdg-config/gtk-4.0:ro;xdg-config/kdeglobals:ro;xdg-data/color-schemes:ro;xdg-data/themes:ro;
-unset-environment=ICON_THEME;
 
 [Environment]
 GTK_THEME=MatkosAmoled
-ICON_THEME=
+ICON_THEME=Adwaita
 QT_QPA_PLATFORMTHEME=kde
 EOF
     '';
@@ -71,7 +70,7 @@ EOF
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
           gtk-theme = "MatkosAmoled";
-          icon-theme = "breeze-dark";
+          icon-theme = "Adwaita";
           font-name = "JetBrainsMono Nerd Font 10";
           monospace-font-name = "JetBrainsMono Nerd Font Mono 10";
         };

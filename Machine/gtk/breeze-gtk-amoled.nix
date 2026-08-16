@@ -42,7 +42,7 @@ headerbar.maximized:backdrop {
   border-top: none;
   border-bottom: none;
   box-shadow: none;
-  background-color: transparent;
+  background-color: #000000;
   background-image: none;
   color: #ffffff; }
 
@@ -73,7 +73,7 @@ headerbar.maximized:backdrop {
   border-top: none;
   border-bottom: none;
   box-shadow: none;
-  background-color: transparent;
+  background-color: #000000;
   background-image: none;
   color: #ffffff; }
 
@@ -148,7 +148,7 @@ EOF
 
     [X-GNOME-Metatheme]
     GtkTheme=MatkosAmoled
-    IconTheme=breeze-dark
+    IconTheme=Adwaita
     EOF
 
     runHook postInstall
