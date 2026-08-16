@@ -27,6 +27,10 @@
       url = "github:Matko802/sharkvis";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mango = {
+      url = "github:mangowm/mango";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -36,6 +40,7 @@
       helium-flake,
       waybar,
       sharkvis,
+      mango,
       ...
     }@inputs:
     let
@@ -53,6 +58,7 @@
             waybar.overlays.default
             helium-flake.overlays.default
             sharkvisOverlay
+            mango.overlays.default
           ];
 
           environment.systemPackages = [ pkgs.helium ];
