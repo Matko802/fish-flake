@@ -10,7 +10,6 @@
     ./fish/fish-config.nix
     ./Starship/starship-config.nix
     ./kitty/kitty-config.nix
-    ./foot/foot-config.nix
     ./mpv/mpv-config.nix
     ./fetch/fetch-config.nix
     ./dolphin/dolphin-config.nix
@@ -94,14 +93,6 @@
     publish = {
       enable = true;
       userServices = true; # Allows non-root user apps like WiVRn to broadcast mDNS services
-    };
-  };
-
-  systemd.coredump = {
-    enable = true;
-    settings.Coredump = {
-      Storage = "none";
-      ProcessSizeMax = "0";
     };
   };
 
@@ -194,7 +185,6 @@
       opencode-desktop
       yt-dlp
       kitty
-      foot
       fuse
       cava
       cavasik
@@ -229,7 +219,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.12" ];
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
@@ -242,7 +231,6 @@
     fresh-editor
     pavucontrol
     networkmanagerapplet
-    ventoy
     usbutils
     p7zip
     cargo

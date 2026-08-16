@@ -89,7 +89,9 @@
 
     "mango/window": {
     "format": "{}",
-	"icon-size": 20
+	"icon-size": 20,
+    "max-length": 30,
+    "ellipsis": true
   },
     
     "pulseaudio": {

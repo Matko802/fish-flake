@@ -3,8 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    helium-flake.url = "github:oxcl/nix-flake-helium-browser";
-    helium-flake.inputs.nixpkgs.follows = "nixpkgs";
+    helium-flake = {
+      url = "github:oxcl/nix-flake-helium-browser";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     gsr-ui-nix = {
       url = "github:rPlakama/gsr-ui-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,7 +19,10 @@
       url = "github:Alexays/Waybar";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sharkvis = {
       url = "github:Matko802/sharkvis";
       inputs.nixpkgs.follows = "nixpkgs";
