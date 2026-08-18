@@ -15,16 +15,16 @@
       url = "github:kossLAN/qtengine";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    waybar = {
-      url = "github:Alexays/Waybar";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-cachyos-kernel = {
       url = "github:xddxdd/nix-cachyos-kernel/release";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sharkvis = {
       url = "github:Matko802/sharkvis";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    waybar = {
+      url = "github:Alexays/Waybar";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mango = {
@@ -38,8 +38,8 @@
       self,
       nixpkgs,
       helium-flake,
-      waybar,
       sharkvis,
+      waybar,
       mango,
       ...
     }@inputs:
@@ -55,10 +55,10 @@
           };
 
           nixpkgs.overlays = [
-            waybar.overlays.default
             helium-flake.overlays.default
             sharkvisOverlay
             mango.overlays.default
+            waybar.overlays.default
           ];
 
           environment.systemPackages = [ pkgs.helium ];

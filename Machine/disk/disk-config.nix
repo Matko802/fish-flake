@@ -20,5 +20,15 @@ in
     fileSystems."/nix" = {
       options = [ "subvol=nix" "noatime" "compress=zstd" ];
     };
+
+    swapDevices = [{
+      device = "/swapfile";
+      size = 6144; # 6 GB
+    }];
+
+    zramSwap = {
+      enable = true;
+      memoryMax = 2 * 1024 * 1024 * 1024; # 2 GB
+    };
   };
 }

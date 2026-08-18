@@ -1,0 +1,22 @@
+[theme]
+name = "dark-synthwave"
+
+[editor]
+line-number = "relative"
+cursorline = true
+bufferline = "always"
+color-modes = true
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name", "file-type", "total-line-numbers"]
+center = []
+right = ["diagnostics", "selections", "position", "file-encoding"]
+
+[editor.statusline.mode]
+normal = "NORMAL"
+insert = "INSERT"
+select = "SELECT"
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true

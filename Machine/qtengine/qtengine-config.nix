@@ -6,7 +6,6 @@
   environment.systemPackages = with pkgs.kdePackages; [
     breeze
     breeze.qt5
-    breeze-icons
   ];
 
   programs.qtengine = {
@@ -15,7 +14,7 @@
     config = {
       theme = {
         colorScheme = "${../KDE-Colours/config/MatkosAmoled.colors}";
-        iconTheme = "breeze-dark";
+        iconTheme = "Papirus";
         style = "breeze";
 
         font = {

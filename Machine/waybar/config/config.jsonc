@@ -44,7 +44,7 @@
         "icon-size": 14,
         "spacing": 12
     },
-    
+
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format": "{:%H:%M:%S}",
@@ -60,7 +60,7 @@
     "memory": {
         "format": " {}%"
     },
-    
+
     "battery": {
         "states": {
             "warning": 30,
@@ -92,7 +92,7 @@
     "max-length": 30,
     "ellipsis": true
   },
-    
+
     "pulseaudio": {
         "format": "{icon} {volume}%",
         "format-bluetooth": "󰂯{icon} {volume}%",

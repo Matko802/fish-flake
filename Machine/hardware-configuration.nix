@@ -1,6 +1,6 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, modulesPath, ... }:
 
 {
   imports =
@@ -42,9 +42,7 @@
       options = [ "defaults" "noatime" "nofail" ];
     };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/c3c7bc3f-f27d-48ea-8203-d29435a62170"; }
-    ];
+  swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

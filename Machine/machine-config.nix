@@ -1,5 +1,5 @@
 # PC (fishy) configuration
-{ config, pkgs, inputs, lib, ... }:
+{ pkgs, inputs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -11,6 +11,8 @@
     ./Starship/starship-config.nix
     ./kitty/kitty-config.nix
     ./mpv/mpv-config.nix
+    ./helix/helix-config.nix
+    ./zed/zed-config.nix
     ./fetch/fetch-config.nix
     ./dolphin/dolphin-config.nix
     ./mango/mango-config.nix
@@ -142,14 +144,16 @@
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
-  security.doas.enable = true;
-  security.doas.extraRules = [
-  {
-    users = [ "matko" ];
-    persist = true;
-    keepEnv = true;
-  }
-];
+  security.doas = {
+      enable = true;
+      extraRules = [
+        {
+          users = [ "matko" ];
+          persist = true;
+          keepEnv = true;
+        }
+      ];
+    };
   security.sudo.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -219,6 +223,7 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.12" ];
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
@@ -248,15 +253,16 @@
     lutris
     unzip
     kdePackages.kcalc
-    kdePackages.partitionmanager
+    gparted
     umu-launcher
     faugus-launcher
     setxkbmap
     mangohud
     mangojuice
     android-tools
-    adwaita-icon-theme
+    papirus-icon-theme
     sound-theme-freedesktop
+    ventoy
   ];
 
 fonts = {
@@ -282,7 +288,6 @@ fonts = {
     package = pkgs.openrgb-with-all-plugins;
   };
 
-  zramSwap.enable = true;
   systemd.oomd.enable = true;
 
   programs.appimage = {
