@@ -9,4 +9,4 @@
 
 ## Preview
 
-![Preview](showcase/image.png)
+![Preview](screenshot.png)
