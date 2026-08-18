@@ -8,3 +8,5 @@
 </div>
 
 ## Preview
+
+![Preview](Preview/Screenshots/screenshot-2026-08-18_13-36-12.png)
