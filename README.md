@@ -1,6 +1,6 @@
 <div align="center">
-    <img src="Preview/Logo/sharknix.png"
-        title="UAAAEncryption" alt="UAAAEncryption logo" width="120" />
+    <img src="Logo/sharknix.png"
+        title="Fish Flake" alt="Sharknix logo" width="120" />
     <h1>Fish Flake</h1>
     <p>
         My Personal NixOS dotfiles 
@@ -9,4 +9,4 @@
 
 ## Preview
 
-![Preview](Preview/Screenshots/screenshot-2026-08-18_13-36-12.png)
+![Preview](showcase/image.png)
