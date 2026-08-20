@@ -15,6 +15,6 @@ case "$SELECTION" in
         systemctl poweroff
         ;;
     *"Log Out")
-        loginctl terminate-user $USER
+        mmsg dispatch quit
         ;;
 esac
