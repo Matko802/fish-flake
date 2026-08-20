@@ -80,6 +80,7 @@
     "network#wifi": {
     "interface": "wlan*",
     "format-wifi": "{icon}",
+    "format-disconnected": "NO INTERNET LMAO",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
     "tooltip": false,
     "on-click": "nm-connection-editor"
@@ -87,6 +88,7 @@
 
     "network#ethernet": {
     "format-ethernet": "",
+    "format-disconnected": "NO INTERNET LMAO",
     "tooltip": false,
     "on-click": "nm-connection-editor"
     },
