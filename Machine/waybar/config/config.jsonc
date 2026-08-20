@@ -49,12 +49,17 @@
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format": "{:%H:%M:%S}",
         "format-alt": "{:%Y-%m-%d}",
-        "interval": 1
+        "interval": 1,
+        "calendar": {
+            "format": {
+                "today": "<span background='#ffffff' color='#000000'>{}</span>"
+            }
+        }
     },
 
     "cpu": {
         "format": " {usage}%",
-        "tooltip": false
+        "tooltip": true
     },
 
     "memory": {

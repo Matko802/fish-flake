@@ -52,7 +52,7 @@
   boot.loader.limine.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   services.ollama = {
     enable = true;

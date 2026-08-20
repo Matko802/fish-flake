@@ -26,6 +26,22 @@ in
           sansSerif = [ fontName ];
           serif     = [ fontName ];
       };
+      localConf = ''
+        <fontconfig>
+          <alias>
+            <family>sans-serif</family>
+            <prefer><family>${fontName}</family></prefer>
+          </alias>
+          <alias>
+            <family>serif</family>
+            <prefer><family>${fontName}</family></prefer>
+          </alias>
+          <alias>
+            <family>monospace</family>
+            <prefer><family>${fontName}</family></prefer>
+          </alias>
+        </fontconfig>
+      '';
     };
   };
 }

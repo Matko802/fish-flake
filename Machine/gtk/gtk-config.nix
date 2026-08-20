@@ -1,4 +1,4 @@
-{ config, pkgs, fontName, ... }:
+{ config, lib, pkgs, fontName, ... }:
 
 let
   themeName = "MatkosAmoled";
@@ -30,8 +30,45 @@ let
           -G .
         cp -r src/gtk2/widgets gtk2-out/
 
-        sassc -I . src/gtk3/gtk.scss gtk3.css
-        sassc -I . src/gtk4/gtk.scss gtk4.css
+        sassc -I . src/gtk3/gtk.scss gtk3.tmp
+        sassc -I . src/gtk4/gtk.scss gtk4.tmp
+
+        { cat <<'EOF'
+        @define-color theme_bg_color #000000;
+        @define-color theme_base_color #000000;
+        @define-color theme_fg_color #fcfcfc;
+        @define-color theme_text_color #fcfcfc;
+        @define-color theme_view_bg_color #000000;
+        @define-color theme_view_fg_color #fcfcfc;
+        @define-color theme_selected_bg_color #3daee9;
+        @define-color theme_selected_fg_color #ffffff;
+        @define-color theme_unfocused_bg_color #030303;
+        @define-color theme_unfocused_base_color #030303;
+        @define-color theme_unfocused_fg_color #acacac;
+        @define-color theme_unfocused_text_color #acacac;
+        @define-color theme_unfocused_selected_bg_color #3daee9;
+        @define-color theme_unfocused_selected_fg_color #ffffff;
+        EOF
+          cat gtk3.tmp
+        } > gtk3.css
+        { cat <<'EOF'
+        @define-color theme_bg_color #000000;
+        @define-color theme_base_color #000000;
+        @define-color theme_fg_color #fcfcfc;
+        @define-color theme_text_color #fcfcfc;
+        @define-color theme_view_bg_color #000000;
+        @define-color theme_view_fg_color #fcfcfc;
+        @define-color theme_selected_bg_color #3daee9;
+        @define-color theme_selected_fg_color #ffffff;
+        @define-color theme_unfocused_bg_color #030303;
+        @define-color theme_unfocused_base_color #030303;
+        @define-color theme_unfocused_fg_color #acacac;
+        @define-color theme_unfocused_text_color #acacac;
+        @define-color theme_unfocused_selected_bg_color #3daee9;
+        @define-color theme_unfocused_selected_fg_color #ffffff;
+        EOF
+          cat gtk4.tmp
+        } > gtk4.css
 
         cat >> gtk3.css <<'EOF'
         headerbar,
@@ -97,29 +134,95 @@ let
         EOF
 
         cat >> gtk3.css <<'EOF'
+        *:selected,
+        *:selected:focus,
+        *:selected:hover,
+        *:selected:backdrop,
+        entry selection,
+        entry selection:hover,
+        label selection,
+        textview text:selected,
+        textview text selection,
+        .view:selected,
+        .view:selected:focus,
+        .view text:selected,
+        .view text selection,
+        treeview.view:selected,
+        flowboxchild:selected,
+        iconview.view:selected {
+          background-color: #3daee9 !important;
+          color: #ffffff !important; }
+        EOF
+        cat >> gtk4.css <<'EOF'
+        *:selected,
+        *:selected:focus,
+        *:selected:hover,
+        *:selected:backdrop,
+        entry selection,
+        entry selection:hover,
+        label selection,
+        textview text:selected,
+        textview text selection,
+        .view:selected,
+        .view:selected:focus,
+        .view text:selected,
+        .view text selection,
+        treeview.view:selected,
+        flowboxchild:selected,
+        iconview.view:selected {
+          background-color: #3daee9 !important;
+          color: #ffffff !important; }
+        EOF
+
+        cat >> gtk3.css <<'EOF'
         scale highlight {
-          background: linear-gradient(alpha(@theme_selected_bg_color_breeze,0.5),alpha(@theme_selected_bg_color_breeze,0.5)), linear-gradient(@theme_bg_color_breeze,@theme_bg_color_breeze);
-          border: 1px solid @theme_selected_bg_color_breeze; }
+          background: linear-gradient(rgba(61, 174, 233, 0.5),rgba(61, 174, 233, 0.5)), linear-gradient(#000000,#000000);
+          border: 1px solid #3DAEE9; }
         EOF
         cat >> gtk4.css <<'EOF'
         scale highlight {
-          background: linear-gradient(alpha(@theme_selected_bg_color_breeze,0.5),alpha(@theme_selected_bg_color_breeze,0.5)), linear-gradient(@theme_bg_color_breeze,@theme_bg_color_breeze);
-          border: 1px solid @theme_selected_bg_color_breeze; }
+          background: linear-gradient(rgba(61, 174, 233, 0.5),rgba(61, 174, 233, 0.5)), linear-gradient(#000000,#000000);
+          border: 1px solid #3DAEE9; }
         EOF
 
         cat >> gtk3.css <<'EOF'
         switch:checked {
-          background: alpha(@theme_selected_bg_color_breeze,0.333);
-          border-color: @theme_selected_bg_color_breeze; }
+          background: rgba(61, 174, 233, 0.333);
+          border-color: #3DAEE9; }
         switch:checked slider {
-          border-color: @theme_selected_bg_color_breeze; }
+          border-color: #3DAEE9; }
         EOF
         cat >> gtk4.css <<'EOF'
         switch:checked {
-          background: alpha(@theme_selected_bg_color_breeze,0.333);
-          border-color: @theme_selected_bg_color_breeze; }
+          background: rgba(61, 174, 233, 0.333);
+          border-color: #3DAEE9; }
         switch:checked slider {
-          border-color: @theme_selected_bg_color_breeze; }
+          border-color: #3DAEE9; }
+        EOF
+
+        cat >> gtk3.css <<'EOF'
+        :not(:backdrop) label:not(:disabled):not(:link):not(:visited) {
+          color: #fcfcfc; }
+        :backdrop label:not(:disabled):not(:link):not(:visited) {
+          color: #acacac; }
+        scale value,
+        scale marks label {
+          color: #fcfcfc; }
+        :backdrop scale value,
+        :backdrop scale marks label {
+          color: #acacac; }
+        EOF
+        cat >> gtk4.css <<'EOF'
+        :not(:backdrop) label:not(:disabled):not(:link):not(:visited) {
+          color: #fcfcfc; }
+        :backdrop label:not(:disabled):not(:link):not(:visited) {
+          color: #acacac; }
+        scale value,
+        scale marks label {
+          color: #fcfcfc; }
+        :backdrop scale value,
+        :backdrop scale marks label {
+          color: #acacac; }
         EOF
 
         runHook postBuild
@@ -167,14 +270,28 @@ in
   environment.etc."xdg/gtk-3.0/settings.ini".text = ''
     [Settings]
     gtk-theme-name=${themeName}
-    gtk-icon-theme-name=Papirus
-    gtk-font-name=${fontName}
+    gtk-icon-theme-name=Papirus-Dark
+    gtk-font-name=${fontName} 10
+    gtk-cursor-theme-name=Adwaita
+    gtk-cursor-theme-size=24
     gtk-application-prefer-dark-theme=1
   '';
 
   environment.etc."xdg/gtk-4.0/settings.ini".text = config.environment.etc."xdg/gtk-3.0/settings.ini".text;
 
   environment.variables.GTK_THEME = themeName;
+
+  # Make the cursor theme available to every toolkit/session, not just
+  # processes spawned by the compositor. Without a global XCURSOR_THEME and a
+  # `default` fallback theme, anything that doesn't inherit the compositor's
+  # env (root cursor, Xwayland default, outside-the-compositor processes) falls
+  # back to the built-in X placeholder cursor.
+  environment.sessionVariables = {
+    XCURSOR_THEME = "Adwaita";
+    XCURSOR_SIZE = "24";
+  };
+
+  xdg.icons.fallbackCursorThemes = [ "Adwaita" ];
 
   programs.dconf = {
     enable = true;
@@ -183,11 +300,23 @@ in
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
           gtk-theme = themeName;
-          icon-theme = "Papirus";
+          icon-theme = "Papirus-Dark";
           font-name = "${fontName} 10";
           monospace-font-name = "${fontName} 10";
+          cursor-theme = "Adwaita";
+          cursor-size = lib.gvariant.mkInt32 24;
         };
       };
+      locks = [
+        "/org/gnome/desktop/interface/color-scheme"
+        "/org/gnome/desktop/interface/gtk-theme"
+        "/org/gnome/desktop/interface/icon-theme"
+        "/org/gnome/desktop/interface/font-name"
+        "/org/gnome/desktop/interface/monospace-font-name"
+        "/org/gnome/desktop/interface/document-font-name"
+        "/org/gnome/desktop/interface/cursor-theme"
+        "/org/gnome/desktop/interface/cursor-size"
+      ];
     }];
   };
 
@@ -202,7 +331,8 @@ in
       mkdir -p "$HOME/.local/share/themes" "$HOME/.local/share/icons" "$HOME/.local/share/flatpak/overrides"
 
       ln -sfn "${amoledTheme}/share/themes/${themeName}" "$HOME/.local/share/themes/${themeName}"
-      ln -sfn "${pkgs.papirus-icon-theme}/share/icons/Papirus" "$HOME/.local/share/icons/Papirus"
+      ln -sfn "${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark" "$HOME/.local/share/icons/Papirus-Dark"
+      ln -sfn "${pkgs.adwaita-icon-theme}/share/icons/Adwaita" "$HOME/.local/share/icons/Adwaita"
 
       if [ -d "${amoledTheme}/share/themes/${themeName}/gtk-4.0" ]; then
         ln -sfn "${amoledTheme}/share/themes/${themeName}/gtk-4.0/gtk.css" "$HOME/.config/gtk-4.0/gtk.css"
@@ -215,7 +345,7 @@ filesystems=xdg-config/gtk-3.0:ro;xdg-config/gtk-4.0:ro;xdg-config/kdeglobals:ro
 
 [Environment]
 GTK_THEME=${themeName}
-ICON_THEME=Papirus
+ICON_THEME=Papirus-Dark
 QT_QPA_PLATFORMTHEME=kde
 EOF
     '';

@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-OPTIONS="󰌾 Lock\n󰒲 Suspend\n Reboot\n󰐥 Shutdown\n󰠚 Log Out"
-SELECTION=$(printf "$OPTIONS" | fuzzel --dmenu --lines=5 --width=15)
+OPTIONS="󰌾 Lock\n󰒲 Suspend\n Hibernate\n Reboot\n󰐥 Shutdown\n󰠚 Log Out"
+SELECTION=$(printf "$OPTIONS" | fuzzel --dmenu --lines=6 --width=15)
 case "$SELECTION" in
     *"Lock")
-        hyprlock
+        loginctl lock-session
         ;;
     *"Suspend")
-        hyprlock & sleep 1 && systemctl suspend
+        loginctl lock-session & sleep 1 && systemctl suspend
+        ;;
+    *"Hibernate")
+        loginctl lock-session & sleep 1 && systemctl hibernate
         ;;
     *"Reboot")
         systemctl reboot

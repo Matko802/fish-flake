@@ -14,7 +14,7 @@
     config = {
       theme = {
         colorScheme = "${../KDE-Colours/config/MatkosAmoled.colors}";
-        iconTheme = "Papirus";
+        iconTheme = "Papirus-Dark";
         style = "breeze";
 
         font = {

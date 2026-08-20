@@ -1,6 +1,7 @@
 { config, pkgs, fontName, ... }: {
   environment.systemPackages = [ pkgs.mako ];
   systemd.tmpfiles.rules = [
+    "d ${config.users.users.matko.home}/.config/mako 0755 ${config.users.users.matko.name} users -"
     "L+ ${config.users.users.matko.home}/.config/mako/config - - - - ${pkgs.writeText "mako-config" ''
 # [ Global Config ]
 # max no of notification in buffer

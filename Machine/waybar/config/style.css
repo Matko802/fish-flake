@@ -1,0 +1,117 @@
+*{
+    font-family: "JetBrainsMono Nerd Font", sans-serif;
+    font-size: 14px;
+    border: none;
+    border-radius: 0;
+}
+
+window{
+    background-color: #000000;
+    color: #ffffff;
+}
+
+#workspaces button label {
+    color: #888888;
+}
+
+#workspaces button.focused label,
+#workspaces button.active label {
+    color: #ffffff;
+}
+
+#workspaces button.active:hover {
+    color: #000000;
+    background: #ffffff;
+}
+
+#workspaces button:hover,
+#workspaces button.focused:hover,
+#workspaces button.occupied:hover,
+#workspaces button.active:hover {
+    color: #000000;
+    background: #ffffff;
+}
+
+#workspaces button:hover label,
+#workspaces button.focused:hover label,
+#workspaces button.occupied:hover label,
+#workspaces button.active:hover label {
+    color: #000000;
+}
+
+#workspaces button.urgent {
+    color: #000000;
+    background-color: #ff0000;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#network,
+#network-wifi,
+#network-ethernet,
+#pulseaudio,
+#pulseaudio-input,
+#pulseaudio-output,
+#pulseaudio-bluetooth,
+#language {
+    background-color: transparent;
+    color: #ffffff;
+    padding: 0 4px;
+}
+
+#tray {
+    background-color: transparent;
+    color: #ffffff;
+    padding: 0 4px;
+}
+
+menu,
+popover {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #444444;
+    padding: 4px;
+}
+
+menu label,
+popover label {
+    color: #ffffff;
+}
+
+menuitem,
+modelbutton {
+    background-color: transparent;
+    color: #ffffff;
+    padding: 6px 12px;
+}
+
+menuitem label,
+modelbutton label {
+    color: #ffffff;
+}
+
+menuitem:hover,
+menuitem:focus,
+modelbutton:hover,
+modelbutton:focus {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+menuitem:hover label,
+menuitem:focus label,
+modelbutton:hover label,
+modelbutton:focus label {
+    color: #000000;
+}
+
+separator {
+    background-color: #444444;
+    min-height: 1px;
+}
+
+popover contents {
+    padding: 4px;
+}
