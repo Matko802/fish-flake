@@ -44,6 +44,10 @@ window{
     background-color: #ff0000;
 }
 
+#workspaces button.urgent label {
+    color: #000000;
+}
+
 #clock,
 #battery,
 #cpu,

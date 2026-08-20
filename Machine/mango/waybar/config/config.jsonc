@@ -18,6 +18,7 @@
         "pulseaudio",
         "network#ethernet",
         "network#wifi",
+        "custom/internet",
         "cpu",
         "memory",
         "battery",
@@ -80,17 +81,25 @@
     "network#wifi": {
     "interface": "wlan*",
     "format-wifi": "{icon}",
-    "format-disconnected": "NO INTERNET LMAO",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-    "tooltip": false,
+    "interval": 1,
+    "tooltip": true,
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)\n↓ {bandwidthDownBytes} B/s  ↑ {bandwidthUpBytes} B/s",
     "on-click": "nm-connection-editor"
     },
 
     "network#ethernet": {
     "format-ethernet": "",
-    "format-disconnected": "NO INTERNET LMAO",
-    "tooltip": false,
+    "interval": 1,
+    "tooltip": true,
+    "tooltip-format-ethernet": "{ifname}\n↓ {bandwidthDownBytes} B/s  ↑ {bandwidthUpBytes} B/s",
     "on-click": "nm-connection-editor"
+    },
+
+    "custom/internet": {
+        "exec": "ping -c1 -W2 1.1.1.1 >/dev/null 2>&1 && true || echo 'NO INTERNET LMAO'",
+        "interval": 10,
+        "restart-interval": 10
     },
 
     "mango/window": {

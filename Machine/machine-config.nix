@@ -34,7 +34,7 @@
     ./mango/satty/satty-config.nix
     ./mango/waypaper/waypaper-config.nix
     ./mango/wl-clipboard/wl-clipboard-config.nix
-    ./waybar/waybar-config.nix
+    ./mango/waybar/waybar-config.nix
     ./gtk/gtk-config.nix
     ./qtengine/qtengine-config.nix
     inputs.gsr-ui-nix.nixosModules.default
@@ -52,7 +52,7 @@
   boot.loader.limine.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = pkgs.cachyosKernels."linuxPackages-cachyos-latest";
 
   services.ollama = {
     enable = true;
