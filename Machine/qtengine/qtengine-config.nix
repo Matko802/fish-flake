@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, fontName, ... }:
 
 {
   imports = [ inputs.qtengine.nixosModules.default ];
@@ -18,13 +18,13 @@
         style = "breeze";
 
         font = {
-          family = "JetBrainsMono Nerd Font";
+          family = fontName;
           size = 11;
           weight = -1;
         };
 
         fontFixed = {
-          family = "JetBrainsMono Nerd Font";
+          family = fontName;
           size = 11;
           weight = -1;
         };

@@ -1,6 +1,124 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, fontName, ... }:
+let
+  waybarDir = pkgs.runCommand "waybar-config" {} ''
+    mkdir -p $out
+    cat > $out/style.css <<'CSSEOF'
+*{
+    font-family: "${fontName}", sans-serif;
+    font-size: 14px;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: #5c5c5c;
+    background-color: transparent;
+    transition: all 0.2s ease;
+    border: none;
+    box-shadow: none;
+    outline: none;
+}
+
+#workspaces button:hover {
+    color: #000000;
+    background: rgb(255, 255, 255);
+    border: none;
+    box-shadow: none;
+    outline: none;
+}
+
+#workspaces button.active {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#workspaces button.active:hover {
+    color: #000000;
+    background: rgb(255, 255, 255);
+    border: none;
+    box-shadow: none;
+    outline: none;
+}
+
+#workspaces button.urgent {
+    color: #000000;
+    background-color: #ff0000;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#network,
+#network-wifi,
+#network-ethernet,
+#pulseaudio,
+#pulseaudio-input,
+#pulseaudio-output,
+#pulseaudio-bluetooth,
+#language {
+    background-color: transparent;
+    color: #ffffff;
+    padding: 0 4px;
+}
+
+#tray {
+    background-color: transparent;
+    color: #ffffff;
+    padding: 0 4px;
+}
+
+menu {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #444444;
+    padding: 4px;
+}
+
+menuitem {
+    background-color: transparent;
+    color: #ffffff;
+    padding: 6px 12px;
+}
+
+menuitem:hover,
+menuitem:focus {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+separator {
+    background-color: #444444;
+    min-height: 1px;
+}
+
+popover {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #444444;
+}
+
+popover contents {
+    padding: 4px;
+}
+
+modelbutton:hover,
+modelbutton:focus {
+    background-color: #ffffff;
+    color: #000000;
+}
+CSSEOF
+    cp ${./config/config.jsonc} $out/config.jsonc
+  '';
+in {
   environment.systemPackages = [ pkgs.waybar ];
   systemd.tmpfiles.rules = [
-    "L+ ${config.users.users.matko.home}/.config/waybar - - - - ${./config}"
+    "L+ ${config.users.users.matko.home}/.config/waybar - - - - ${waybarDir}"
   ];
 }

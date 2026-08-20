@@ -1,9 +1,11 @@
 # PC (fishy) configuration
 { pkgs, inputs, ... }:
+
 {
   imports = [
     ./hardware-configuration.nix
     ./disk/disk-config.nix
+    ./fonts/fonts-config.nix
     ./nh/nh-config.nix
     ./udev/udev-config.nix
     ./fastfetch/fastfetch-config.nix
@@ -15,6 +17,8 @@
     ./zed/zed-config.nix
     ./fetch/fetch-config.nix
     ./dolphin/dolphin-config.nix
+    ./thunar/thunar-config.nix
+    ./kde/kde-config.nix
     ./mango/mango-config.nix
     ./mango/awww/awww-config.nix
     ./mango/bemoji/bemoji-config.nix
@@ -124,9 +128,8 @@
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = false;
+    services.xserver.enable = false;
 
-  services.greetd.enable = true;
   services.displayManager.regreet.enable = true;
   programs.mango.enable = true;
 
@@ -261,24 +264,10 @@
     mangojuice
     android-tools
     papirus-icon-theme
+    adwaita-icon-theme
     sound-theme-freedesktop
     ventoy
   ];
-
-fonts = {
-    fontDir.enable = true;
-    packages = with pkgs; [
-      nerd-fonts.jetbrains-mono
-    ];
-    fontconfig = {
-      enable = true;
-      defaultFonts = {
-        monospace = [ "JetBrainsMono Nerd Font" ];
-        sansSerif = [ "JetBrainsMono Nerd Font" ];
-        serif     = [ "JetBrainsMono Nerd Font" ];
-      };
-    };
-  };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -300,7 +289,7 @@ fonts = {
     enable = true;
     settings = {
       Resolve = {
-        DNS = "9.9.9.9 149.112.112.112";
+        DNS = "9.9.9.9 149.112.112.112 1.1.1.2 1.0.0.2";
         DNSSEC = "true";
         DNSOverTLS = "true";
         Domains = "~.";
