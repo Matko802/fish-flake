@@ -1,47 +1,54 @@
-{ pkgs, ... }:
-let
-  fontName = "DepartureMono Nerd Font";
-in
+{ config, lib, pkgs, ... }:
 {
-  _module.args = { inherit fontName; };
+  options.custom.fontName = lib.mkOption {
+    type = lib.types.str;
+    default = "DepartureMono Nerd Font";
+    description = "System font — change via `custom.fontName` in your host config, no hardcode needed";
+  };
 
-  fonts = {
-    fontDir.enable = true;
-    packages = with pkgs; [
-        nerd-fonts.departure-mono
-    ];
-    fontconfig = {
-      enable = true;
-      antialias = true;
-      hinting = {
+  config = {
+    _module.args.fontName = config.custom.fontName;
+
+    fonts = {
+      fontDir.enable = true;
+      packages = with pkgs; [
+          nerd-fonts.departure-mono
+          noto-fonts-color-emoji
+      ];
+      fontconfig = {
         enable = true;
-        style = "slight";
+        antialias = true;
+        hinting = {
+          enable = true;
+          style = "slight";
+        };
+        subpixel = {
+          rgba = "rgb";
+          lcdfilter = "default";
+        };
+        defaultFonts = {
+            monospace = [ config.custom.fontName ];
+            sansSerif = [ config.custom.fontName ];
+            serif     = [ config.custom.fontName ];
+            emoji     = [ "Noto Color Emoji" ];
+        };
+        localConf = ''
+          <fontconfig>
+            <alias>
+              <family>sans-serif</family>
+              <prefer><family>${config.custom.fontName}</family></prefer>
+            </alias>
+            <alias>
+              <family>serif</family>
+              <prefer><family>${config.custom.fontName}</family></prefer>
+            </alias>
+            <alias>
+              <family>monospace</family>
+              <prefer><family>${config.custom.fontName}</family></prefer>
+            </alias>
+          </fontconfig>
+        '';
       };
-      subpixel = {
-        rgba = "rgb";
-        lcdfilter = "default";
-      };
-      defaultFonts = {
-          monospace = [ fontName ];
-          sansSerif = [ fontName ];
-          serif     = [ fontName ];
-      };
-      localConf = ''
-        <fontconfig>
-          <alias>
-            <family>sans-serif</family>
-            <prefer><family>${fontName}</family></prefer>
-          </alias>
-          <alias>
-            <family>serif</family>
-            <prefer><family>${fontName}</family></prefer>
-          </alias>
-          <alias>
-            <family>monospace</family>
-            <prefer><family>${fontName}</family></prefer>
-          </alias>
-        </fontconfig>
-      '';
     };
   };
 }

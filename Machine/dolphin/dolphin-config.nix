@@ -7,6 +7,8 @@
     kdePackages.kimageformats
     kdePackages.ffmpegthumbs
     libmtp
+    unrar
+    rar
   ];
 
   services.gvfs.enable = true;

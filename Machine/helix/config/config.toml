@@ -1,16 +1,30 @@
-[theme]
-name = "dark-synthwave"
+theme = "dark-synthwave"
 
 [editor]
 line-number = "relative"
 cursorline = true
 bufferline = "always"
 color-modes = true
+true-color = true
+scrolloff = 8
+
+[editor.cursor-shape]
+normal = "block"
+insert = "bar"
+select = "underline"
+
+[editor.indent-guides]
+render = true
+character = "▏"
+
+[editor.file-picker]
+hidden = false
 
 [editor.statusline]
-left = ["mode", "spinner", "file-name", "file-type", "total-line-numbers"]
+left = ["mode", "spinner", "file-name", "file-type", "version-control"]
 center = []
-right = ["diagnostics", "selections", "position", "file-encoding"]
+right = ["diagnostics", "selections", "position", "file-encoding", "file-line-ending", "total-line-numbers"]
+separator = "│"
 
 [editor.statusline.mode]
 normal = "NORMAL"

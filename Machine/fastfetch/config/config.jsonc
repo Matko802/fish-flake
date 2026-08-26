@@ -36,6 +36,11 @@
       "keyColor": "blue"
     },
     {
+    "type": "shell",
+    "key": " Shell",
+    "keyColor": "blue"
+  },
+    {
       "type": "packages",
       "key": "󰏖 Packages",
       "keyColor": "blue"
@@ -49,7 +54,7 @@
       "type": "colors",
       "key": "󰸌 Palette",
       "keyColor": "blue",
-      "symbol": "circle"
+      "symbol": "square"
     },
     {
       "type": "terminalfont",

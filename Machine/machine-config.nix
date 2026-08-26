@@ -19,25 +19,19 @@
     ./dolphin/dolphin-config.nix
     ./thunar/thunar-config.nix
     ./kde/kde-config.nix
-    ./mango/mango-config.nix
-    ./mango/awww/awww-config.nix
-    ./mango/bemoji/bemoji-config.nix
-    ./mango/cliphist/cliphist-config.nix
-    ./mango/fuzzel/fuzzel-config.nix
-    ./mango/hypridle/hypridle-config.nix
-    ./mango/hyprlock/hyprlock-config.nix
-    ./mango/hyprpicker/hyprpicker-config.nix
-    ./mango/hyprpolkitagent/hyprpolkitagent-config.nix
-    ./mango/libnotify/libnotify-config.nix
-    ./mango/mako/mako-config.nix
-    ./mango/playerctl/playerctl-config.nix
-    ./mango/satty/satty-config.nix
-    ./mango/waypaper/waypaper-config.nix
-    ./mango/wl-clipboard/wl-clipboard-config.nix
-    ./mango/waybar/waybar-config.nix
+    ./desktop/mango/mango-config.nix
+    ./desktop/cliphist/cliphist-config.nix
+    ./desktop/hyprpicker/hyprpicker-config.nix
+    ./desktop/hyprpolkitagent/hyprpolkitagent-config.nix
+    ./desktop/libnotify/libnotify-config.nix
+    ./desktop/playerctl/playerctl-config.nix
+    ./desktop/satty/satty-config.nix
+    ./desktop/wl-clipboard/wl-clipboard-config.nix
+    ./desktop/quickshell/quickshell-config.nix
     ./gtk/gtk-config.nix
     ./qtengine/qtengine-config.nix
-    inputs.gsr-ui-nix.nixosModules.default
+    ./virtualization/kvm/kvm-config.nix
+    ./virtualization/virtualbox/virtualbox-config.nix
   ];
 
   nixpkgs.overlays = [
@@ -65,10 +59,7 @@
     autoStart = true;
   };
 
-  virtualisation.virtualbox.host.enable = true;
-
   programs.gpu-screen-recorder = {
-    package = inputs.gsr-ui-nix.packages.${pkgs.stdenv.hostPlatform.system}.gpu-screen-recorder;
     enable = true;
     ui.enable = true;
   };
@@ -84,6 +75,7 @@
 
   programs.kdeconnect.enable = true;
   services.udisks2.enable = true;
+  services.upower.enable = true;
   services.gnome.gnome-keyring.enable = true;
   programs.dconf.enable = true;
 
@@ -103,12 +95,13 @@
   };
 
   services.flatpak.enable = true;
+
   # Fish
   programs.fish.enable = true;
 
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
+  # Timezone
   time.timeZone = "Europe/Bratislava";
 
   # Select internationalisation properties.
@@ -131,7 +124,6 @@
     services.xserver.enable = false;
 
   services.displayManager.regreet.enable = true;
-  programs.mango.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -180,7 +172,7 @@
     isNormalUser = true;
     description = "Matko";
     shell = pkgs.fish;
-    extraGroups = [ "networkmanager" "wheel" "i2c" "vboxusers" ];
+    extraGroups = [ "networkmanager" "wheel" "i2c" ];
     packages = with pkgs; [
       zapzap
       prismlauncher
@@ -196,6 +188,7 @@
       cava
       cavasik
       sharkvis
+      sharkvis-gtk
       pear-desktop
       mpvScripts.visualizer
       equibop
@@ -220,25 +213,22 @@
       onlyoffice-desktopeditors
       itch
       zed-editor
-
     ];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.12" ];
+  nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.17" ];
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-    (pkgs.discord.override {
-    withEquicord = true;
-    withOpenASAR = true;
-  })
+    (discord.override {
+      withEquicord = true;
+      withOpenASAR = true;
+    })
     bazaar
     mission-center
     fresh-editor
-    pavucontrol
-    networkmanagerapplet
     usbutils
     p7zip
     cargo
@@ -249,7 +239,7 @@
     steamcmd
     fastfetch
     starship
-    wineWow64Packages.waylandFull
+    wine-wayland
     winetricks
     protontricks
     proton-vpn
@@ -278,7 +268,6 @@
   };
 
   systemd.oomd.enable = true;
-
   programs.appimage = {
     enable = true;
     binfmt = true;
