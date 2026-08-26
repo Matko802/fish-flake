@@ -22,7 +22,6 @@
     ./desktop/mango/mango-config.nix
     ./desktop/cliphist/cliphist-config.nix
     ./desktop/hyprpicker/hyprpicker-config.nix
-    ./desktop/hyprpolkitagent/hyprpolkitagent-config.nix
     ./desktop/libnotify/libnotify-config.nix
     ./desktop/playerctl/playerctl-config.nix
     ./desktop/satty/satty-config.nix
