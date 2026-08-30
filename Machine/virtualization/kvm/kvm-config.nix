@@ -12,8 +12,8 @@
   programs.virt-manager.enable = true;
 
   virtualisation.spiceUSBRedirection.enable = true;
-  environment.systemPackages = [
-    pkgs.dnsmasq
+  environment.systemPackages = with pkgs; [
+    dnsmasq
   ];
   users.users."matko".extraGroups = [ "libvirtd" ];
 }

@@ -16,21 +16,17 @@
     ./helix/helix-config.nix
     ./zed/zed-config.nix
     ./fetch/fetch-config.nix
-    ./dolphin/dolphin-config.nix
     ./thunar/thunar-config.nix
-    ./kde/kde-config.nix
     ./desktop/mango/mango-config.nix
     ./desktop/cliphist/cliphist-config.nix
     ./desktop/hyprpicker/hyprpicker-config.nix
     ./desktop/libnotify/libnotify-config.nix
-    ./desktop/playerctl/playerctl-config.nix
-    ./desktop/satty/satty-config.nix
-    ./desktop/wl-clipboard/wl-clipboard-config.nix
     ./desktop/quickshell/quickshell-config.nix
     ./gtk/gtk-config.nix
     ./qtengine/qtengine-config.nix
     ./virtualization/kvm/kvm-config.nix
     ./virtualization/virtualbox/virtualbox-config.nix
+    ./flatpak/flatpak-config.nix
   ];
 
   nixpkgs.overlays = [
@@ -155,12 +151,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    jack.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -182,14 +173,13 @@
       mpv
       opencode-desktop
       yt-dlp
-      kitty
       fuse
       cava
       cavasik
       sharkvis
       sharkvis-gtk
+      sharkmanager
       pear-desktop
-      mpvScripts.visualizer
       equibop
       godot
       litellm
@@ -215,18 +205,17 @@
     ];
   };
 
-  # Allow unfree packages
+  # Allow packages that are not free
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.17" ];
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    fluffychat
     (discord.override {
       withEquicord = true;
       withOpenASAR = true;
     })
-    bazaar
-    mission-center
     fresh-editor
     usbutils
     p7zip
@@ -234,9 +223,10 @@
     rustc
     gcc
     appimage-run
-    #gearlever
+    rpi-imager
     steamcmd
     fastfetch
+    btop
     starship
     wine-wayland
     winetricks
@@ -256,6 +246,7 @@
     adwaita-icon-theme
     sound-theme-freedesktop
     ventoy
+    kitty
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

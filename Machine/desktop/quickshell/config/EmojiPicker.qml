@@ -134,12 +134,15 @@ Scope {
     return j === q.length
   }
 
+  // Lowercased search strings, computed once when rows loads (not per keystroke).
+  readonly property var lcSearch: root.rows.map((_, i) => root.searchText(i).toLowerCase())
+
   // Resolved indices into allEmojis/rows.
   readonly property var results: {
     const q = query.toLowerCase().trim()
     const idxs = []
     for (let i = 0; i < rows.length; i++)
-      if (q === "" || searchMatch(searchText(i).toLowerCase(), q))
+      if (q === "" || searchMatch(root.lcSearch[i], q))
         idxs.push(i)
     return idxs
   }
@@ -169,7 +172,7 @@ Scope {
     exclusionMode: ExclusionMode.Ignore
     color: "transparent"
     WlrLayershell.namespace: "quickshell-emoji"
-    WlrLayershell.layer: WlrLayer.Overlay
+    WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
     visible: root.open || root.closePending
 
@@ -277,7 +280,7 @@ Scope {
           id: grid
           Layout.fillWidth: true
           Layout.preferredHeight: Math.min(Math.ceil(root.results.length / root.cols), root.visibleRows) * root.cellSize
-          Behavior on Layout.preferredHeight { enabled: root.open && !root.closePending; NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+          Behavior on Layout.preferredHeight { enabled: root.open && !root.closePending; NumberAnimation { duration: 90; easing.type: Easing.OutCubic } }
           clip: true
           interactive: true
           cellWidth: root.cellSize

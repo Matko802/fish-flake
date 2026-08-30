@@ -7,8 +7,10 @@ import QtQuick
 ShellRoot {
   id: root
   property bool fullscreenActive: false
+  readonly property bool barShown: !root.fullscreenActive
+    || launcher.open || ControlState.open || ClockState.open
+    || emojiPicker.open || clipboard.open
   readonly property var _idleRef: IdleManager
-  readonly property var _saverRef: ScreenSaver
 
   Connections {
     target: LockState
@@ -17,9 +19,10 @@ ShellRoot {
     }
   }
 
-  // Track fullscreen immediately via watch (no 250ms poll delay) and
-  // keep the bar mapped but put it under the fullscreen app (Background layer)
-  // when fullscreen — no visible toggle delay.
+  // Track fullscreen immediately via watch (instant on focus switch) plus a
+  // periodic poll as a safety net, since `mmsg watch focusing-client` only
+  // fires on focus *switches* and can miss a window leaving fullscreen while
+  // staying focused (leaving fullscreenActive stuck true, hiding the bar).
   Process {
     id: fsProc
     running: true
@@ -32,6 +35,26 @@ ShellRoot {
         } catch (e) {}
       }
     }
+  }
+
+  Process {
+    id: fsPoll
+    running: false
+    command: ["mmsg", "get", "focusing-client"]
+    stdout: SplitParser {
+      onRead: data => {
+        try {
+          const w = JSON.parse(data)
+          root.fullscreenActive = !!(w && w.is_fullscreen)
+        } catch (e) {}
+      }
+    }
+  }
+
+  Timer {
+    interval: 500
+    running: true
+    onTriggered: fsPoll.running = true
   }
 
   Variants {
@@ -48,14 +71,16 @@ ShellRoot {
         color: "transparent"
         exclusionMode: ExclusionMode.Auto
         WlrLayershell.namespace: "quickshell"
+        // Unmap the whole surface when hidden (fullscreen, nothing open) so it
+        // stops capturing pointer input entirely — clicks pass through to the
+        // app underneath. It remaps (with the 30px exclusive zone) whenever a
+        // menu opens or fullscreen ends.
+        visible: root.barShown
         WlrLayershell.layer: WlrLayer.Overlay
-        // Invisible spacer that keeps 30px exclusive zone even in fullscreen
-        // so tiled windows don't resize. Real bar draws only when not fullscreen
-        // (or launcher/control open).
         Rectangle {
           anchors.fill: parent
           color: "#000000"
-          visible: !root.fullscreenActive || launcher.open || ControlState.open || ClockState.open || emojiPicker.open || clipboard.open
+          visible: true
           Bar { anchors.fill: parent }
         }
         ControlCenter {
@@ -73,6 +98,7 @@ ShellRoot {
 
   ToastStack {}
   VolumeOSD {}
+  ScreensharePicker {}
   Wallpaper {}
   Launcher {
     id: launcher

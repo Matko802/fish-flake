@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  environment.systemPackages = [ pkgs.cliphist ];
+  environment.systemPackages = with pkgs; [ cliphist ];
 }

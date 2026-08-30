@@ -1,8 +1,5 @@
-{ config, lib, ... }:
+{ lib, ... }:
 
-let
-  cfg = config.services.btrfsOptimizations;
-in
 {
   options.services.btrfsOptimizations = {
     enable = lib.mkEnableOption "automatic Btrfs mount optimizations (noatime, compress=zstd)";
@@ -28,7 +25,7 @@ in
 
     zramSwap = {
       enable = true;
-      memoryMax = 2 * 1024 * 1024 * 1024; # 2 GB
+      memoryMax = 2 * 1024 * 1024 * 1024;
     };
   };
 }

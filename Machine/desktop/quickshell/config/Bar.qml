@@ -40,7 +40,7 @@ Item {
         color: clockCenterMa.containsMouse ? Theme.bg : Theme.fg
         font.family: Theme.fontFamily
         font.pixelSize: 12
-        property int notifCount: NotificationServer.notifications.length
+        property int notifCount: NotificationServer.meaningfulCount
         Timer {
           interval: 1000; running: true; repeat: true; triggeredOnStart: true
           onTriggered: {
@@ -136,8 +136,7 @@ Item {
         cursorShape: Qt.PointingHandCursor
         onClicked: ControlState.toggle(quickSettingsBtn.QsWindow.window)
         onWheel: wheel => {
-          if (Audio.vol < 0) return
-          Audio.setVol(Audio.vol + (wheel.angleDelta.y > 0 ? 5 : -5))
+          Audio.setVol((Audio.vol < 0 ? 50 : Audio.vol) + (wheel.angleDelta.y > 0 ? 5 : -5))
         }
       }
     }

@@ -128,9 +128,9 @@ let
     '';
 in
 {
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
     amoledTheme
-    pkgs.papirus-icon-theme
+    papirus-icon-theme
   ];
 
   environment.etc."xdg/gtk-3.0/settings.ini".text = ''

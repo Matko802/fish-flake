@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  environment.systemPackages = [ pkgs.hyprpicker ];
+  environment.systemPackages = with pkgs; [ hyprpicker ];
 }

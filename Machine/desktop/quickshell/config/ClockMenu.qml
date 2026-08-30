@@ -5,6 +5,8 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Widgets
+import Quickshell.Services.Mpris
+import QMLTermWidget 2.0
 
 PanelWindow {
   id: root
@@ -24,11 +26,31 @@ PanelWindow {
   property bool shown: false
   property int activeTab: 0
   property date calDate: new Date()
+  property int mediaIdx: 0
+  // keep mediaIdx in bounds and auto-switch to newest playing
+  onMediaIdxChanged: {
+    if (mediaIdx < 0) mediaIdx = 0
+    if (Mpris.players.values && Mpris.players.values.length > 0 && mediaIdx >= Mpris.players.values.length) mediaIdx = Mpris.players.values.length - 1
+    if (Mpris.players.values.length === 0) mediaIdx = 0
+  }
+  Connections {
+    target: Mpris.players
+    function onValuesChanged() {
+      if (Mpris.players.values && root.mediaIdx >= Mpris.players.values.length) root.mediaIdx = Math.max(0, Mpris.players.values.length - 1)
+      // when new audio starts, switch to it if it's playing
+      if (Mpris.players.values && Mpris.players.values.length > 0) {
+        const last = Mpris.players.values ? Mpris.players.values.length - 1 : -1
+        const p = Mpris.players.values[last]
+        if (p && p.isPlaying) root.mediaIdx = last
+      }
+    }
+  }
 
-  property var sysVals: ["--", "--", "--"]
+  property var sysVals: ["--", "--", "--", "--"]
   property var cpuHist: []
   property var memHist: []
   property var diskHist: []
+  property var gpuHist: []
   property var _prevCpu: null
 
   screen: root.targetScreen
@@ -63,7 +85,7 @@ PanelWindow {
         if (v !== "" && !isNaN(parseInt(v))) {
           const iv = Math.max(0, Math.min(100, parseInt(v)))
           const cur = root.sysVals.slice()
-          while (cur.length < 3) cur.push("--")
+          while (cur.length < 4) cur.push("--")
           cur[2] = String(iv)
           root.sysVals = cur
           root.diskHist = root.pushHist(root.diskHist, iv)
@@ -71,9 +93,26 @@ PanelWindow {
       }
     }
   }
+  Process {
+    id: gpuProc
+    command: ["sh", "-c", "for f in /sys/class/drm/card*/device/gpu_busy_percent; do v=$(cat \"$f\" 2>/dev/null); if [ -n \"$v\" ]; then printf '%s' \"$v\"; break; fi; done"]
+    stdout: StdioCollector {
+      onStreamFinished: {
+        const v = text.trim()
+        if (v !== "" && !isNaN(parseInt(v))) {
+          const iv = Math.max(0, Math.min(100, parseInt(v)))
+          const cur = root.sysVals.slice()
+          while (cur.length < 4) cur.push("--")
+          cur[3] = String(iv)
+          root.sysVals = cur
+          root.gpuHist = root.pushHist(root.gpuHist, iv)
+        }
+      }
+    }
+  }
   Timer {
     interval: 2000; running: root.visible; repeat: true; triggeredOnStart: true
-    onTriggered: { statFile.reload(); memFile.reload(); diskProc.running = true }
+    onTriggered: { statFile.reload(); memFile.reload(); diskProc.running = true; gpuProc.running = true }
   }
   Connections {
     target: statFile
@@ -90,7 +129,7 @@ PanelWindow {
         if (dT > 0) {
           const iv = Math.max(0, Math.min(100, Math.round((1 - dI/dT)*100)))
           const cur = root.sysVals.slice()
-          while (cur.length < 3) cur.push("--")
+          while (cur.length < 4) cur.push("--")
           cur[0] = String(iv)
           root.sysVals = cur
           root.cpuHist = root.pushHist(root.cpuHist, iv)
@@ -118,7 +157,7 @@ PanelWindow {
       if (total > 0) {
         const iv = Math.max(0, Math.min(100, Math.round((total - avail)/total*100)))
         const cur = root.sysVals.slice()
-        while (cur.length < 3) cur.push("--")
+        while (cur.length < 4) cur.push("--")
         cur[1] = String(iv)
         root.sysVals = cur
         root.memHist = root.pushHist(root.memHist, iv)
@@ -170,7 +209,8 @@ PanelWindow {
         Repeater {
           model: [
             { label: "Calendar", idx: 0 },
-            { label: "System",   idx: 1 }
+            { label: "System",   idx: 1 },
+            { label: "Media",    idx: 2 }
           ]
           delegate: Item {
             required property var modelData
@@ -212,6 +252,26 @@ PanelWindow {
             onClicked: NotificationServer.setDnd(!NotificationServer.dnd)
           }
         }
+        Rectangle {
+          Layout.preferredWidth: 28
+          Layout.preferredHeight: 28
+          color: coffeeMa.containsMouse ? Theme.fg : "transparent"
+          radius: Theme.rounding
+          Text {
+            anchors.centerIn: parent
+            text: IdleManager.stayAwake ? "󰾪" : "󰅶"
+            color: coffeeMa.containsMouse ? Theme.bg : Theme.fg
+            font.family: Theme.fontFamily
+            font.pixelSize: 14
+          }
+          MouseArea {
+            id: coffeeMa
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.PointingHandCursor
+            onClicked: IdleManager.stayAwake = !IdleManager.stayAwake
+          }
+        }
       }
 
       // ===== Swipeable content =====
@@ -233,7 +293,7 @@ PanelWindow {
             width: swipeContainer.width
             height: swipeContainer.height
 
-            // Calendar — left half
+            // Calendar â left half
             ColumnLayout {
               anchors.left: parent.left
               anchors.right: parent.horizontalCenter
@@ -344,7 +404,7 @@ PanelWindow {
                 }
               }
 
-              // Notifications — right half
+              // Notifications â right half
               Item {
                 anchors.left: parent.horizontalCenter
                 anchors.leftMargin: 8
@@ -367,8 +427,8 @@ PanelWindow {
                   }
                   Item { Layout.fillWidth: true; height: 1 }
                   Text {
-                    text: NotificationServer.notifications.filter(n => n).length > 0
-                          ? String(NotificationServer.notifications.filter(n => n).length) : ""
+                    text: NotificationServer.meaningfulCount > 0
+                          ? String(NotificationServer.meaningfulCount) : ""
                     color: Theme.muted
                     font.family: Theme.fontFamily
                     font.pixelSize: 10
@@ -379,7 +439,7 @@ PanelWindow {
                     color: clearBtnMa.containsMouse ? Theme.fg : Theme.muted
                     font.family: Theme.fontFamily
                     font.pixelSize: 9
-                    visible: NotificationServer.notifications.filter(n => n).length > 0
+                    visible: NotificationServer.meaningfulCount > 0
                     MouseArea {
                       id: clearBtnMa
                       anchors.fill: parent
@@ -398,7 +458,7 @@ PanelWindow {
                   spacing: 4
                   interactive: true
                   boundsBehavior: Flickable.StopAtBounds
-                  model: NotificationServer.notifications.filter(n => n).slice().reverse()
+                  model: NotificationServer.notifications.filter(n => n && NotificationServer.isMeaningful(n)).slice().reverse()
 
                   add: Transition {
                     NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 200; easing.type: Theme.easingOut }
@@ -453,8 +513,8 @@ PanelWindow {
                       Column {
                         Layout.fillWidth: true; spacing: 2
                         Text { text: (modelData.appName || modelData.desktopEntry || "").toUpperCase(); color: Theme.muted2; font.family: Theme.fontFamily; font.pixelSize: 8; font.letterSpacing: 1; elide: Text.ElideRight; width: parent.width; visible: text !== "" }
-                        Text { text: modelData.summary || ""; color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: 11; elide: Text.ElideRight; width: parent.width; maximumLineCount: 2; wrapMode: Text.Wrap }
-                        Text { text: modelData.body || ""; color: Theme.muted; font.family: Theme.fontFamily; font.pixelSize: 9; width: parent.width; wrapMode: Text.Wrap; maximumLineCount: 2; elide: Text.ElideRight; visible: (modelData.body || "") !== "" }
+                         Text { text: modelData.summary || ""; color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: 11; width: parent.width; wrapMode: Text.WordWrap }
+                         Text { text: modelData.body || ""; color: Theme.muted; font.family: Theme.fontFamily; font.pixelSize: 9; width: parent.width; wrapMode: Text.WordWrap; visible: (modelData.body || "") !== "" }
                       }
                       Rectangle {
                         Layout.preferredWidth: 14; Layout.preferredHeight: 14; Layout.alignment: Qt.AlignTop
@@ -486,7 +546,7 @@ PanelWindow {
                   color: Theme.muted2
                   font.family: Theme.fontFamily
                   font.pixelSize: 10
-                  visible: NotificationServer.notifications.filter(n => n).length === 0
+                   visible: NotificationServer.meaningfulCount === 0
                 }
               }
             }
@@ -496,69 +556,470 @@ PanelWindow {
             width: swipeContainer.width
             height: swipeContainer.height
 
-            RowLayout {
+            GridLayout {
               anchors.fill: parent
-              anchors.topMargin: 16
-              spacing: 24
+              anchors.margins: 16
+              columns: 2
+              rowSpacing: 12
+              columnSpacing: 12
 
               Repeater {
                 model: [
                   { label: "CPU",  icon: "\uF4BC", idx: 0 },
                   { label: "MEM",  icon: "\uEFC5", idx: 1 },
-                  { label: "DISK", icon: "\uF0A0", idx: 2 }
+                  { label: "DISK", icon: "\uF0A0", idx: 2 },
+                  { label: "GPU",  icon: "\uF2DB", idx: 3 }
                 ]
-                delegate: ColumnLayout {
+                delegate: Rectangle {
                   required property var modelData
                   Layout.fillWidth: true
-                  spacing: 8
+                  Layout.fillHeight: true
+                  color: Theme.bgAlt
+                  border.color: Theme.border
+                  border.width: 1
+                  ColumnLayout {
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    spacing: 8
 
-                  RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 0
-                    Text { text: modelData.icon + "  " + modelData.label; color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: 10 }
-                    Item { Layout.fillWidth: true; height: 1 }
-                    Text {
-                      text: { const v = root.sysVals[modelData.idx]; return v !== undefined && v !== "--" ? v + "%" : "--" }
-                      color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: 11
+                    RowLayout {
+                      Layout.fillWidth: true
+                      spacing: 0
+                      Text { text: modelData.icon + "  " + modelData.label; color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: 10 }
+                      Item { Layout.fillWidth: true; height: 1 }
+                      Text {
+                        text: { const v = root.sysVals[modelData.idx]; return v !== undefined && v !== "--" ? v + "%" : "--" }
+                        color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: 11
+                      }
                     }
-                  }
 
-                  Item {
-                    Layout.fillWidth: true; Layout.preferredHeight: 80
+                    Item {
+                      Layout.fillWidth: true; Layout.fillHeight: true
+                      Canvas {
+                        anchors.centerIn: parent; width: 80; height: 80
+                        property real pct: { const v = parseInt(root.sysVals[modelData.idx] || "0"); return Math.max(0, Math.min(100, isNaN(v) ? 0 : v)) / 100 }
+                        onPctChanged: requestPaint()
+                        onPaint: {
+                          const ctx = getContext("2d"); ctx.clearRect(0, 0, width, height)
+                          const cx = width/2, cy = height/2, r = 32, lw = 3
+                          ctx.lineWidth = lw; ctx.lineCap = "round"
+                          ctx.beginPath(); ctx.strokeStyle = Theme.border; ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke()
+                          if (pct > 0) { ctx.beginPath(); ctx.strokeStyle = Theme.fg; ctx.arc(cx, cy, r, -Math.PI/2, -Math.PI/2 + Math.PI*2*pct); ctx.stroke() }
+                        }
+                        Text { anchors.centerIn: parent; text: modelData.icon; color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: 18 }
+                      }
+                    }
+
                     Canvas {
-                      anchors.centerIn: parent; width: 80; height: 80
-                      property real pct: { const v = parseInt(root.sysVals[modelData.idx] || "0"); return Math.max(0, Math.min(100, isNaN(v) ? 0 : v)) / 100 }
-                      onPctChanged: requestPaint()
+                      Layout.fillWidth: true; Layout.preferredHeight: 24
+                      property var hist: { if (modelData.idx === 0) return root.cpuHist; if (modelData.idx === 1) return root.memHist; if (modelData.idx === 2) return root.diskHist; return root.gpuHist }
+                      onHistChanged: requestPaint()
                       onPaint: {
                         const ctx = getContext("2d"); ctx.clearRect(0, 0, width, height)
-                        const cx = width/2, cy = height/2, r = 32, lw = 3
-                        ctx.lineWidth = lw; ctx.lineCap = "round"
-                        ctx.beginPath(); ctx.strokeStyle = Theme.border; ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke()
-                        if (pct > 0) { ctx.beginPath(); ctx.strokeStyle = Theme.fg; ctx.arc(cx, cy, r, -Math.PI/2, -Math.PI/2 + Math.PI*2*pct); ctx.stroke() }
+                        if (!hist || hist.length < 2) return
+                        ctx.strokeStyle = Theme.fg; ctx.lineWidth = 1; ctx.beginPath()
+                        for (let i = 0; i < hist.length; i++) {
+                          const x = i / Math.max(1, hist.length - 1) * width; const y = height - (hist[i] / 100 * height)
+                          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
+                        }
+                        ctx.stroke()
                       }
-                      Text { anchors.centerIn: parent; text: modelData.icon; color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: 18 }
-                    }
-                  }
-
-                  Canvas {
-                    Layout.fillWidth: true; Layout.preferredHeight: 24
-                    property var hist: { if (modelData.idx === 0) return root.cpuHist; if (modelData.idx === 1) return root.memHist; return root.diskHist }
-                    onHistChanged: requestPaint()
-                    onPaint: {
-                      const ctx = getContext("2d"); ctx.clearRect(0, 0, width, height)
-                      if (!hist || hist.length < 2) return
-                      ctx.strokeStyle = Theme.fg; ctx.lineWidth = 1; ctx.beginPath()
-                      for (let i = 0; i < hist.length; i++) {
-                        const x = i / Math.max(1, hist.length - 1) * width; const y = height - (hist[i] / 100 * height)
-                        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
-                      }
-                      ctx.stroke()
                     }
                   }
                 }
               }
             }
           }
+
+          // ----- Tab 2: Media -----
+          Item {
+            width: swipeContainer.width
+            height: swipeContainer.height
+
+            ColumnLayout {
+              anchors.fill: parent
+              spacing: 0
+
+
+
+              // Tabbed single player view (arrows next to icon)
+              Item {
+                id: mediaSingle
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                visible: true
+                 property var cur: (Mpris.players.values && Mpris.players.values.length > root.mediaIdx) ? Mpris.players.values[root.mediaIdx] : null
+                 ColumnLayout {
+                    id: msRoot
+                    anchors.fill: parent
+                    spacing: 0
+
+                    // BODY
+                    RowLayout {
+                      id: msBody
+                      Layout.fillWidth: true
+                      Layout.fillHeight: true
+                      spacing: 0
+
+                      // LEFT — info + terminal + controls + progress (always present; grows when expanded)
+                       ColumnLayout {
+                          id: msLeft
+                          Layout.fillWidth: true
+                          Layout.fillHeight: true
+                          Layout.leftMargin: 16
+                          Layout.rightMargin: 16
+                          Layout.bottomMargin: 8
+                          spacing: 8
+
+                        // title
+                        ColumnLayout {
+                          visible: true
+                          spacing: 8
+                          Text {
+                            Layout.fillWidth: true
+                            Layout.maximumHeight: 44
+                            clip: true
+                            text: mediaSingle.cur ? (mediaSingle.cur.trackTitle || "Unknown") : "no songs playing"
+                            color: Theme.fg
+                            font.family: Theme.fontFamily
+                            font.pixelSize: 18
+                            font.bold: true
+                            wrapMode: Text.Wrap
+                          }
+                          Text {
+                            Layout.fillWidth: true
+                            text: {
+                              if (!mediaSingle.cur) return ""
+                              const a = mediaSingle.cur.trackArtist || ""
+                              const b = mediaSingle.cur.trackAlbum || ""
+                              if (a && b) return a + " — " + b
+                              return a || b || (mediaSingle.cur.identity || "")
+                            }
+                            color: Theme.muted
+                            font.family: Theme.fontFamily
+                            font.pixelSize: 11
+                            elide: Text.ElideRight
+                          }
+                        }
+
+                        Rectangle {
+                          id: termRect
+                          Layout.fillWidth: true
+                          Layout.fillHeight: true
+                          Layout.preferredHeight: 200
+                          color: "#000000"
+                          clip: true
+                          property bool termRunning: false
+                          Timer {
+                            interval: 500
+                            running: true
+                            repeat: true
+                            onTriggered: termRect.termRunning = sharkVisSession.hasActiveProcess
+                          }
+                          QMLTermWidget {
+                            id: sharkVisTerm
+                            anchors.fill: parent
+                            font.family: Theme.fontFamily
+                            font.pointSize: 9
+                            colorScheme: "Linux"
+                            focus: false
+                            enabled: true
+                            session: QMLTermSession {
+                              id: sharkVisSession
+                              shellProgram: "/etc/profiles/per-user/matko/bin/sharkvis"
+                            }
+                            function startProg(prog, args) {
+                              if (sharkVisSession.hasActiveProcess) return
+                              sharkVisSession.shellProgram = prog
+                              sharkVisSession.shellProgramArgs = args
+                              sharkVisSession.startShellProgram()
+                            }
+                            Component.onCompleted: {
+                              if (root.shown) sharkVisTerm.startProg("/etc/profiles/per-user/matko/bin/sharkvis", [])
+                            }
+                            Connections {
+                              target: sharkVisSession
+                              function onFinished() {
+                                if (root.shown) sharkVisTerm.startProg("bash", [])
+                              }
+                            }
+                            Connections {
+                              target: root
+                              function onShownChanged() {
+                                if (root.shown) {
+                                  sharkVisTerm.startProg("/etc/profiles/per-user/matko/bin/sharkvis", [])
+                                } else if (sharkVisSession.hasActiveProcess) {
+                                  sharkVisSession.sendSignal(15)
+                                }
+                              }
+                            }
+                          }
+                          MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            acceptedButtons: Qt.NoButton
+                            cursorShape: Qt.IBeamCursor
+                            onEntered: sharkVisTerm.forceActiveFocus()
+                            onExited: sharkVisTerm.focus = false
+                          }
+                        }
+
+                        // transport controls
+                        Rectangle {
+                          Layout.alignment: Qt.AlignHCenter
+                          Layout.topMargin: -8
+                          implicitWidth: 146
+                          implicitHeight: 46
+                          color: Theme.bgAlt
+                          border.color: Theme.border
+                          border.width: 1
+                          RowLayout {
+                            anchors.fill: parent
+                            spacing: 0
+                            Item {
+                              Layout.preferredWidth: 44
+                              Layout.fillHeight: true
+                              Text {
+                                anchors.centerIn: parent
+                                text: "⏮"
+                                color: Theme.fg
+                                font.family: Theme.fontFamily
+                                font.pixelSize: 20
+                              }
+                              MouseArea {
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: if (mediaSingle.cur) mediaSingle.cur.previous()
+                              }
+                            }
+                            Rectangle { Layout.preferredWidth: 1; Layout.fillHeight: true; color: Theme.border }
+                            Item {
+                              Layout.preferredWidth: 56
+                              Layout.fillHeight: true
+                              Text {
+                                anchors.centerIn: parent
+                                text: mediaSingle.cur && mediaSingle.cur.isPlaying ? "⏸" : "▶"
+                                color: Theme.fg
+                                font.family: Theme.fontFamily
+                                font.pixelSize: 26
+                              }
+                              MouseArea {
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: if (mediaSingle.cur) mediaSingle.cur.togglePlaying()
+                              }
+                            }
+                            Rectangle { Layout.preferredWidth: 1; Layout.fillHeight: true; color: Theme.border }
+                            Item {
+                              Layout.preferredWidth: 44
+                              Layout.fillHeight: true
+                              Text {
+                                anchors.centerIn: parent
+                                text: "⏭"
+                                color: Theme.fg
+                                font.family: Theme.fontFamily
+                                font.pixelSize: 20
+                              }
+                              MouseArea {
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: if (mediaSingle.cur) mediaSingle.cur.next()
+                              }
+                            }
+                          }
+                        }
+
+                        Rectangle {
+                          id: progressBar
+                          Layout.alignment: Qt.AlignHCenter
+                          Layout.topMargin: 6
+                          implicitWidth: 260
+                          Layout.preferredHeight: 22
+                          color: "transparent"
+                          visible: mediaSingle.cur && mediaSingle.cur.lengthSupported
+                          property bool hovered: false
+                          property bool scrubbing: false
+                          function fmtTime(t) {
+                            if (!t || t < 0) t = 0
+                            const m = Math.floor(t / 60)
+                            const s = Math.floor(t % 60)
+                            return m + ":" + (s < 10 ? "0" : "") + s
+                          }
+                          function seek(x) {
+                            if (mediaSingle.cur && mediaSingle.cur.positionSupported)
+                              mediaSingle.cur.position = (x / width) * mediaSingle.cur.length
+                          }
+                          Rectangle {
+                            id: progBox
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: progressBar.hovered ? parent.width : 200
+                            height: progressBar.hovered ? 14 : 8
+                            color: progressBar.hovered ? Theme.bgAlt : Theme.border
+                            border.color: Theme.border
+                            border.width: progressBar.hovered ? 1 : 0
+                            clip: true
+                            property real fillW: width * Math.max(0, Math.min(1, mediaSingle.cur ? mediaSingle.cur.position / Math.max(1, mediaSingle.cur.length) : 0))
+                            Behavior on width { NumberAnimation { duration: 120; easing.type: Easing.OutCubic } }
+                            Behavior on height { NumberAnimation { duration: 120; easing.type: Easing.OutCubic } }
+                            Rectangle {
+                              z: 0
+                              anchors.left: parent.left
+                              anchors.verticalCenter: parent.verticalCenter
+                              height: progressBar.hovered ? 8 : 6
+                              width: parent.width * Math.max(0, Math.min(1, (mediaSingle.cur ? mediaSingle.cur.position / Math.max(1, mediaSingle.cur.length) : 0)))
+                              color: Theme.fg
+                            }
+                          }
+                          Text {
+                            z: 1
+                            anchors.left: parent.left
+                            anchors.leftMargin: 6
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: progressBar.fmtTime(mediaSingle.cur ? mediaSingle.cur.position : 0)
+                            color: Theme.fg
+                            font.family: Theme.fontFamily
+                            font.pixelSize: 9
+                            visible: progressBar.hovered
+                          }
+                          Item {
+                            z: 2
+                            anchors.left: parent.left
+                            anchors.top: parent.top
+                            anchors.bottom: parent.bottom
+                            width: progBox.fillW
+                            clip: true
+                            visible: progressBar.hovered
+                            Text {
+                              anchors.left: parent.left
+                              anchors.leftMargin: 6
+                              anchors.verticalCenter: parent.verticalCenter
+                              text: progressBar.fmtTime(mediaSingle.cur ? mediaSingle.cur.position : 0)
+                              color: Theme.bg
+                              font.family: Theme.fontFamily
+                              font.pixelSize: 9
+                            }
+                          }
+                          Text {
+                            z: 1
+                            anchors.right: parent.right
+                            anchors.rightMargin: 6
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: progressBar.fmtTime(mediaSingle.cur ? mediaSingle.cur.length : 0)
+                            color: Theme.fg
+                            font.family: Theme.fontFamily
+                            font.pixelSize: 9
+                            visible: progressBar.hovered
+                          }
+                          Item {
+                            z: 2
+                            anchors.left: parent.left
+                            anchors.top: parent.top
+                            anchors.bottom: parent.bottom
+                            width: progBox.fillW
+                            clip: true
+                            visible: progressBar.hovered
+                            Text {
+                              x: progBox.width - 6 - width
+                              anchors.verticalCenter: parent.verticalCenter
+                              text: progressBar.fmtTime(mediaSingle.cur ? mediaSingle.cur.length : 0)
+                              color: Theme.bg
+                              font.family: Theme.fontFamily
+                              font.pixelSize: 9
+                            }
+                          }
+                          MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onEntered: progressBar.hovered = true
+                            onExited: progressBar.hovered = false
+                            onPressed: mouse => { progressBar.scrubbing = true; progressBar.seek(mouse.x) }
+                            onReleased: progressBar.scrubbing = false
+                            onPositionChanged: mouse => { if (progressBar.scrubbing) progressBar.seek(mouse.x) }
+                          }
+                        }
+                      }
+
+                      // RIGHT — artwork with tab arrows
+                      Item {
+                        id: msRight
+                        visible: true
+                        Layout.fillHeight: true
+                        Layout.preferredWidth: swipeContainer.width * 0.46
+                        Layout.fillWidth: false
+                        clip: true
+                        Image {
+                          anchors.fill: parent
+                          source: mediaSingle.cur && mediaSingle.cur.trackArtUrl ? mediaSingle.cur.trackArtUrl : ""
+                          fillMode: Image.PreserveAspectCrop
+                          asynchronous: true
+                          visible: !!(mediaSingle.cur && mediaSingle.cur.trackArtUrl)
+                        }
+                        AnimatedImage {
+                          anchors.fill: parent
+                          source: "file:///mnt/ssd/My-Files/Pictures/animated%20shark.gif"
+                          fillMode: Image.PreserveAspectCrop
+                          playing: true
+                          cache: false
+                          visible: !(mediaSingle.cur && mediaSingle.cur.trackArtUrl)
+                        }
+                        Item {
+                          id: tabContainer
+                          anchors.bottom: parent.bottom
+                          anchors.horizontalCenter: parent.horizontalCenter
+                          anchors.bottomMargin: 6
+                          width: tabRow.implicitWidth + 12
+                          height: (tabHover.containsMouse) ? 16 : 10
+                          visible: Mpris.players.values && Mpris.players.values.length > 1
+                          Behavior on height { NumberAnimation { duration: 120; easing.type: Easing.OutCubic } }
+                          Rectangle {
+                            anchors.fill: parent
+                            color: (tabHover.containsMouse) ? Theme.bgAlt : "transparent"
+                            border.color: Theme.border
+                            border.width: (tabHover.containsMouse) ? 1 : 0
+                            radius: 0
+                          }
+                          RowLayout {
+                            id: tabRow
+                            anchors.centerIn: parent
+                            spacing: (tabHover.containsMouse) ? 2 : 4
+                            Repeater {
+                              model: Mpris.players.values ? Mpris.players.values.length : 0
+                              delegate: Rectangle {
+                                required property int index
+                                implicitWidth: (tabHover.containsMouse) ? (index === root.mediaIdx ? 18 : 10) : 6
+                                implicitHeight: (tabHover.containsMouse) ? 8 : 6
+                                radius: 0
+                                color: index === root.mediaIdx ? Theme.fg : Theme.muted2
+                                Behavior on implicitWidth { NumberAnimation { duration: 120 } }
+                                Behavior on implicitHeight { NumberAnimation { duration: 120 } }
+                                MouseArea {
+                                  anchors.fill: parent
+                                  cursorShape: Qt.PointingHandCursor
+                                  onClicked: root.mediaIdx = index
+                                }
+                              }
+                            }
+                          }
+                          MouseArea {
+                            id: tabHover
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            acceptedButtons: Qt.NoButton
+                          }
+                        }
+                      }
+                    }
+                  }
+              }
+
+            }
+          }
+
         }
       }
     }

@@ -99,7 +99,7 @@ Scope {
   }
 
   function paste(i) {
-    const entry = root.results[i]
+    const entry = root.currentList[i]
     if (!entry)
       return
     root.forceClose()
@@ -108,11 +108,25 @@ Scope {
   }
 
   function remove(i) {
-    const entry = root.results[i]
+    const entry = root.currentList[i]
     if (!entry)
       return
     delProc.command = ["sh", "-c", "printf '%s\\n' " + root.shellEscape(entry) + " | cliphist delete"]
     delProc.running = true
+  }
+
+  function switchTab() {
+    root.tab = root.tab === "text" ? "images" : "text"
+  }
+
+  // Items visible on one viewport of the image grid (used for page scrolling).
+  function pageStep() {
+    const g = imgGrid
+    if (!g)
+      return 1
+    const cols = Math.max(1, Math.floor(g.width / g.cellWidth))
+    const rows = Math.max(1, Math.floor(g.height / g.cellHeight))
+    return cols * rows
   }
 
   Timer {
@@ -140,29 +154,36 @@ Scope {
     }
   }
 
-  // Decode image entries once into a thumbnail cache; prints every known id so
-  // the picker can tell which thumbnails exist.
+  // Build a thumbnail cache, streaming each id as soon as its thumbnail is
+  // ready (cached ones immediately, generated ones as magick finishes) so the
+  // grid fills in progressively instead of staying black until the whole batch
+  // completes. Generation runs in parallel (xargs -P 6).
   Process {
     id: thumbProc
-    command: ["sh", "-c", "mkdir -p \"$HOME/.cache/quickshell/clipboard\"\n"
+    onStarted: root.thumbs = ({})
+    command: ["stdbuf", "-oL", "sh", "-c",
+      "mkdir -p \"$HOME/.cache/quickshell/clipboard\"\n"
+      + "tmp=$(mktemp)\n"
       + "cliphist list | while IFS= read -r line; do\n"
       + "  prev=${line#*$'\\t'}\n"
       + "  case $prev in \"[[ binary data\"*) ;; *) continue ;; esac\n"
       + "  case $prev in *png*|*jpeg*|*jpg*|*gif*|*bmp*|*webp*) ;; *) continue ;; esac\n"
       + "  id=${line%%$'\\t'*}\n"
       + "  f=\"$HOME/.cache/quickshell/clipboard/$id.png\"\n"
-      + "  if [ ! -f \"$f\" ]; then\n"
-      + "    printf '%s\\n' \"$line\" | cliphist decode | magick - -resize '256x256>' \"$f\" 2>/dev/null || continue\n"
-      + "  fi\n"
-      + "  echo \"$id\"\n"
-      + "done"]
-    stdout: StdioCollector {
-      onStreamFinished: {
-        const m = {}
-        for (const l of this.text.split("\n"))
-          if (l.trim() !== "")
-            m[l.trim()] = true
-        root.thumbs = m
+      + "  if [ -f \"$f\" ]; then echo \"$id\"; continue; fi\n"
+      + "  echo \"$line\" >> \"$tmp\"\n"
+      + "done\n"
+      + "xargs -P 6 -I {} sh -c 'id=$(printf \"%s\" \"{}\" | cut -f1); f=\"$HOME/.cache/quickshell/clipboard/$id.png\"; [ -f \"$f\" ] && { echo \"$id\"; exit 0; }; printf \"%s\\n\" \"{}\" | cliphist decode | magick - -resize \"256x256>\" \"$f\" 2>/dev/null && echo \"$id\"' < \"$tmp\"\n"
+      + "rm -f \"$tmp\"\n"
+    ]
+    stdout: SplitParser {
+      onRead: line => {
+        const l = String(line).trim()
+        if (l === "")
+          return
+        const t = Object.assign({}, root.thumbs)
+        t[l] = true
+        root.thumbs = t
       }
     }
   }
@@ -187,12 +208,20 @@ Scope {
     }
   }
 
+  // Lowercased previews, computed once when the list loads (not per keystroke).
+  readonly property var lcPreviews: root.allEntries.map(l => root.preview(l).toLowerCase())
+
   readonly property var results: {
     const q = root.query.toLowerCase()
-    return root.allEntries.filter(l => q === "" || root.preview(l).toLowerCase().includes(q))
+    return root.allEntries.filter((l, i) => q === "" || root.lcPreviews[i].includes(q))
   }
   readonly property var textEntries: root.results.filter(l => !root.isImage(l))
   readonly property var imageEntries: root.results.filter(l => root.isImage(l))
+
+  // The active tab's entry list. Both the views and the keyboard navigation
+  // index into this, so selection/paste always line up (the bug was indexing
+  // results while the views showed a subset).
+  readonly property var currentList: root.tab === "images" ? root.imageEntries : root.textEntries
 
   onTabChanged: {
     root.selIdx = 0
@@ -205,15 +234,24 @@ Scope {
     root.hoverIdx = -1
   }
   onResultsChanged: {
-    if (root.selIdx >= root.results.length)
-      root.selIdx = Math.max(0, root.results.length - 1)
-    if (root.hoverIdx >= root.results.length)
+    if (root.selIdx >= root.currentList.length)
+      root.selIdx = Math.max(0, root.currentList.length - 1)
+    if (root.hoverIdx >= root.currentList.length)
       root.hoverIdx = -1
   }
   onSelIdxChanged: {
-    const v = root.tab === "images" ? imgGrid : list
-    if (v)
-      v.positionViewAtIndex(root.selIdx, ListView.Contain)
+    if (root.tab === "images") {
+      const g = imgGrid
+      if (!g)
+        return
+      const cols = Math.max(1, Math.floor(g.width / g.cellWidth))
+      const row = Math.floor(root.selIdx / cols)
+      const y = row * g.cellHeight
+      const maxY = Math.max(0, g.contentHeight - g.height)
+      g.contentY = Math.min(Math.max(y, 0), maxY)
+    } else {
+      list.positionViewAtIndex(root.selIdx, ListView.Contain)
+    }
   }
 
   TextMetrics {
@@ -235,7 +273,7 @@ Scope {
     exclusionMode: ExclusionMode.Ignore
     color: "transparent"
     WlrLayershell.namespace: "quickshell-clipboard"
-    WlrLayershell.layer: WlrLayer.Overlay
+    WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
     visible: root.open || root.closePending
 
@@ -326,25 +364,35 @@ Scope {
                   }
                 }
                 Keys.onEscapePressed: event => { root.requestClose(); event.accepted = true }
+                Keys.onTabPressed: { root.switchTab(); event.accepted = true }
+                Keys.onBacktabPressed: { root.switchTab(); event.accepted = true }
                 Keys.onUpPressed: { root.mouseOverList = false; root.selIdx = Math.max(0, root.selIdx - (root.tab === "images" ? 3 : 1)) }
-                Keys.onDownPressed: { root.mouseOverList = false; root.selIdx = Math.min(root.results.length - 1, root.selIdx + (root.tab === "images" ? 3 : 1)) }
+                Keys.onDownPressed: { root.mouseOverList = false; root.selIdx = Math.min(root.currentList.length - 1, root.selIdx + (root.tab === "images" ? 3 : 1)) }
                 Keys.onLeftPressed: if (root.tab === "images") { root.mouseOverList = false; root.selIdx = Math.max(0, root.selIdx - 1); event.accepted = true }
-                Keys.onRightPressed: if (root.tab === "images") { root.mouseOverList = false; root.selIdx = Math.min(root.results.length - 1, root.selIdx + 1); event.accepted = true }
+                Keys.onRightPressed: if (root.tab === "images") { root.mouseOverList = false; root.selIdx = Math.min(root.currentList.length - 1, root.selIdx + 1); event.accepted = true }
                 Keys.onReturnPressed: root.paste(root.selIdx)
                 Keys.onEnterPressed: root.paste(root.selIdx)
                 Keys.onDeletePressed: root.remove(root.selIdx)
                 Keys.onPressed: event => {
                   if ((event.key === Qt.Key_N || event.key === Qt.Key_P) && (event.modifiers & Qt.ControlModifier)) {
-                    root.mouseOverList = false; root.selIdx = event.key === Qt.Key_N ? Math.min(root.results.length - 1, root.selIdx + 1) : Math.max(0, root.selIdx - 1)
+                    root.mouseOverList = false; root.selIdx = event.key === Qt.Key_N ? Math.min(root.currentList.length - 1, root.selIdx + 1) : Math.max(0, root.selIdx - 1)
                     event.accepted = true
                   } else if ((event.key === Qt.Key_D) && (event.modifiers & Qt.ControlModifier)) {
                     root.remove(root.selIdx)
                     event.accepted = true
                   } else if (event.key === Qt.Key_PageDown) {
-                    root.mouseOverList = false; root.selIdx = Math.min(root.results.length - 1, root.selIdx + 5 * (root.tab === "images" ? 3 : 1))
+                    root.mouseOverList = false
+                    if (root.tab === "images")
+                      root.selIdx = Math.min(root.currentList.length - 1, root.selIdx + root.pageStep())
+                    else
+                      root.selIdx = Math.min(root.currentList.length - 1, root.selIdx + 5)
                     event.accepted = true
                   } else if (event.key === Qt.Key_PageUp) {
-                    root.mouseOverList = false; root.selIdx = Math.max(0, root.selIdx - 5 * (root.tab === "images" ? 3 : 1))
+                    root.mouseOverList = false
+                    if (root.tab === "images")
+                      root.selIdx = Math.max(0, root.selIdx - root.pageStep())
+                    else
+                      root.selIdx = Math.max(0, root.selIdx - 5)
                     event.accepted = true
                   }
                 }
@@ -423,7 +471,7 @@ Scope {
                 anchors.fill: parent
                 clip: true
                 interactive: true
-                flickableDirection: Flickable.HorizontalAndVerticalFlick
+                flickableDirection: Flickable.VerticalFlick
                 cellWidth: Math.floor(imgGrid.width / 3)
                 cellHeight: root.imgCellH
                 model: root.imageEntries
@@ -441,7 +489,12 @@ Scope {
                   Image {
                     anchors.fill: parent
                     anchors.margins: 4
-                    source: root.thumbs[root.idOf(modelData)] !== undefined ? "file://" + root.thumbDir + "/" + root.idOf(modelData) + ".png" : ""
+                    readonly property string _src: root.thumbs[root.idOf(modelData)] !== undefined ? "file://" + root.thumbDir + "/" + root.idOf(modelData) + ".png" : ""
+                    source: _src
+                    // Decode at display size, not the thumbnail's native resolution.
+                    // This is the main win: far less CPU decode + much smaller GL textures.
+                    sourceSize.width: imgGrid.cellWidth - 8
+                    sourceSize.height: imgGrid.cellHeight - 8
                     fillMode: Image.PreserveAspectCrop
                     asynchronous: true
                     cache: true
@@ -451,7 +504,7 @@ Scope {
                   Rectangle {
                     anchors.fill: parent
                     anchors.margins: 4
-                    border.width: isSel || isHover ? 1 : 0
+                    border.width: isSel ? 2 : (isHover ? 1 : 0)
                     border.color: "#ffffff"
                     color: "transparent"
                   }
@@ -460,7 +513,7 @@ Scope {
                     anchors.fill: parent
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
-                    onEntered: { root.hoverIdx = index; root.selIdx = index; root.mouseOverList = true }
+                    onEntered: { root.hoverIdx = index }
                     onExited: { if (root.hoverIdx === index) root.hoverIdx = -1; root.mouseOverList = false }
                     onClicked: root.paste(index)
                   }
@@ -486,8 +539,8 @@ Scope {
           spacing: 0
           Repeater {
             model: [
-              { label: "TEXT", idx: 0 },
-              { label: "IMAGES", idx: 1 }
+              { label: "Text", idx: 0 },
+              { label: "Images", idx: 1 }
             ]
             delegate: Item {
               required property var modelData

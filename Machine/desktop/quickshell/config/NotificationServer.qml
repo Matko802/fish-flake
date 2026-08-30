@@ -12,6 +12,18 @@ Scope {
   property var notifications: []
   property var hiddenToasts: []
 
+  // Count of notifications that actually carry content (no empty placeholders).
+  property int meaningfulCount: root.notifications.filter(n => n && isMeaningful(n)).length
+
+  // A notification is only worth keeping if it has a summary, body, or image.
+  function isMeaningful(n) {
+    if (!n) return false
+    const s = (n.summary || "").trim()
+    const b = (n.body || "").trim()
+    const im = n.image ? String(n.image) : ""
+    return s !== "" || b !== "" || im !== ""
+  }
+
   // The only model the toast stack binds to. Incremental insert/remove means
   // a new toast adds one delegate without recreating the others — so existing
   // cards never re-run their entrance animation.
@@ -27,6 +39,10 @@ Scope {
 
     onNotification: notif => {
       notif.tracked = true
+      // ignore empty placeholders (apps send these during update cycles)
+      if (!root.isMeaningful(notif)) return
+      // dedupe by id — a replace/update reuses the same id, don't stack copies
+      root.notifications = root.notifications.filter(n => n && n.id !== notif.id)
       root.notifications = [notif, ...root.notifications]
       console.log("QS notif", notif.id, notif.summary, "popup before", popupModel.count)
       if ((root.dnd && notif.urgency !== NotificationUrgency.Critical) || ControlState.open || ClockState.open) {

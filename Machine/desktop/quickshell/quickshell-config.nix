@@ -1,22 +1,22 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 let
   qsConfig = pkgs.runCommand "quickshell-config" { src = ./config; } ''
     mkdir -p $out/quickshell
     cp -r $src/. $out/quickshell/
   '';
-  # Quickshell's Qt build lacks the webp imageformat plugin; add it so QML
-  # Image can decode .webp wallpapers.
   quickshellWrapped = pkgs.symlinkJoin {
     name = "quickshell-wrapped";
     paths = [ pkgs.quickshell ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram "$out/bin/quickshell" \
-        --prefix QT_PLUGIN_PATH : "${pkgs.qt6Packages.qtimageformats}/${pkgs.qt6.qtbase.qtPluginPrefix}"
+        --prefix QT_PLUGIN_PATH : "${pkgs.qt6Packages.qtimageformats}/${pkgs.qt6.qtbase.qtPluginPrefix}" \
+        --prefix QML2_IMPORT_PATH : "/home/matko/.local/share/qmltermwidget" \
+        --prefix QML_IMPORT_PATH : "/home/matko/.local/share/qmltermwidget"
     '';
   };
 in {
-  environment.systemPackages = [ quickshellWrapped pkgs.upower pkgs.wtype ];
+  environment.systemPackages = with pkgs; [ quickshellWrapped upower wtype ];
   environment.variables.QUICKSHELL_FONT = config.custom.fontName;
   qt.enable = true;
 

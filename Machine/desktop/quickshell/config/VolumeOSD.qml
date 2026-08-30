@@ -17,11 +17,17 @@ PanelWindow {
   WlrLayershell.layer: WlrLayer.Overlay
   implicitWidth: 380
   implicitHeight: 200
-  visible: shown || bg.y > 96
+  // Keep the surface permanently mapped so the first show after a (re)start has
+  // no layer-surface remap delay. Click-through is handled by the mask: when
+  // bg is slid off-screen the mask region is empty, so the window captures no
+  // input and paints nothing.
+  visible: true
+
+  // Mask input (and paint) to the box only; the rest of the 380x200 window is
+  // transparent and click-through.
+  mask: Region { item: bg }
 
   function show() {
-    if (Audio.vol < 0)
-      return
     osd.shown = true
     hideTimer.restart()
   }
@@ -50,7 +56,7 @@ PanelWindow {
         Audio.playVolumeSound()
     }
     function onMutedChanged() {
-      if (!osd.armed || Audio.vol < 0) return
+      if (!osd.armed) return
       if (ControlState.open)
         return
       osd.show()
@@ -63,7 +69,7 @@ PanelWindow {
     id: bg
     width: parent.width
     height: 56
-    y: osd.shown ? parent.height - 56 - 48 : parent.height
+    y: osd.shown ? parent.height - 56 - 64 : parent.height
     Behavior on y { NumberAnimation { duration: 250; easing.type: Easing.OutCubic } }
     color: "#000000"
     border.color: "#ffffff"

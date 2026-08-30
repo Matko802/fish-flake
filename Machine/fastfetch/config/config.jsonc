@@ -1,4 +1,5 @@
 {
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
     "type": "file",
     "source": "/etc/xdg/fastfetch/shork.txt",
@@ -9,114 +10,44 @@
       "left": 2
     }
   },
-  "modules": [
-    {
-      "type": "os",
-      "key": " OS",
-      "keyColor": "blue"
-    },
-    {
-      "type": "kernel",
-      "key": " Kernel",
-      "keyColor": "blue"
-    },
-    {
-      "type": "wm",
-      "key": " WM",
-      "keyColor": "blue"
-    },
-    {
-      "type": "de",
-      "key": " DE",
-      "keyColor": "blue"
-    },
-    {
-      "type": "terminal",
-      "key": " Terminal",
-      "keyColor": "blue"
-    },
-    {
-    "type": "shell",
-    "key": " Shell",
-    "keyColor": "blue"
+  "display": {
+    "separator": "  "
   },
-    {
-      "type": "packages",
-      "key": "󰏖 Packages",
-      "keyColor": "blue"
-    },
-    {
-      "type": "wmtheme",
-      "key": "󰉼 WM theme",
-      "keyColor": "blue"
-    },
-    {
-      "type": "colors",
-      "key": "󰸌 Palette",
-      "keyColor": "blue",
-      "symbol": "square"
-    },
-    {
-      "type": "terminalfont",
-      "key": " Font",
-      "keyColor": "blue"
-    },
+  "modules": [
+    { "type": "custom", "format": "{#white}┌─ Software ────────────────────────────┐" },
+    { "type": "os",           "key": "{#white}│ {#blue} OS" },
+    { "type": "kernel",       "key": "{#white}│ {#blue} Kernel" },
+    { "type": "wm",           "key": "{#white}│ {#blue} WM" },
+    { "type": "de",           "key": "{#white}│ {#blue} DE" },
+    { "type": "terminal",     "key": "{#white}│ {#blue} Terminal" },
+    { "type": "shell",        "key": "{#white}│ {#blue} Shell" },
+    { "type": "packages",     "key": "{#white}│ {#blue}󰏖 Packages",     "format": "{all}" },
+    { "type": "wmtheme",      "key": "{#white}│ {#blue}󰉼 WM theme" },
+    { "type": "terminalfont", "key": "{#white}│ {#blue} Font" },
+    { "type": "colors",       "key": "{#white}│ {#blue}󰸌 Palette",      "symbol": "square" },
+    { "type": "custom", "format": "{#white}└───────────────────────────────────────┘" },
+
     "break",
-    {
-      "type": "board",
-      "key": " Board",
-      "keyColor": "green"
-    },
-    {
-      "type": "cpu",
-      "key": " CPU",
-      "showPeCoreCount": true,
-      "keyColor": "green"
-    },
-    {
-      "type": "gpu",
-      "key": " GPU",
-      "detectionMethod": "pci",
-      "keyColor": "green"
-    },
-    {
-      "type": "display",
-      "key": "󰍹 Display",
-      "keyColor": "green"
-    },
-    {
-      "type": "disk",
-      "key": "󰋊 Disk",
-      "keyColor": "green"
-    },
-    {
-      "type": "memory",
-      "key": " Memory",
-      "keyColor": "green"
-    },
-    {
-      "type": "swap",
-      "key": "󰓡 Swap",
-      "keyColor": "green"
-    },
+
+    { "type": "custom", "format": "{#white}┌─ Hardware ────────────────────────────┐" },
+    { "type": "board",        "key": "{#white}│ {#green} Board" },
+    { "type": "cpu",          "key": "{#white}│ {#green} CPU",          "showPeCoreCount": true },
+    { "type": "gpu",          "key": "{#white}│ {#green} GPU",          "detectionMethod": "pci" },
+    { "type": "display",      "key": "{#white}│ {#green}󰍹 Display" },
+    { "type": "disk",         "key": "{#white}│ {#green}󰋊 Disk" },
+    { "type": "memory",       "key": "{#white}│ {#green} Memory" },
+    { "type": "swap",         "key": "{#white}│ {#green}󰓡 Swap" },
+    { "type": "custom", "format": "{#white}└───────────────────────────────────────┘" },
+
     "break",
+
+    { "type": "custom", "format": "{#white}┌─ Status ──────────────────────────────┐" },
     {
       "type": "command",
-      "key": "󱦟 OS Age",
-      "keyColor": "magenta",
+      "key": "{#white}│ {#magenta}󱦟 OS Age",
       "text": "echo $(( ($(date +%s) - $(stat -c %W /)) / 86400 )) days"
     },
-    {
-      "type": "uptime",
-      "key": "󱫐 Uptime",
-      "keyColor": "magenta"
-    },
-    {
-      "type": "command",
-      "key": " Update",
-      "keyColor": "magenta",
-      "text": "updated=$(omarchy-version-pkgs); echo \"$updated\""
-    },
-    "break"
+    { "type": "uptime",       "key": "{#white}│ {#magenta}󱫐 Uptime" },
+    { "type": "custom", "format": "{#white}└───────────────────────────────────────┘" }
   ]
 }

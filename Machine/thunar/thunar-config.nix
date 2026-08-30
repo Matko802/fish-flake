@@ -5,6 +5,7 @@
     thunar-volman
     tumbler
     libmtp
+    rar
   ];
 
   services.gvfs.enable = true;

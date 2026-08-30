@@ -39,11 +39,11 @@ Scope {
 
   readonly property var entries: [
     { name: "LOCK", icon: "󰌾", cmd: ["quickshell", "ipc", "call", "lock", "lock"] },
-    { name: "HIBERNATE", icon: "󰤁", cmd: ["sh", "-c", "loginctl lock-session & sleep 1; systemctl hibernate"] },
+    { name: "HIBERNATE", icon: "󰤁", cmd: ["sh", "-c", "systemctl hibernate"] },
     { name: "LOG OUT", icon: "󰍃", cmd: ["mmsg", "dispatch", "quit"] },
     { name: "REBOOT", icon: "󰜉", cmd: ["sh", "-c", "systemctl reboot"] },
     { name: "SHUTDOWN", icon: "󰐥", cmd: ["sh", "-c", "systemctl poweroff"] },
-    { name: "SUSPEND", icon: "󰤄", cmd: ["sh", "-c", "loginctl lock-session & sleep 1; systemctl suspend"] }
+    { name: "SUSPEND", icon: "󰤄", cmd: ["sh", "-c", "systemctl suspend"] }
   ]
 
   onSelIdxChanged: {
@@ -76,7 +76,7 @@ Scope {
     exclusionMode: ExclusionMode.Ignore
     color: "#b3000000"
     WlrLayershell.namespace: "quickshell-power"
-    WlrLayershell.layer: WlrLayer.Overlay
+    WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
     visible: root.open
 

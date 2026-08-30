@@ -6,171 +6,220 @@ import Quickshell.Io
 import Quickshell.Wayland
 
 Scope {
-	id: root
+  id: root
 
-	property string displayUser: Quickshell.env("USER") || ""
+  property string displayUser: Quickshell.env("USER") || ""
 
-	IpcHandler {
-		target: "lock"
-		function lock() { LockState.locked = true }
-	}
+  IpcHandler {
+    target: "lock"
+    function lock() { LockState.locked = true }
+  }
 
-	LockContext {
-		id: lockContext
+  LockContext {
+    id: lockContext
 
-		onUnlocked: {
-			// Unlock the screen before exiting, or the compositor will display a
-			// fallback lock you can't interact with.
-			LockState.locked = false;
-		}
-	}
+    onUnlocked: {
+      // Unlock the screen before exiting, or the compositor will display a
+      // fallback lock you can't interact with.
+      LockState.locked = false;
+    }
+  }
 
-	WlSessionLock {
-		id: lock
-		locked: LockState.locked
+  WlSessionLock {
+    id: lock
+    locked: LockState.locked
 
-		surface: Component {
-			WlSessionLockSurface {
-				id: surf
-				color: "#000000"
+    surface: Component {
+      WlSessionLockSurface {
+        id: surf
+        color: "#000000"
 
-				Text {
-					id: clock
-					property var date: new Date()
+        // 5-second "grace" after locking: any mouse movement or keypress
+        // unlocks without a password, like KDE Plasma's post-lock delay.
+        property bool graceActive: false
 
-					anchors {
-						horizontalCenter: parent.horizontalCenter
-						top: parent.top
-						topMargin: 100
-					}
+        Timer {
+          id: graceTimer
+          interval: 5000
+          onTriggered: {
+            graceActive = false
+            passwordBox.forceActiveFocus()
+          }
+        }
 
-					color: "#ffffff"
-					renderType: Text.NativeRendering
-					font.pointSize: 72
-					font.family: Theme.fontFamily
+        Connections {
+          target: LockState
+          function onLockedChanged() {
+            if (LockState.locked) {
+              graceActive = true
+              graceTimer.restart()
+            } else {
+              graceActive = false
+              graceTimer.stop()
+            }
+          }
+        }
 
-					// updates the clock every second
-					Timer {
-						running: true
-						repeat: true
-						interval: 1000
+        Keys.onPressed: {
+          if (graceActive) LockState.locked = false
+        }
 
-						onTriggered: clock.date = new Date();
-					}
+        Text {
+          id: clock
+          property var date: new Date()
 
-					text: {
-						const hours = this.date.getHours().toString().padStart(2, '0');
-						const minutes = this.date.getMinutes().toString().padStart(2, '0');
-						return `${hours}:${minutes}`;
-					}
-				}
+          anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            topMargin: 100
+          }
 
-				ColumnLayout {
-					anchors {
-						horizontalCenter: parent.horizontalCenter
-						top: parent.verticalCenter
-					}
+          color: "#ffffff"
+          renderType: Text.NativeRendering
+          font.pointSize: 72
+          font.family: Theme.fontFamily
 
-					spacing: 12
+          // updates the clock every second
+          Timer {
+            running: true
+            repeat: true
+            interval: 1000
 
-					Text {
-						visible: root.displayUser !== ""
-						Layout.alignment: Qt.AlignHCenter
+            onTriggered: clock.date = new Date();
+          }
 
-						text: root.displayUser
-						color: "#888888"
-						font.pixelSize: 14
-						font.family: Theme.fontFamily
-					}
+          text: {
+            const hours = this.date.getHours().toString().padStart(2, '0');
+            const minutes = this.date.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
+          }
+        }
 
-					RowLayout {
-						Layout.alignment: Qt.AlignHCenter
-						spacing: 8
+        ColumnLayout {
+          anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: parent.verticalCenter
+          }
 
-						TextField {
-							id: passwordBox
+          spacing: 12
+          visible: !graceActive
 
-							implicitWidth: 260
-							padding: 10
+          Text {
+            visible: root.displayUser !== ""
+            Layout.alignment: Qt.AlignHCenter
 
-							color: "#ffffff"
-							font.pixelSize: 14
-							font.family: Theme.fontFamily
-							selectedTextColor: "#000000"
-							selectionColor: "#ffffff"
+            text: root.displayUser
+            color: "#888888"
+            font.pixelSize: 14
+            font.family: Theme.fontFamily
+          }
 
-							background: Rectangle {
-								color: "#000000"
-								border.color: lockContext.showFailure ? "#ff0000" : "#ffffff"
-								border.width: 1
-							}
+          RowLayout {
+            Layout.alignment: Qt.AlignHCenter
+            spacing: 8
 
-							focus: true
-							enabled: !lockContext.unlockInProgress
-							echoMode: TextInput.Password
-							inputMethodHints: Qt.ImhSensitiveData
+            TextField {
+              id: passwordBox
 
-							// Update the text in the context when the text in the box changes.
-							onTextChanged: lockContext.currentText = this.text;
+              implicitWidth: 260
+              padding: 10
 
-							// Try to unlock when enter is pressed.
-							onAccepted: lockContext.tryUnlock();
+              color: "#ffffff"
+              font.pixelSize: 14
+              font.family: Theme.fontFamily
+              selectedTextColor: "#000000"
+              selectionColor: "#ffffff"
 
-							// Update the text in the box to match the text in the context.
-							// This makes sure multiple monitors have the same text.
-							Connections {
-								target: lockContext
+              background: Rectangle {
+                color: "#000000"
+                border.color: lockContext.showFailure ? "#ff0000" : "#ffffff"
+                border.width: 1
+              }
 
-								function onCurrentTextChanged() {
-									passwordBox.text = lockContext.currentText;
-								}
-							}
-						}
+              focus: true
+              enabled: !lockContext.unlockInProgress
+              echoMode: TextInput.Password
+              inputMethodHints: Qt.ImhSensitiveData
 
-						Rectangle {
-							id: unlockButton
+              // Update the text in the context when the text in the box changes.
+              onTextChanged: lockContext.currentText = this.text;
 
-							implicitWidth: 70
-							implicitHeight: passwordBox.height
+              // Try to unlock when enter is pressed.
+              onAccepted: lockContext.tryUnlock();
 
-							color: unlockButtonMa.pressed ? "#ffffff" : "#000000"
-							border.color: "#ffffff"
-							border.width: 1
-							opacity: lockContext.unlockInProgress || lockContext.currentText === "" ? 0.5 : 1.0
+              // Update the text in the box to match the text in the context.
+              // This makes sure multiple monitors have the same text.
+              Connections {
+                target: lockContext
 
-							Text {
-								anchors.centerIn: parent
+                function onCurrentTextChanged() {
+                  passwordBox.text = lockContext.currentText;
+                }
+              }
+            }
 
-								text: "Unlock"
-								color: unlockButtonMa.pressed ? "#000000" : "#ffffff"
-								font.pixelSize: 11
-								font.family: Theme.fontFamily
-							}
+            Rectangle {
+              id: unlockButton
 
-							MouseArea {
-								id: unlockButtonMa
-								anchors.fill: parent
-								cursorShape: Qt.PointingHandCursor
+              implicitWidth: 70
+              implicitHeight: passwordBox.height
 
-								// don't steal focus from the text box
-								focusPolicy: Qt.NoFocus
-								enabled: !lockContext.unlockInProgress && lockContext.currentText !== "";
-								onClicked: lockContext.tryUnlock();
-							}
-						}
-					}
+              color: unlockButtonMa.pressed ? "#ffffff" : "#000000"
+              border.color: "#ffffff"
+              border.width: 1
+              opacity: lockContext.unlockInProgress || lockContext.currentText === "" ? 0.5 : 1.0
 
-					Text {
-						visible: lockContext.showFailure
-						Layout.alignment: Qt.AlignHCenter
+              Text {
+                anchors.centerIn: parent
 
-						text: "This Password is Incorrect"
-						color: "#ff0000"
-						font.pixelSize: 12
-						font.family: Theme.fontFamily
-					}
-				}
-			}
-		}
-	}
+                text: "Unlock"
+                color: unlockButtonMa.pressed ? "#000000" : "#ffffff"
+                font.pixelSize: 11
+                font.family: Theme.fontFamily
+              }
+
+              MouseArea {
+                id: unlockButtonMa
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+
+                // don't steal focus from the text box
+                focusPolicy: Qt.NoFocus
+                enabled: !lockContext.unlockInProgress && lockContext.currentText !== "";
+                onClicked: lockContext.tryUnlock();
+              }
+            }
+          }
+
+          Text {
+            visible: lockContext.showFailure
+            Layout.alignment: Qt.AlignHCenter
+
+            text: "This Password is Incorrect"
+            color: "#ff0000"
+            font.pixelSize: 12
+            font.family: Theme.fontFamily
+          }
+        }
+
+        Text {
+          visible: graceActive
+          anchors.horizontalCenter: parent.horizontalCenter
+          anchors.verticalCenter: parent.verticalCenter
+          text: "Move your mouse or press any key to unlock"
+          color: "#888888"
+          font.pixelSize: 13
+          font.family: Theme.fontFamily
+        }
+
+        MouseArea {
+          anchors.fill: parent
+          hoverEnabled: true
+          enabled: graceActive
+          onPositionChanged: LockState.locked = false
+          onPressed: LockState.locked = false
+        }
+      }
+    }
+  }
 }

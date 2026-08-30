@@ -7,67 +7,7 @@
 let
   zedDir = pkgs.runCommand "zed-config" {} ''
     mkdir -p $out
-    cat > $out/settings.json <<'EOF'
-{
-  "cli_default_open_behavior": "existing_window",
-  "outline_panel": {
-    "dock": "right"
-  },
-  "collaboration_panel": {
-    "dock": "right"
-  },
-  "agent": {
-    "default_model": {
-      "provider": "ollama",
-      "model": "minimax-m3:cloud",
-      "enable_thinking": true
-    },
-    "dock": "left",
-    "favorite_models": [],
-    "model_parameters": []
-  },
-  "git_panel": {
-    "dock": "right"
-  },
-  "icon_theme": "Colored Zed Icons Theme Dark",
-  "project_panel": {
-    "git_status_indicator": true,
-    "entry_spacing": "comfortable",
-    "dock": "right"
-  },
-  "bottom_dock_layout": "contained",
-  "completion_detail_alignment": "left",
-  "telemetry": {
-    "diagnostics": false,
-    "metrics": false,
-    "anthropic_retention": false
-  },
-  "session": {
-    "trust_all_worktrees": true
-  },
-  "terminal": {
-    "font_family": "${fontName}",
-    "font_fallbacks": [
-      "monospace"
-    ]
-  },
-  "base_keymap": "VSCode",
-  "minimap": {
-    "show": "always"
-  },
-  "buffer_font_fallbacks": [
-    "monospace"
-  ],
-  "buffer_font_family": "${fontName}",
-  "ui_font_size": 16,
-  "buffer_font_size": 15,
-  "theme": {
-    "mode": "dark",
-    "light": "Ayu Mirage",
-    "dark": "GitHub Dark"
-  }
-}
-EOF
+    cp ${./settings.json} $out/settings.json
   '';
 in {
   systemd.tmpfiles.rules = [

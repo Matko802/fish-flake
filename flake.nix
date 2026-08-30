@@ -31,6 +31,18 @@
       url = "git+https://github.com/komaruworld/mocktail?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sharkmanager = {
+      url = "path:/mnt/ssd/My-Files/Projects/sharkmanager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    shark-scrp = {
+      url = "path:/mnt/ssd/My-Files/Projects/shark-scrp";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    opencode-desktop = {
+      url = "path:/mnt/ssd/My-Files/Projects/opencode-desktop-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
   };
 
@@ -43,11 +55,17 @@
       sharkvis-gtk,
       mango,
       mocktail,
+      sharkmanager,
+      shark-scrp,
+      opencode-desktop,
       ...
     }@inputs:
     let
       sharkvisOverlay = sharkvis.overlays.default;
       sharkvisGtkOverlay = sharkvis-gtk.overlays.default;
+      sharkmanagerOverlay = sharkmanager.overlays.default;
+      sharkScrpOverlay = shark-scrp.overlays.default;
+      opencodeDesktopOverlay = opencode-desktop.overlays.default;
 
       sharedModules = [
 
@@ -65,11 +83,15 @@
             sharkvisOverlay
             sharkvisGtkOverlay
             mango.overlays.default
+            sharkmanagerOverlay
+            sharkScrpOverlay
+            opencodeDesktopOverlay
           ];
 
           environment.systemPackages = [
             pkgs.helium
             inputs.mocktail.packages.x86_64-linux.default
+            pkgs.shark-scrp
           ];
         })
       ];
@@ -88,5 +110,8 @@
       packages.x86_64-linux.sharkvis = inputs.sharkvis.packages.x86_64-linux.default;
       packages.x86_64-linux.sharkvis-gtk = inputs.sharkvis-gtk.packages.x86_64-linux.default;
       packages.x86_64-linux.mocktail = inputs.mocktail.packages.x86_64-linux.default;
+      packages.x86_64-linux.sharkmanager = inputs.sharkmanager.packages.x86_64-linux.default;
+      packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
+      packages.x86_64-linux.opencode-desktop = inputs.opencode-desktop.packages.x86_64-linux.default;
     };
 }

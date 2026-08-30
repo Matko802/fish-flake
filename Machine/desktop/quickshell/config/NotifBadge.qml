@@ -9,7 +9,7 @@ Item {
   Text {
     id: label
     anchors.centerIn: parent
-    property int count: NotificationServer.notifications.length
+    property int count: NotificationServer.meaningfulCount
     text: (NotificationServer.dnd ? "󰂛" : "󰂚") + (count > 0 ? " " + count : "")
     color: "#ffffff"
     font.family: Theme.fontFamily

@@ -10,11 +10,26 @@ Scope {
 
   property bool open: false
   property string query: ""
+  property string filterQuery: ""
   property int selIdx: 0
   property int hoverIdx: -1
   property bool mouseOverList: false
   readonly property string fontFamily: Theme.fontFamily
   readonly property color matchColor: "#cb4b16"
+
+  // Debounce the actual filter: typing stays responsive, but the list + resize
+  // animation only recompute after a short pause, so fast typing doesn't rebuild
+  // the ListView and restart the height animation on every keystroke.
+  Timer {
+    id: searchTimer
+    interval: 60
+    onTriggered: root.filterQuery = root.query
+  }
+
+  // Runs the raw query as a shell command (used when no app matches).
+  Process {
+    id: cmdRunner
+  }
 
   // Keep the surface mapped briefly after a key/mouse-initiated close so the
   // triggering key's press+release both land here instead of the refocused app
@@ -56,6 +71,8 @@ Scope {
     closeTimer.stop()
     root.closePending = false
     root.query = ""
+    root.filterQuery = ""
+    searchTimer.stop()
     root.selIdx = 0
     root.hoverIdx = -1
     root.open = true
@@ -67,6 +84,15 @@ Scope {
       return
     root.forceClose()
     entry.execute()
+  }
+  function runCommand() {
+    const cmd = root.query.trim()
+    if (cmd === "")
+      return
+    root.forceClose()
+    cmdRunner.running = false
+    cmdRunner.command = ["setsid", "-f", "sh", "-c", cmd]
+    cmdRunner.running = true
   }
   function esc(s) {
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -99,18 +125,30 @@ Scope {
     }
   }
 
-  readonly property var results: {
-    const q = root.query.toLowerCase()
+  // Sorted app list, computed once (not per keystroke).
+  readonly property var sortedApps: {
     const all = DesktopEntries.applications.values.filter(e => !e.noDisplay)
-    const sorted = all.slice().sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)
+    return all.slice().sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)
+  }
+
+  // Lowercased names, computed once so typing only does a cheap includes().
+  readonly property var lcNames: root.sortedApps.map(e => e.name.toLowerCase())
+
+  readonly property var results: {
+    const q = root.filterQuery.toLowerCase()
     if (q === "")
-      return sorted
-    return sorted.filter(e => e.name.toLowerCase().includes(q))
+      return root.sortedApps
+    const out = []
+    for (let i = 0; i < root.sortedApps.length; i++)
+      if (root.lcNames[i].includes(q))
+        out.push(root.sortedApps[i])
+    return out
   }
 
   onQueryChanged: {
     root.selIdx = 0
     root.hoverIdx = -1
+    searchTimer.restart()
   }
   onResultsChanged: {
     if (root.selIdx >= root.results.length)
@@ -134,9 +172,9 @@ Scope {
   PanelWindow {
     id: panel
     anchors.top: true
-    anchors.bottom: true
     anchors.left: true
     anchors.right: true
+    anchors.bottom: true
     margins.top: 30
     exclusionMode: ExclusionMode.Ignore
     color: "transparent"
@@ -154,6 +192,9 @@ Scope {
       onTriggered: { if (root.open) search.forceActiveFocus() }
     }
 
+    // Full-screen click catcher: clicking outside the card dismisses the launcher,
+    // so the window never needs to be box-sized (which forced the layer surface
+    // to resize on every search result change -> janky animation).
     MouseArea {
       anchors.fill: parent
       onClicked: root.requestClose()
@@ -235,8 +276,18 @@ Scope {
                 Keys.onEscapePressed: event => { root.requestClose(); event.accepted = true }
                 Keys.onUpPressed: { root.mouseOverList = false; root.selIdx = Math.max(0, root.selIdx - 1) }
                 Keys.onDownPressed: { root.mouseOverList = false; root.selIdx = Math.min(root.results.length - 1, root.selIdx + 1) }
-                Keys.onReturnPressed: root.launch(root.selIdx)
-                Keys.onEnterPressed: root.launch(root.selIdx)
+                Keys.onReturnPressed: {
+                  if (root.query.trim() !== "" && root.results.length === 0)
+                    root.runCommand()
+                  else
+                    root.launch(root.selIdx)
+                }
+                Keys.onEnterPressed: {
+                  if (root.query.trim() !== "" && root.results.length === 0)
+                    root.runCommand()
+                  else
+                    root.launch(root.selIdx)
+                }
                 Keys.onPressed: event => {
                   if ((event.key === Qt.Key_N || event.key === Qt.Key_P) && (event.modifiers & Qt.ControlModifier)) {
                     root.mouseOverList = false; root.selIdx = event.key === Qt.Key_N ? Math.min(root.results.length - 1, root.selIdx + 1) : Math.max(0, root.selIdx - 1)
@@ -259,7 +310,7 @@ Scope {
           Layout.fillWidth: true
           Layout.preferredHeight: root.results.length === 0 ? 0 : Math.min(root.results.length * 28, 15 * 28)
           visible: root.results.length > 0
-          Behavior on Layout.preferredHeight { enabled: root.open && !root.closePending; NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+          Behavior on Layout.preferredHeight { enabled: root.query !== "" && root.open && !root.closePending; NumberAnimation { duration: 90; easing.type: Easing.OutCubic } }
           clip: true
           interactive: true
           spacing: 0
@@ -302,6 +353,41 @@ Scope {
               onExited: { if (root.hoverIdx === index) root.hoverIdx = -1; root.mouseOverList = false }
               onClicked: root.launch(index)
             }
+          }
+        }
+
+        Rectangle {
+          Layout.fillWidth: true
+          Layout.preferredHeight: root.query.trim() !== "" && root.results.length === 0 ? 28 : 0
+          visible: height > 0
+          color: "transparent"
+          border.color: "#ffffff"
+          border.width: 1
+          RowLayout {
+            anchors.fill: parent
+            anchors.leftMargin: 6
+            anchors.rightMargin: 6
+            spacing: 8
+            Text {
+              text: "Run command"
+              color: root.matchColor
+              font.family: root.fontFamily
+              font.pointSize: 12
+              Layout.alignment: Qt.AlignVCenter
+            }
+            Text {
+              Layout.fillWidth: true
+              text: root.fit(root.query)
+              color: "#ffffff"
+              font.family: root.fontFamily
+              font.pointSize: 12
+              elide: Text.ElideRight
+            }
+          }
+          MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: root.runCommand()
           }
         }
       }

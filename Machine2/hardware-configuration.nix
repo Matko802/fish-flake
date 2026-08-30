@@ -1,7 +1,7 @@
 # Laptop hardware config.
 # Generate the real one on the laptop with:  nixos-generate-config --root /mnt/nixos
 # then copy the generated fileSystems / swapDevices here.
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, modulesPath, ... }:
 
 {
   imports =
