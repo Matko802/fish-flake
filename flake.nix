@@ -79,26 +79,6 @@
           };
 
           nixpkgs.overlays = [
-            (final: prev: {
-              xorg = prev.xorg // {
-                libX11 = final.libx11;
-                libxcb = final.libxcb;
-                libXau = final.libxau;
-                libXdmcp = final.libxdmcp;
-                libXext = final.libXext;
-                libXft = final.libxft;
-                libXinerama = final.libXinerama;
-                libXrandr = final.libXrandr;
-                libXrender = final.libXrender;
-                libXfixes = final.libXfixes;
-                libXi = final.libXi;
-                libXcursor = final.libXcursor;
-                libXcomposite = final.libXcomposite;
-                libXdamage = final.libXdamage;
-                libXtst = final.libXtst;
-                libXScrnSaver = final.libxscrnsaver;
-              };
-            })
             helium-flake.overlays.default
             sharkvisOverlay
             sharkvisGtkOverlay
