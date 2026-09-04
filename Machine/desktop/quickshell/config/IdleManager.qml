@@ -2,15 +2,39 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import Quickshell.Power
 import Quickshell.Services.Mpris
+import Quickshell.Wayland
 
+// Idle stage manager.
+//
+// On niri (now default) native Quickshell.IdleMonitor works via ext-idle-notify-v1.
+// On mango (archived) only wlr_idle_notifier_v1 exists, so we kept mmsg watch as
+// fallback. Both sources feed the same 1s clock that sequences lock →
+// screen-off → suspend. Screen power uses the bundled OutputPower plugin
+// (wlr-output-power-management-v1, no wlopm binary).
 Item {
     id: root
 
     property bool enabled: true
+
+    // ---- stage timeouts (seconds) ----
     property int lockTimeout: 300
+    property int screenOffDelay: 15
     property int suspendTimeout: 600
+
+    // ---- idle state ----
     property int _idleSeconds: 0
+    property bool screenIsOff: false
+
+    // Guards stop a stage re-firing in a loop once acted on. Each re-arms only
+    // when real activity is observed (see markActive).
+    property bool lockStageArmed: true
+    property bool screenOffStageArmed: true
+    property bool suspendStageArmed: true
+
+    // Media/GPU "don't go idle" flags. Any one being true keeps the session
+    // marked active so it never locks, blanks, or suspends.
     property bool mediaPlaying: {
         const ps = Mpris.players ? Mpris.players.values : []
         for (let i = 0; i < ps.length; i++) {
@@ -26,42 +50,40 @@ Item {
     // "Coffee" stay-awake toggle (set from ClockMenu). While true the session
     // is treated as permanently active, so it never auto-locks or suspends.
     property bool stayAwake: false
+    readonly property bool _inhibited: mediaPlaying || audioActive || gameMode || stayAwake
 
-    // Guards prevent re-firing in a loop after the action already happened.
-    // They only re-arm once we observe a genuine input event or media playback.
-    property bool lockArmed: true
-    property bool suspendArmed: true
+    function _setScreen(off) {
+        if (off === root.screenIsOff)
+            return
+        root.screenIsOff = off
+        outputPower.setAllPower(!off)
+    }
 
-    function reset() {
-        _idleSeconds = 0
-        lockArmed = true
-        suspendArmed = true
+    // Any genuine activity (input event, media/GPU playback, unlocking) resets
+    // the idle clock, re-arms every stage, and wakes a blanked screen.
+    function markActive() {
+        root._idleSeconds = 0
+        root.lockStageArmed = true
+        root.screenOffStageArmed = true
+        root.suspendStageArmed = true
+        root._setScreen(false)
     }
 
     function toggle() {
         enabled = !enabled
     }
 
-    function markActive() {
-        root._idleSeconds = 0
-        root.lockArmed = true
-        root.suspendArmed = true
+    // Native idle watcher — works on niri (ext-idle-notify-v1), no-op on mango.
+    IdleMonitor {
+        id: nativeIdle
+        enabled: root.enabled
+        timeout: 1
+        respectInhibitors: false
+        onIsIdleChanged: if (!isIdle) root.markActive()
     }
 
-    Connections {
-        target: LockState
-        function onLockedChanged() {
-            if (LockState.locked) {
-                root._idleSeconds = 0
-                root.lockArmed = true
-            }
-        }
-    }
-
-    // Real input detection: the compositor streams an event for every input
-    // device activity. Each event resets the idle clock. logind's IdleHint
-    // does NOT work on Wayland (it never learns about input), so this is the
-    // reliable source.
+    // Mango fallback: mmsg streams an event per input device. Kept for
+    // archived mango, harmless on niri (binary not found → process just exits).
     Process {
         id: activityWatch
         running: root.enabled
@@ -71,9 +93,25 @@ Item {
         }
     }
 
+    // Propagate locking through LockState and keep the locked screen awake
+    // during the grace period, then allow screen-off afterwards.
+    Connections {
+        target: LockState
+        function onLockedChanged() {
+            if (LockState.locked) {
+                root._idleSeconds = 0
+                root.lockStageArmed = true
+                root.screenOffStageArmed = true
+            } else {
+                root._setScreen(false)
+                root.screenOffStageArmed = true
+            }
+        }
+    }
+
     // Media playback should suppress idle (don't blank/lock/suspend while a
-    // video or music is playing). Detect via MPRIS (mediaPlaying) and active
-    // PipeWire audio output (audioActive, catches non-MPRIS players).
+    // video or music is playing). Poll MPRIS (mediaPlaying) and live PipeWire
+    // audio output (audioActive, catches non-MPRIS players).
     Timer {
         interval: 3000
         running: root.enabled
@@ -82,6 +120,8 @@ Item {
         onTriggered: {
             gameCheck.running = true
             audioCheck.running = true
+            if (root.mediaPlaying)
+                root.markActive()
         }
     }
 
@@ -103,34 +143,43 @@ Item {
         command: ["sh", "-c", "pw-dump 2>/dev/null | awk '/^  \\{$/ { b=\"\"; f=1; next } /^  \\},?$/ { if (f && b ~ /\"media.class\"[[:space:]]*:[[:space:]]*\"Stream\\/Output\\/Audio\"/ && b ~ /\"state\"[[:space:]]*:[[:space:]]*\"running\"/ && b !~ /\"pulse.corked\"[[:space:]]*:[[:space:]]*true/) { print \"P\"; exit } f=0; next } f { b = b \"\\n\" $0 }' | grep -q P"]
         onExited: (exitCode) => {
             root.audioActive = (exitCode === 0)
+            if (exitCode === 0)
+                root.markActive()
         }
     }
 
+    // The idle clock: advances one second per tick unless the session is
+    // inhibited. Fires each stage exactly once in order when its timeout hits.
     Timer {
+        id: idleClock
         interval: 1000
         running: root.enabled
         repeat: true
-        triggeredOnStart: false
         onTriggered: {
-            if (root.mediaPlaying || root.audioActive || root.gameMode || root.stayAwake) {
+            if (root._inhibited) {
                 root.markActive()
                 return
             }
             root._idleSeconds += 1
             const locked = LockState.locked
-            if (!locked && root.lockArmed && root._idleSeconds >= root.lockTimeout) {
+            if (!locked && root.lockStageArmed && root._idleSeconds >= root.lockTimeout) {
                 LockState.locked = true
-                root.lockArmed = false
+                root.lockStageArmed = false
             }
-            if (root.suspendArmed && root._idleSeconds >= root.suspendTimeout) {
+            if (locked && root.screenOffStageArmed && root._idleSeconds >= root.screenOffDelay) {
+                root._setScreen(true)
+                root.screenOffStageArmed = false
+            }
+            if (root.suspendStageArmed && root._idleSeconds >= root.suspendTimeout) {
                 suspendProc.running = true
-                root.suspendArmed = false
+                root.suspendStageArmed = false
             }
         }
     }
 
-    Process {
-        id: suspendProc
-        command: ["systemctl", "suspend"]
+    OutputPower {
+        id: outputPower
     }
+
+    Process { id: suspendProc; command: ["systemctl", "suspend"] }
 }

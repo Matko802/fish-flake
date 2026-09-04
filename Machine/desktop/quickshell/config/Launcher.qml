@@ -17,6 +17,57 @@ Scope {
   readonly property string fontFamily: Theme.fontFamily
   readonly property color matchColor: "#cb4b16"
 
+  // Terminal handling — works with any installed terminal.
+  // Respects $TERMINAL, then xdg-terminal-exec, then common terminals.
+  property var terminalCmd: ["kitty", "-e"]
+  property int termProbeIdx: 0
+  readonly property var termCandidates: [
+    { bin: "xdg-terminal-exec", cmd: ["xdg-terminal-exec"] },
+    { bin: "kitty", cmd: ["kitty", "-e"] },
+    { bin: "alacritty", cmd: ["alacritty", "-e"] },
+    { bin: "foot", cmd: ["foot"] },
+    { bin: "wezterm", cmd: ["wezterm", "start", "--"] },
+    { bin: "gnome-terminal", cmd: ["gnome-terminal", "--"] },
+    { bin: "konsole", cmd: ["konsole", "-e"] },
+    { bin: "xfce4-terminal", cmd: ["xfce4-terminal", "-e"] },
+    { bin: "tilix", cmd: ["tilix", "-e"] },
+    { bin: "xterm", cmd: ["xterm", "-e"] }
+  ]
+  Component.onCompleted: {
+    const envTerm = Quickshell.env("TERMINAL")
+    if (envTerm && envTerm.length > 0) {
+      const t = envTerm.trim().split(/\s+/)[0]
+      if (t === "foot") root.terminalCmd = ["foot"]
+      else if (t === "wezterm") root.terminalCmd = ["wezterm", "start", "--"]
+      else if (t === "gnome-terminal") root.terminalCmd = ["gnome-terminal", "--"]
+      else if (t === "xdg-terminal-exec") root.terminalCmd = ["xdg-terminal-exec"]
+      else root.terminalCmd = [t, "-e"]
+      return
+    }
+    termProbe.running = true
+  }
+  Process {
+    id: termProbe
+    running: false
+    onExited: exitCode => {
+      const cand = root.termCandidates[root.termProbeIdx]
+      if (exitCode === 0 && cand) {
+        root.terminalCmd = cand.cmd
+        return
+      }
+      root.termProbeIdx += 1
+      if (root.termProbeIdx < root.termCandidates.length) {
+        termProbe.command = ["sh", "-c", "command -v " + root.termCandidates[root.termProbeIdx].bin + " >/dev/null"]
+        termProbe.running = true
+      }
+    }
+    Component.onCompleted: {
+      if (root.termCandidates.length > 0) {
+        termProbe.command = ["sh", "-c", "command -v " + root.termCandidates[0].bin + " >/dev/null"]
+      }
+    }
+  }
+
   // Debounce the actual filter: typing stays responsive, but the list + resize
   // animation only recompute after a short pause, so fast typing doesn't rebuild
   // the ListView and restart the height animation on every keystroke.
@@ -83,7 +134,18 @@ Scope {
     if (!entry)
       return
     root.forceClose()
-    entry.execute()
+    if (entry.runInTerminal) {
+      if (entry.command && entry.command.length > 0) {
+        Quickshell.execDetached(root.terminalCmd.concat(entry.command))
+      } else {
+        let exec = entry.execString ?? ""
+        exec = exec.replace(/%[fFuUickdDnNvm]/g, "").trim()
+        if (exec === "") exec = entry.execString
+        Quickshell.execDetached(root.terminalCmd.concat(["sh", "-c", exec]))
+      }
+    } else {
+      entry.execute()
+    }
   }
   function runCommand() {
     const cmd = root.query.trim()
@@ -235,13 +297,16 @@ Scope {
             anchors.leftMargin: 6
             anchors.rightMargin: 6
             spacing: 6
-            Text {
-              text: "󰍉"
-              color: "#ffffff"
-              font.family: root.fontFamily
-              font.pixelSize: 14
-              verticalAlignment: Text.AlignVCenter
+            Item {
+              Layout.preferredWidth: 16
+              Layout.preferredHeight: 16
               Layout.alignment: Qt.AlignVCenter
+              QIcon {
+                anchors.centerIn: parent
+                name: "search"
+                size: 16
+                color: "#ffffff"
+              }
             }
             Item {
               Layout.fillWidth: true

@@ -1,0 +1,2 @@
+module Quickshell.Power
+plugin quickshelloutputpower

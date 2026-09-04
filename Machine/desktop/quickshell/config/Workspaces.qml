@@ -30,17 +30,114 @@ Row {
         hoverEnabled: true
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked: mouse => {
-          if (mouse.button === Qt.RightButton)
-            Quickshell.execDetached(["mmsg", "dispatch", "toggle," + modelData.index])
-          else
-            Quickshell.execDetached(["mmsg", "dispatch", "view," + modelData.index + ",0"])
+          // Niri if available, else mango mmsg
+          if (niriCheck.isNiri) {
+            if (mouse.button === Qt.RightButton)
+              Quickshell.execDetached(["niri", "msg", "action", "focus-workspace", String(modelData.index)])
+            else
+              Quickshell.execDetached(["niri", "msg", "action", "focus-workspace", String(modelData.index)])
+          } else {
+            if (mouse.button === Qt.RightButton)
+              Quickshell.execDetached(["mmsg", "dispatch", "toggle," + modelData.index])
+            else
+              Quickshell.execDetached(["mmsg", "dispatch", "view," + modelData.index + ",0"])
+          }
         }
       }
     }
   }
 
+  // Detect compositor once
   Process {
+    id: niriCheck
+    property bool isNiri: false
     running: true
+    command: ["sh", "-c", "command -v niri >/dev/null 2>&1 && niri msg -j workspaces >/dev/null 2>&1 && echo niri || echo mango"]
+    stdout: SplitParser {
+      onRead: data => {
+        niriCheck.isNiri = data.trim() === "niri"
+        if (niriCheck.isNiri) {
+          niriInit.running = true
+        } else {
+          mangoWatch.running = true
+        }
+      }
+    }
+  }
+
+  // Niri: initial fetch
+  Process {
+    id: niriInit
+    running: false
+    command: ["niri", "msg", "-j", "workspaces"]
+    stdout: SplitParser {
+      onRead: data => {
+        try {
+          const arr = JSON.parse(data)
+          updateFromNiri(arr)
+        } catch (e) {}
+      }
+    }
+  }
+
+  // Niri: event-stream instant + poll fallback
+  Process {
+    id: niriWatch
+    running: true
+    command: ["sh", "-c", "command -v niri >/dev/null 2>&1 && stdbuf -oL niri msg -j event-stream 2>/dev/null || sleep 999999"]
+    stdout: SplitParser {
+      onRead: data => {
+        // Fast path for workspace changes
+        try {
+          const j = JSON.parse(data)
+          const ws = j.WorkspacesChanged?.workspaces
+          if (ws) { updateFromNiri(ws); return }
+        } catch (e) {}
+        // Window open/close changes occupancy -> poll workspaces
+        if (data.includes("Window") && !niriPoll.running) niriPoll.running = true
+      }
+    }
+  }
+  // Fallback poll: faster for responsiveness (150ms)
+  Timer {
+    interval: 150
+    running: niriCheck.isNiri
+    repeat: true
+    triggeredOnStart: true
+    onTriggered: { if (!niriPoll.running) niriPoll.running = true }
+  }
+  Process {
+    id: niriPoll
+    running: false
+    command: ["niri", "msg", "-j", "workspaces"]
+    stdout: SplitParser {
+      onRead: data => {
+        try {
+          const arr = JSON.parse(data)
+          updateFromNiri(arr)
+        } catch (e) {}
+      }
+    }
+  }
+
+  function updateFromNiri(arr) {
+    const next = arr.filter(w => w.is_focused || w.active_window_id !== null || w.is_urgent).map(w => ({
+      index: w.idx,
+      active: !!w.is_focused,
+      occupied: w.active_window_id !== null,
+      urgent: !!w.is_urgent
+    })).sort((a, b) => a.index - b.index)
+    const json = JSON.stringify(next)
+    if (json !== repeater.lastJson) {
+      repeater.lastJson = json
+      repeater.model = next
+    }
+  }
+
+  // Mango fallback: all-tags
+  Process {
+    id: mangoWatch
+    running: false
     command: ["stdbuf", "-oL", "mmsg", "watch", "all-tags"]
     stdout: SplitParser {
       onRead: data => {

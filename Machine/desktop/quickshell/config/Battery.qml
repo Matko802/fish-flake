@@ -2,24 +2,21 @@ import QtQuick
 import Quickshell
 import Quickshell.Services.UPower
 
-Text {
-  color: "#ffffff"
-  font.pixelSize: 12
-  text: {
+// Standalone battery icon-name provider. Not currently instantiated; Bar.qml
+// renders the battery inline. Keep in sync if wired up later.
+Item {
+  readonly property string batName: {
     try {
       const dev = UPower.displayDevice
       if (!dev || !dev.ready || !dev.isLaptopBattery)
         return ""
-      const p = Math.round(dev.percentage * 100)
-      const icons = ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
-      let icon
-      if (dev.state === UPowerDeviceState.Charging)
-        icon = "󰂄"
-      else if (dev.state === UPowerDeviceState.FullyCharged)
-        icon = ""
-      else
-        icon = icons[p >= 100 ? 10 : Math.floor(p / 10)]
-      return icon + " " + p + "%"
+      const p = Math.max(0, Math.min(100, Math.round(dev.percentage * 100)))
+      const lv = Math.floor(p / 10) * 10
+      if (dev.state === UPowerDeviceState.Charging && lv < 100)
+        return "bat-" + lv + "-chg"
+      if (dev.state === UPowerDeviceState.FullyCharged)
+        return "bat-charged"
+      return "bat-" + lv
     } catch (e) {
       return ""
     }

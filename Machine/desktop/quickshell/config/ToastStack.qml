@@ -70,8 +70,10 @@ PanelWindow {
         property real remaining: 1.0
         readonly property bool ticking: lifetime > 0 && !card.hovered && !ControlState.open && !ClockState.open
 
-        onSummaryChanged: cardSlot.remaining = 1.0
-        onBodyChanged: cardSlot.remaining = 1.0
+        // Only a freshly-created card (a genuinely new notification) starts
+        // with a full lifetime. Re-binding summary/body on insert must NOT reset
+        // the countdown, otherwise new notifications "un-stop" every visible card.
+        Component.onCompleted: cardSlot.remaining = 1.0
 
         Timer {
           interval: 50

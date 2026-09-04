@@ -53,12 +53,11 @@ Item {
       Item {
         Layout.preferredWidth: 18; Layout.preferredHeight: 18
         visible: clockCenterLabel.notifCount > 0
-        Text {
+        QIcon {
           anchors.centerIn: parent
-          text: NotificationServer.dnd ? "󰂛" : "󰂚"
+          name: NotificationServer.dnd ? "notifications-disabled" : "notifications"
+          size: 18
           color: clockCenterMa.containsMouse ? Theme.bg : Theme.fg
-          font.family: Theme.fontFamily
-          font.pixelSize: 12
         }
       }
       Text {
@@ -107,25 +106,23 @@ Item {
         anchors.centerIn: parent
         spacing: Theme.spacingS
 
-        Item { Layout.preferredWidth: 18; Layout.preferredHeight: 18; Text { anchors.centerIn: parent; text: Audio.icon; color: quickSettingsMa.containsMouse ? "#000000" : "#ffffff"; font.pixelSize: 12; font.family: Theme.fontFamily } }
-        Item { Layout.preferredWidth: 18; Layout.preferredHeight: 18; Text { anchors.centerIn: parent; text: Network.online ? Network.icon : "󰤫"; color: quickSettingsMa.containsMouse ? "#000000" : (Network.online ? "#ffffff" : "#777777"); font.pixelSize: 12; font.family: Theme.fontFamily } }
+        Item { Layout.preferredWidth: 18; Layout.preferredHeight: 18; QIcon { anchors.centerIn: parent; name: Audio.icon; size: 18; color: quickSettingsMa.containsMouse ? "#000000" : "#ffffff" } }
+        Item { Layout.preferredWidth: 18; Layout.preferredHeight: 18; QIcon { anchors.centerIn: parent; name: Network.online ? Network.icon : "wifi-off"; size: 18; color: quickSettingsMa.containsMouse ? "#000000" : (Network.online ? "#ffffff" : "#777777") } }
         Item {
-          Layout.preferredWidth: 18; Layout.preferredHeight: 18; visible: batteryText.text !== ""
-          Text { id: batteryText; anchors.centerIn: parent; text: {
-              try {
-                const dev = UPower.displayDevice
-                if (!dev || !dev.ready || !dev.isLaptopBattery) return ""
-                const p = Math.round(dev.percentage * 100)
-                const icons = ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
-                let icon
-                if (dev.state === UPowerDeviceState.Charging) icon = "󰂄"
-                else if (dev.state === UPowerDeviceState.FullyCharged) icon = ""
-                else icon = icons[p >= 100 ? 10 : Math.floor(p / 10)]
-                return icon
-              } catch (e) { return "" }
-            }
-            color: quickSettingsMa.containsMouse ? "#000000" : "#ffffff"; font.pixelSize: 12; font.family: Theme.fontFamily
+          Layout.preferredWidth: 18; Layout.preferredHeight: 18
+          property string batName: {
+            try {
+              const dev = UPower.displayDevice
+              if (!dev || !dev.ready || !dev.isLaptopBattery) return ""
+              const p = Math.max(0, Math.min(100, Math.round(dev.percentage * 100)))
+              const lv = Math.floor(p / 10) * 10
+              if (dev.state === UPowerDeviceState.Charging && lv < 100) return "bat-" + lv + "-chg"
+              if (dev.state === UPowerDeviceState.FullyCharged) return "bat-charged"
+              return "bat-" + lv
+            } catch (e) { return "" }
           }
+          visible: batName !== ""
+          QIcon { anchors.centerIn: parent; name: parent.batName; size: 18; color: quickSettingsMa.containsMouse ? "#000000" : "#ffffff" }
         }
       }
 

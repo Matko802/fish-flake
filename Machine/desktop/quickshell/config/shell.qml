@@ -6,11 +6,20 @@ import QtQuick
 
 ShellRoot {
   id: root
+  // Top bar visible, hidden only in fullscreen (menus pop above on Overlay)
+  property bool barEnabled: true
+  // True when a fullscreen app covers the screen (bar hides)
   property bool fullscreenActive: false
-  readonly property bool barShown: !root.fullscreenActive
+  readonly property bool barShown: barEnabled && (!root.fullscreenActive
     || launcher.open || ControlState.open || ClockState.open
-    || emojiPicker.open || clipboard.open
-  readonly property var _idleRef: IdleManager
+    || emojiPicker.open || clipboard.open)
+
+  IpcHandler {
+    target: "bar"
+    function toggle(): void { root.barEnabled = !root.barEnabled }
+    function show(): void { root.barEnabled = true }
+    function hide(): void { root.barEnabled = false }
+  }
 
   Connections {
     target: LockState
@@ -19,43 +28,64 @@ ShellRoot {
     }
   }
 
-  // Track fullscreen immediately via watch (instant on focus switch) plus a
-  // periodic poll as a safety net, since `mmsg watch focusing-client` only
-  // fires on focus *switches* and can miss a window leaving fullscreen while
-  // staying focused (leaving fullscreenActive stuck true, hiding the bar).
-  Process {
-    id: fsProc
-    running: true
-    command: ["mmsg", "watch", "focusing-client"]
-    stdout: SplitParser {
-      onRead: data => {
-        try {
-          const w = JSON.parse(data)
-          root.fullscreenActive = !!(w && w.is_fullscreen)
-        } catch (e) {}
-      }
-    }
+  // Niri fullscreen detection: focused window covering output size → hide bar.
+  // Responsive: event-stream triggers instant poll + fast 100ms fallback.
+  function applyFs(d) {
+    if (!d || !d.layout) { root.fullscreenActive = false; return }
+    const ws = d.layout.window_size
+    const ts = d.layout.tile_size
+    const ow = Quickshell.screens.length > 0 ? Math.round(Quickshell.screens[0].width) : 1920
+    const oh = Quickshell.screens.length > 0 ? Math.round(Quickshell.screens[0].height) : 1080
+    const wFs = ws && Math.round(ws[0]) === ow && Math.round(ws[1]) === oh
+    const tFs = ts && Math.round(ts[0]) === ow && Math.round(ts[1]) === oh
+    root.fullscreenActive = wFs || tFs
   }
-
   Process {
-    id: fsPoll
+    id: niriFsPoll
     running: false
-    command: ["mmsg", "get", "focusing-client"]
-    stdout: SplitParser {
-      onRead: data => {
-        try {
-          const w = JSON.parse(data)
-          root.fullscreenActive = !!(w && w.is_fullscreen)
-        } catch (e) {}
+    command: ["/run/current-system/sw/bin/niri", "msg", "-j", "focused-window"]
+    stdout: StdioCollector {
+      onStreamFinished: {
+        try { applyFs(JSON.parse(text.trim())) } catch (e) {
+          const ow = Quickshell.screens.length > 0 ? Math.round(Quickshell.screens[0].width) : 1920
+          const oh = Quickshell.screens.length > 0 ? Math.round(Quickshell.screens[0].height) : 1080
+          const pat1 = "[" + ow + "," + oh + "]"
+          const pat2 = "[" + ow + ".0," + oh + ".0]"
+          const pat3 = "[" + ow + ", " + oh + "]"
+          const pat4 = "[" + ow + ".0, " + oh + ".0]"
+          root.fullscreenActive = text.includes(pat1) || text.includes(pat2) || text.includes(pat3) || text.includes(pat4)
+        }
       }
     }
   }
-
-  Timer {
-    interval: 500
+  // Instant trigger on any window/workspace focus change
+  Process {
+    id: niriFsWatch
     running: true
-    onTriggered: fsPoll.running = true
+    command: ["sh", "-c", "command -v niri >/dev/null 2>&1 && stdbuf -oL niri msg -j event-stream 2>/dev/null || sleep 999999"]
+    stdout: SplitParser {
+      onRead: data => {
+        if (data.includes("Window") || data.includes("Workspace") || data.includes("Overview") || data.includes("Fullscreen")) {
+          if (!niriFsPoll.running) niriFsPoll.running = true
+          // Fast path: try to apply without extra round-trip when payload contains focused window
+          try {
+            const j = JSON.parse(data)
+            const w = j.WindowOpenedOrChanged?.window || j.WindowFocusChanged || null
+            // WindowFocusChanged is just {id: N}, need full data -> fallback to poll, so ignore
+            // WindowsChanged contains array, extract focused directly
+            const wins = j.WindowsChanged?.windows
+            if (wins) {
+              const f = wins.find(x => x.is_focused)
+              if (f) applyFs(f)
+            } else if (j.WindowOpenedOrChanged?.window?.is_focused) {
+              applyFs(j.WindowOpenedOrChanged.window)
+            }
+          } catch (e) {}
+        }
+      }
+    }
   }
+  Timer { interval: 100; running: true; repeat: true; triggeredOnStart: true; onTriggered: { if (!niriFsPoll.running) niriFsPoll.running = true } }
 
   Variants {
     model: Quickshell.screens
@@ -71,16 +101,18 @@ ShellRoot {
         color: "transparent"
         exclusionMode: ExclusionMode.Auto
         WlrLayershell.namespace: "quickshell"
-        // Unmap the whole surface when hidden (fullscreen, nothing open) so it
-        // stops capturing pointer input entirely — clicks pass through to the
-        // app underneath. It remaps (with the 30px exclusive zone) whenever a
-        // menu opens or fullscreen ends.
-        visible: root.barShown
+        // Always mapped to reserve 30px strut even when bar is hidden (fullscreen).
+        // Inner bar content is hidden via `barShown`, but the exclusive zone remains
+        // so tiled windows stay inset and don't jump. True fullscreen (`fullscreen-window`)
+        // still bypasses the strut and covers the area.
+        visible: true
         WlrLayershell.layer: WlrLayer.Overlay
         Rectangle {
           anchors.fill: parent
           color: "#000000"
-          visible: true
+          opacity: root.barShown ? 1 : 0
+          visible: opacity > 0.01
+          Behavior on opacity { NumberAnimation { duration: Theme.animFast; easing.type: Theme.easingOut } }
           Bar { anchors.fill: parent }
         }
         ControlCenter {
@@ -119,10 +151,15 @@ ShellRoot {
         wallpaperPicker.toggle()
       else if (action === "launcher")
         launcher.toggle()
+      else if (action === "avatar")
+        avatarPicker.toggle()
     }
   }
   WallpaperPicker {
     id: wallpaperPicker
+  }
+  AvatarPicker {
+    id: avatarPicker
   }
   PowerMenu {}
   Lock {}

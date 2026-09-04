@@ -23,15 +23,20 @@ Scope {
   readonly property bool online: kind === "eth" || kind === "wifi"
   readonly property string icon: {
     if (kind === "eth")
-      return ""
+      return "network-wired"
     if (kind === "wifi")
       return sigIcon(sig)
-    return ""
+    return "wifi-off"
   }
 
   function sigIcon(s) {
-    const idx = Math.min(4, Math.max(0, Math.floor(s / 20) - (s >= 100 ? 1 : 0)))
-    return ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"][idx]
+    // Map signal strength 0-100 to a discrete wifi icon name using the catalog levels.
+    const names = ["wifi-none", "wifi-weak", "wifi-ok", "wifi-good", "wifi-excellent"]
+    let idx = Math.floor(s / 20)
+    idx = Math.min(4, Math.max(0, idx))
+    if (s >= 100) idx = 4
+    else if (s === 0) idx = 0
+    return names[idx]
   }
 
   // Waybar-style "{bandwidthDownBytes} B/s" formatting.

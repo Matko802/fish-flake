@@ -6,6 +6,13 @@ Singleton {
   // Font follows system `custom.fontName` via QUICKSHELL_FONT env (set in Nix).
   property string fontFamily: Quickshell.env("QUICKSHELL_FONT") || "DepartureMono Nerd Font"
 
+  // Active icon pack (see QIcon.qml). Swappable live from the settings menu.
+  property string iconTheme: "Papirus-Dark"
+  // Icon packs offered in the settings menu (must exist in the theme dirs).
+  readonly property var iconThemes: [
+    "Papirus-Dark", "Papirus", "Papirus-Light", "Adwaita", "breeze"
+  ]
+
   // Tokens — sharp monochrome, inspired by Caelestia Tokens
   readonly property int spacingXS: 4
   readonly property int spacing6: 6
@@ -18,9 +25,9 @@ Singleton {
   readonly property int paddingL: 16
   readonly property int rounding: 0
   readonly property int radius: 0
-  readonly property int animFast: 180
-  readonly property int animDefault: 260
-  readonly property int animSlow: 320
+  readonly property int animFast: 90
+  readonly property int animDefault: 140
+  readonly property int animSlow: 200
   // easing
   readonly property int easingOut: Easing.OutCubic
   readonly property int easingIn: Easing.InCubic

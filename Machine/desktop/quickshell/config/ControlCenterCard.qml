@@ -127,16 +127,17 @@ PanelWindow {
       RowLayout {
         Layout.fillWidth: true
         spacing: 10
-        Text {
-          text: Audio.icon
-          color: "#ffffff"
-          font.pixelSize: 16
-          font.family: Theme.fontFamily
+        Item {
           Layout.preferredWidth: 20
           Layout.minimumWidth: 20
           Layout.maximumWidth: 20
-          horizontalAlignment: Text.AlignHCenter
-          verticalAlignment: Text.AlignVCenter
+          Layout.preferredHeight: 20
+          QIcon {
+            anchors.centerIn: parent
+            name: Audio.icon
+            size: 20
+            color: "#ffffff"
+          }
           MouseArea {
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
@@ -163,16 +164,17 @@ PanelWindow {
       RowLayout {
         Layout.fillWidth: true
         spacing: 10
-        Text {
-          text: Audio.micIcon
-          color: "#ffffff"
-          font.pixelSize: 16
-          font.family: Theme.fontFamily
+        Item {
           Layout.preferredWidth: 20
           Layout.minimumWidth: 20
           Layout.maximumWidth: 20
-          horizontalAlignment: Text.AlignHCenter
-          verticalAlignment: Text.AlignVCenter
+          Layout.preferredHeight: 20
+          QIcon {
+            anchors.centerIn: parent
+            name: Audio.micIcon
+            size: 20
+            color: "#ffffff"
+          }
           MouseArea {
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
@@ -211,11 +213,11 @@ PanelWindow {
           implicitWidth: 18
           implicitHeight: 18
           color: appsExpMa.containsMouse || appsExpMa.pressed ? "#ffffff" : "transparent"
-          Text {
+          QIcon {
             anchors.centerIn: parent
-            text: ccCard.appsExpanded ? "" : ""
+            name: ccCard.appsExpanded ? "pan-up" : "pan-down"
+            size: 14
             color: appsExpMa.pressed ? "#000000" : (appsExpMa.containsMouse ? "#000000" : "#ffffff")
-            font.pixelSize: 12
           }
           MouseArea {
             id: appsExpMa
@@ -248,12 +250,15 @@ PanelWindow {
               font.pixelSize: 10
               elide: Text.ElideRight
             }
-            Text {
-              text: modelData.audio && modelData.audio.muted ? "󰝟" : "󰕾"
-              color: "#ffffff"
-              font.family: Theme.fontFamily
-              font.pixelSize: 12
+            Item {
               Layout.preferredWidth: 16
+              Layout.preferredHeight: 16
+              QIcon {
+                anchors.centerIn: parent
+                name: modelData.audio && modelData.audio.muted ? "audio-volume-muted" : "audio-volume-high"
+                size: 16
+                color: "#ffffff"
+              }
               MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
@@ -287,16 +292,17 @@ PanelWindow {
       RowLayout {
         Layout.fillWidth: true
         spacing: 10
-        Text {
-          text: Network.online ? Network.icon : "󰤫"
-          color: Network.online ? "#ffffff" : "#777777"
-          font.pixelSize: 15
-          font.family: Theme.fontFamily
+        Item {
           Layout.preferredWidth: 20
           Layout.minimumWidth: 20
           Layout.maximumWidth: 20
-          horizontalAlignment: Text.AlignHCenter
-          verticalAlignment: Text.AlignVCenter
+          Layout.preferredHeight: 20
+          QIcon {
+            anchors.centerIn: parent
+            name: Network.online ? Network.icon : "wifi-off"
+            size: 20
+            color: Network.online ? "#ffffff" : "#777777"
+          }
         }
         Text {
           text: Network.kind === "wifi" ? Network.ssid : (Network.kind === "eth" ? "Ethernet" : (Network.wifiEnabled ? "Wi-Fi on" : "Wi-Fi off"))
@@ -317,11 +323,11 @@ PanelWindow {
           implicitWidth: 18
           implicitHeight: 18
           color: expMa.containsMouse || expMa.pressed ? "#ffffff" : "transparent"
-          Text {
+          QIcon {
             anchors.centerIn: parent
-            text: Network.expanded ? "" : ""
+            name: Network.expanded ? "pan-up" : "pan-down"
+            size: 14
             color: expMa.pressed ? "#000000" : (expMa.containsMouse ? "#000000" : "#ffffff")
-            font.pixelSize: 12
           }
           MouseArea {
             id: expMa
@@ -367,11 +373,11 @@ PanelWindow {
             color: rescanMa.containsMouse || rescanMa.pressed ? "#ffffff" : "transparent"
             border.color: "#ffffff"
             border.width: 1
-            Text {
+            QIcon {
               anchors.centerIn: parent
-              text: ""
+              name: "refresh"
+              size: 14
               color: rescanMa.pressed ? "#000000" : "#ffffff"
-              font.pixelSize: 11
             }
             MouseArea {
               id: rescanMa
@@ -481,10 +487,15 @@ PanelWindow {
                 Layout.fillWidth: true
                 spacing: 8
                 height: 20
-                Text {
-                  text: Network.sigIcon(modelData.sig)
-                  color: modelData.active ? "#ffffff" : "#aaaaaa"
-                  font.pixelSize: 13
+                Item {
+                  Layout.preferredWidth: 13
+                  Layout.preferredHeight: 13
+                  QIcon {
+                    anchors.centerIn: parent
+                    name: Network.sigIcon(modelData.sig)
+                    size: 13
+                    color: modelData.active ? "#ffffff" : "#aaaaaa"
+                  }
                 }
                 Text {
                   text: modelData.ssid
@@ -493,10 +504,16 @@ PanelWindow {
                   elide: Text.ElideRight
                   Layout.fillWidth: true
                 }
-                Text {
-                  text: modelData.active ? "" : (modelData.secure ? "" : "")
-                  color: modelData.active ? "#ffffff" : "#777777"
-                  font.pixelSize: 10
+                Item {
+                  Layout.preferredWidth: 12
+                  Layout.preferredHeight: 12
+                  visible: modelData.active || modelData.secure
+                  QIcon {
+                    anchors.centerIn: parent
+                    name: modelData.active ? "check" : (modelData.secure ? "wifi-lock" : "")
+                    size: 12
+                    color: modelData.active ? "#ffffff" : "#777777"
+                  }
                 }
                 MouseArea {
                   anchors.fill: parent
@@ -521,11 +538,15 @@ PanelWindow {
       RowLayout {
         Layout.fillWidth: true
         spacing: 10
-        Text {
-          text: "󰌾"
-          color: "#ffffff"
-          font.pixelSize: 15
-          font.family: Theme.fontFamily
+        Item {
+          Layout.preferredWidth: 20
+          Layout.preferredHeight: 20
+          QIcon {
+            anchors.centerIn: parent
+            name: "lock"
+            size: 20
+            color: "#ffffff"
+          }
           MouseArea {
             id: lockMa
             anchors.fill: parent

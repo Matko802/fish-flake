@@ -20,9 +20,21 @@ Scope {
   readonly property int contentW: 340
 
   readonly property var appearanceItems: [
-    { name: "Wallpaper", glyph: "󰀾", action: "wallpaper" },
-    { name: "Launcher",  glyph: "󰍉", action: "launcher" }
+    { name: "Wallpaper", glyph: "wallpaper", action: "wallpaper" },
+    { name: "Launcher",  glyph: "search", action: "launcher" },
+    { name: "Profile picture", glyph: "user-circle", action: "avatar" }
   ]
+
+  // Cycle the live icon theme (wraps around); Theme.iconTheme change reloads all QIcon.
+  function cycleIconTheme(dir) {
+    const list = Theme.iconThemes
+    if (!list || list.length === 0)
+      return
+    let i = list.indexOf(Theme.iconTheme)
+    if (i < 0) i = 0
+    const nxt = (i + dir + list.length) % list.length
+    Theme.iconTheme = list[nxt]
+  }
 
   readonly property var sources: Pipewire.nodes.values
     .filter(n => n && n.audio && !n.isStream && !n.isSink)
@@ -137,37 +149,22 @@ Scope {
   readonly property int boxWidth: root.tabW + root.contentW + 18
   readonly property int boxHeight: 460
 
-  PanelWindow {
-    anchors.top: true
-    anchors.bottom: true
-    anchors.left: true
-    anchors.right: true
-    margins.top: 30
-    exclusionMode: ExclusionMode.Ignore
-    color: "transparent"
-    WlrLayershell.namespace: "quickshell-settings"
-    WlrLayershell.layer: WlrLayer.Top
-    WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+  // Noctalia-style window (not overlay) — regular toplevel, centered
+  FloatingWindow {
+    id: settingsWindow
     visible: root.open || root.closePending
+    implicitWidth: root.boxWidth
+    implicitHeight: root.boxHeight
+    color: "transparent"
+    title: "SharkShell Settings"
 
-    MouseArea {
-      anchors.fill: parent
-      onClicked: root.requestClose()
-    }
-
-    Rectangle {
+      Rectangle {
       id: card
-      anchors.verticalCenter: parent.verticalCenter
-      anchors.right: parent.right
-      anchors.rightMargin: 20
-      width: root.boxWidth
-      height: root.boxHeight
+      anchors.fill: parent
       color: "#000000"
-      border.color: "#ffffff"
+      border.color: "transparent"
       border.width: 1
       opacity: root.open ? 1 : 0
-      x: root.open ? parent.width - width - 20 : parent.width + 20
-      Behavior on x { NumberAnimation { duration: 200; easing.type: Theme.easingOut } }
       Behavior on opacity { NumberAnimation { duration: 150; easing.type: Theme.easingOut } }
 
       RowLayout {
@@ -266,10 +263,149 @@ Scope {
                       anchors.leftMargin: 14
                       anchors.rightMargin: 14
                       spacing: 12
-                      Text { text: modelData.glyph; color: root.selIdx === index ? "#000000" : "#ffffff"; font.family: root.fontFamily; font.pixelSize: 18 }
+                      Item { Layout.preferredWidth: 22; Layout.preferredHeight: 22; QIcon { anchors.centerIn: parent; name: modelData.glyph; size: 22; color: root.selIdx === index ? "#000000" : "#ffffff" } }
                       Text { text: modelData.name; color: root.selIdx === index ? "#000000" : "#ffffff"; font.family: root.fontFamily; font.pixelSize: 12 }
                     }
                   }
+                }
+              }
+
+              // Current profile picture preview + clear.
+              RowLayout {
+                visible: root.activeTab === 0
+                Layout.fillWidth: true
+                Layout.topMargin: 8
+                spacing: 10
+                Rectangle {
+                  Layout.preferredWidth: 44
+                  Layout.preferredHeight: 44
+                  radius: 22
+                  clip: true
+                  color: "#111111"
+                  border.color: "#ffffff"
+                  border.width: 1
+                  Image {
+                    anchors.fill: parent
+                    source: AvatarState.path !== "" ? "file://" + AvatarState.path.split("/").map(encodeURIComponent).join("/") : ""
+                    fillMode: Image.PreserveAspectCrop
+                    asynchronous: true
+                    cache: true
+                    smooth: true
+                  }
+                  Text {
+                    anchors.centerIn: parent
+                    visible: AvatarState.path === ""
+                    text: "?"
+                    color: "#666666"
+                    font.family: root.fontFamily
+                    font.pixelSize: 18
+                  }
+                }
+                ColumnLayout {
+                  Layout.fillWidth: true
+                  spacing: 2
+                  Text {
+                    Layout.fillWidth: true
+                    text: AvatarState.path !== "" ? AvatarState.path.split("/").pop() : "No profile picture"
+                    color: "#ffffff"
+                    font.family: root.fontFamily
+                    font.pixelSize: 11
+                    elide: Text.ElideMiddle
+                  }
+                  Text {
+                    Layout.fillWidth: true
+                    visible: AvatarState.path !== ""
+                    text: "Shown on lockscreen"
+                    color: "#777777"
+                    font.family: root.fontFamily
+                    font.pixelSize: 9
+                  }
+                }
+                Rectangle {
+                  Layout.preferredWidth: 64
+                  Layout.preferredHeight: 26
+                  radius: 3
+                  color: avatarChooseMa.containsMouse ? "#ffffff" : "transparent"
+                  border.color: "#ffffff"
+                  border.width: 1
+                  Text {
+                    anchors.centerIn: parent
+                    text: "Choose"
+                    color: avatarChooseMa.containsMouse ? "#000000" : "#ffffff"
+                    font.family: root.fontFamily
+                    font.pixelSize: 11
+                  }
+                  MouseArea {
+                    id: avatarChooseMa
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: root.choose("avatar")
+                  }
+                }
+                Rectangle {
+                  Layout.preferredWidth: 64
+                  Layout.preferredHeight: 26
+                  radius: 3
+                  color: avatarClearMa.containsMouse ? "#ffffff" : "transparent"
+                  border.color: "#ffffff"
+                  border.width: 1
+                  visible: AvatarState.path !== ""
+                  Text {
+                    anchors.centerIn: parent
+                    text: "Clear"
+                    color: avatarClearMa.containsMouse ? "#000000" : "#ffffff"
+                    font.family: root.fontFamily
+                    font.pixelSize: 11
+                  }
+                  MouseArea {
+                    id: avatarClearMa
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: AvatarState.clear()
+                  }
+                }
+              }
+
+              // Icon theme selector: cycles the live icon theme (no rebuild).
+              RowLayout {
+                visible: root.activeTab === 0
+                Layout.fillWidth: true
+                Layout.topMargin: 8
+                spacing: 8
+                Text {
+                  text: "Icon theme"
+                  color: "#8a8a8a"
+                  font.family: root.fontFamily
+                  font.pixelSize: 11
+                }
+                Item { Layout.fillWidth: true }
+                Item {
+                  Layout.preferredWidth: 22; Layout.preferredHeight: 22
+                  Rectangle {
+                    anchors.fill: parent
+                    radius: 3
+                    color: themePrevMa.containsMouse ? "#33ffffff" : "transparent"
+                    Text { anchors.centerIn: parent; text: "<"; color: "#ffffff"; font.family: root.fontFamily; font.pixelSize: 12 }
+                  }
+                  MouseArea { id: themePrevMa; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: root.cycleIconTheme(-1) }
+                }
+                Text {
+                  text: Theme.iconTheme
+                  color: "#ffffff"
+                  font.family: root.fontFamily
+                  font.pixelSize: 11
+                }
+                Item {
+                  Layout.preferredWidth: 22; Layout.preferredHeight: 22
+                  Rectangle {
+                    anchors.fill: parent
+                    radius: 3
+                    color: themeNextMa.containsMouse ? "#33ffffff" : "transparent"
+                    Text { anchors.centerIn: parent; text: ">"; color: "#ffffff"; font.family: root.fontFamily; font.pixelSize: 12 }
+                  }
+                  MouseArea { id: themeNextMa; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: root.cycleIconTheme(1) }
                 }
               }
 
@@ -316,11 +452,15 @@ Scope {
           anchors.topMargin: 7
           anchors.bottomMargin: 7
           spacing: 12
-          Text {
-            text: modelData.type === "source" ? "󰍬" : "󰕾"
-            color: root.selIdx === index ? "#000000" : "#ffffff"
-            font.family: root.fontFamily
-            font.pixelSize: 20
+          Item {
+            Layout.preferredWidth: 22
+            Layout.preferredHeight: 22
+            QIcon {
+              anchors.centerIn: parent
+              name: modelData.type === "source" ? "mic" : "audio-volume-high"
+              size: 22
+              color: root.selIdx === index ? "#000000" : "#ffffff"
+            }
           }
           ColumnLayout {
             Layout.fillWidth: true

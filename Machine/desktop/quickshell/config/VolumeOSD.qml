@@ -80,15 +80,17 @@ PanelWindow {
       anchors.margins: 12
       spacing: 12
 
-      Text {
-        text: Audio.icon
-        color: "#ffffff"
-        font.pixelSize: 18
-        font.family: Theme.fontFamily
+      Item {
         Layout.preferredWidth: 24
         Layout.minimumWidth: 24
         Layout.maximumWidth: 24
-        horizontalAlignment: Text.AlignHCenter
+        Layout.preferredHeight: 24
+        QIcon {
+          anchors.centerIn: parent
+          name: Audio.icon
+          size: 24
+          color: "#ffffff"
+        }
         MouseArea {
           anchors.fill: parent
           cursorShape: Qt.PointingHandCursor

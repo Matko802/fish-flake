@@ -3,17 +3,29 @@ import Quickshell
 
 Item {
   id: root
-  implicitWidth: label.width + 12
+  implicitWidth: row.width + 12
   implicitHeight: 20
 
-  Text {
-    id: label
+  Row {
+    id: row
     anchors.centerIn: parent
-    property int count: NotificationServer.meaningfulCount
-    text: (NotificationServer.dnd ? "󰂛" : "󰂚") + (count > 0 ? " " + count : "")
-    color: "#ffffff"
-    font.family: Theme.fontFamily
-    font.pixelSize: 12
+    spacing: 3
+    QIcon {
+      id: bell
+      anchors.verticalCenter: parent.verticalCenter
+      name: NotificationServer.dnd ? "notifications-disabled" : "notifications"
+      size: 14
+      color: "#ffffff"
+    }
+    Text {
+      id: label
+      anchors.verticalCenter: parent.verticalCenter
+      property int count: NotificationServer.meaningfulCount
+      text: count > 0 ? String(count) : ""
+      color: "#ffffff"
+      font.family: Theme.fontFamily
+      font.pixelSize: 12
+    }
   }
 
   MouseArea {

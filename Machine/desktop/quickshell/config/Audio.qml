@@ -26,9 +26,9 @@ Scope {
   readonly property bool micMuted: sourceReady ? source.audio.muted : root._micMuted
 
   readonly property string icon: muted
-    ? ""
-    : (vol <= 30 ? "" : (vol < 65 ? "" : ""))
-  readonly property string micIcon: micMuted ? "󰍭" : "󰍬"
+    ? "audio-volume-muted"
+    : (vol <= 30 ? "audio-volume-low" : (vol < 65 ? "audio-volume-medium" : "audio-volume-high"))
+  readonly property string micIcon: micMuted ? "mic-muted" : "mic"
 
   property int lastSound: 0
 

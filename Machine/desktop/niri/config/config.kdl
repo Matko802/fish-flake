@@ -1,0 +1,247 @@
+// Niri config — ported from mangowm (archived/Machine/desktop/mango/config)
+// https://github.com/YaLTeR/niri/wiki/Configuration
+
+input {
+    keyboard {
+        xkb {
+            layout "sk,us"
+            variant "qwerty"
+            options "grp:alt_shift_toggle"
+        }
+        repeat-delay 350
+        repeat-rate 35
+        numlock
+    }
+    touchpad {
+        tap
+        dwt
+        accel-profile "adaptive"
+        accel-speed 0.0
+    }
+    mouse {
+        accel-profile "adaptive"
+        accel-speed 0.0
+    }
+    warp-mouse-to-focus
+    focus-follows-mouse max-scroll-amount="0%"
+}
+
+output "DP-1" {
+    // exact mode from `niri msg outputs`
+    mode "1920x1080@165.003"
+    position x=0 y=0
+    scale 1
+    // variable-refresh-rate on-demand=true
+}
+
+layout {
+    gaps 8
+    center-focused-column "never"
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+        proportion 1.0
+    }
+    default-column-width { proportion 0.5; }
+    focus-ring { off; }
+    border {
+        width 2
+        active-color "#ffffffff"
+        inactive-color "#444444ff"
+        urgent-color "#ff0000ff"
+    }
+    struts {}
+}
+
+prefer-no-csd
+
+spawn-at-startup "quickshell"
+spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist store"
+spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist store"
+spawn-at-startup "systemctl" "--user" "restart" "hyprpolkitagent"
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+animations {
+    slowdown 1.0
+}
+
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
+}
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// Floating rules ported from mango windowrules.conf
+window-rule {
+    match app-id=r#"kcalc"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"localsend"#
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 800; }
+}
+window-rule {
+    match app-id=r#"ytdownloader"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"com\.gabm\.satty"#
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 800; }
+}
+window-rule {
+    match app-id=r#"steam"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"nm-connection-editor"#
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 800; }
+}
+window-rule {
+    match app-id=r#"org\.pulseaudio\.pavucontrol"#
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 800; }
+}
+window-rule {
+    match app-id=r#"mpv"#
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 800; }
+}
+window-rule {
+    match app-id=r#"btop"#
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 800; }
+}
+window-rule {
+    match app-id=r#"kitty"# title=r#"btop"#
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 800; }
+}
+
+binds {
+    Mod+Return { spawn "kitty"; }
+    Mod+C { spawn "zeditor"; }
+    Mod+Q { close-window; }
+    Mod+L { spawn "quickshell" "ipc" "call" "lock" "lock"; }
+    Mod+Escape { spawn "kitty" "-e" "btop"; }
+    Mod+M { spawn "quickshell" "ipc" "call" "power" "toggle"; }
+    Mod+E { spawn "thunar"; }
+    Mod+B { spawn "helium"; }
+    Mod+Shift+B { spawn "quickshell" "ipc" "call" "bar" "toggle"; }
+    Mod+T { toggle-window-floating; }
+    Mod+Period { spawn "quickshell" "ipc" "call" "emoji" "toggle"; }
+    Mod+Space { spawn "quickshell" "ipc" "call" "launcher" "toggle"; }
+    Mod+Alt+Space { spawn "quickshell" "ipc" "call" "settings" "toggle"; }
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+    Mod+Alt+F { toggle-windowed-fullscreen; }
+    Mod+W { toggle-overview; }
+    Mod+V { spawn "quickshell" "ipc" "call" "clipboard" "toggle"; }
+    Mod+P { spawn "hyprpicker" "--autocopy"; }
+
+    Print { spawn "sh" "-c" "grim - | satty -f - --output-filename '/home/matko/Obrázky/Screenshots/screenshot-%Y-%m-%d_%H-%M-%S.png'"; }
+    Shift+Print { spawn "sh" "-c" "grim -g \"$(slurp)\" - | satty -f - --output-filename '/home/matko/Obrázky/Screenshots/screenshot-%Y-%m-%d_%H-%M-%S.png'"; }
+
+    XF86PowerOff { spawn "quickshell" "ipc" "call" "power" "toggle"; }
+    XF86Calculator { spawn "kcalc"; }
+
+    Mod+Left { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Up { focus-window-up; }
+    Mod+Down { focus-window-down; }
+    Mod+Tab { focus-window-down; }
+    Mod+Shift+Tab { focus-window-up; }
+    Mod+Shift+Left { move-column-left; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+Up { move-window-up; }
+    Mod+Shift+Down { move-window-down; }
+    Mod+Alt+Right { set-column-width "+10%"; }
+    Mod+Alt+Left { set-column-width "-10%"; }
+    Mod+Alt+Up { set-window-height "-10%"; }
+    Mod+Alt+Down { set-window-height "+10%"; }
+
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+0 { focus-workspace 10; }
+
+    Mod+plus { focus-workspace 1; }
+    Mod+lcaron { focus-workspace 2; }
+    Mod+scaron { focus-workspace 3; }
+    Mod+ccaron { focus-workspace 4; }
+    Mod+tcaron { focus-workspace 5; }
+    Mod+zcaron { focus-workspace 6; }
+    Mod+yacute { focus-workspace 7; }
+    Mod+aacute { focus-workspace 8; }
+    Mod+iacute { focus-workspace 9; }
+    Mod+eacute { focus-workspace 10; }
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+    Mod+Shift+0 { move-column-to-workspace 10; }
+    Mod+Shift+plus { move-column-to-workspace 1; }
+    Mod+Shift+lcaron { move-column-to-workspace 2; }
+    Mod+Shift+scaron { move-column-to-workspace 3; }
+    Mod+Shift+ccaron { move-column-to-workspace 4; }
+    Mod+Shift+tcaron { move-column-to-workspace 5; }
+    Mod+Shift+zcaron { move-column-to-workspace 6; }
+    Mod+Shift+yacute { move-column-to-workspace 7; }
+    Mod+Shift+aacute { move-column-to-workspace 8; }
+    Mod+Shift+iacute { move-column-to-workspace 9; }
+    Mod+Shift+eacute { move-column-to-workspace 10; }
+
+    Mod+Ctrl+Left { focus-workspace-up; }
+    Mod+Ctrl+Right { focus-workspace-down; }
+    Mod+Page_Down { focus-workspace-down; }
+    Mod+Page_Up { focus-workspace-up; }
+    Mod+U { focus-workspace-down; }
+    Mod+I { focus-workspace-up; }
+
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "sh" "-c" "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "sh" "-c" "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"; }
+    XF86AudioMute allow-when-locked=true { spawn "sh" "-c" "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioPlay allow-when-locked=true { spawn "playerctl" "play-pause"; }
+
+    Mod+Shift+E { quit; }
+    Ctrl+Alt+Delete { quit; }
+    Mod+Shift+P { power-off-monitors; }
+
+    Mod+R { switch-preset-column-width; }
+    Mod+Shift+R { switch-preset-column-width-back; }
+    Mod+Ctrl+R { reset-window-height; }
+    Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+    Mod+BracketLeft { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+    Mod+Comma { consume-window-into-column; }
+    Mod+Shift+Period { expel-window-from-column; }
+    Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp cooldown-ms=150 { focus-workspace-up; }
+    Mod+WheelScrollRight { focus-column-right; }
+    Mod+WheelScrollLeft { focus-column-left; }
+}

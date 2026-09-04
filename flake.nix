@@ -19,28 +19,20 @@
       url = "github:Matko802/sharkvis";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sharkvis-gtk = {
-      url = "git+file:///mnt/ssd/My-Files/Projects/sharkvis-gtk";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    mango = {
-      url = "github:mangowm/mango";
+    sharkfetch = {
+      url = "github:Matko802/sharkfetch";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mocktail = {
       url = "git+https://github.com/komaruworld/mocktail?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sharkmanager = {
-      url = "path:/mnt/ssd/My-Files/Projects/sharkmanager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     shark-scrp = {
-      url = "path:/mnt/ssd/My-Files/Projects/shark-scrp";
+      url = "github:Matko802/shark-scrp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    opencode-desktop = {
-      url = "path:/mnt/ssd/My-Files/Projects/opencode-desktop-rs";
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -52,24 +44,20 @@
       nixpkgs,
       helium-flake,
       sharkvis,
-      sharkvis-gtk,
-      mango,
       mocktail,
-      sharkmanager,
       shark-scrp,
-      opencode-desktop,
+      sharkfetch,
       ...
     }@inputs:
     let
       sharkvisOverlay = sharkvis.overlays.default;
-      sharkvisGtkOverlay = sharkvis-gtk.overlays.default;
-      sharkmanagerOverlay = sharkmanager.overlays.default;
       sharkScrpOverlay = shark-scrp.overlays.default;
-      opencodeDesktopOverlay = opencode-desktop.overlays.default;
+      sharkfetchOverlay = sharkfetch.overlays.default;
+      zenBrowserOverlay = inputs.zen-browser.overlays.default or (final: prev: {});
 
       sharedModules = [
 
-        ({ pkgs, ... }: {
+        ({ ... }: {
           nix.settings = {
             max-jobs = "auto";
             cores = 0;
@@ -81,17 +69,13 @@
           nixpkgs.overlays = [
             helium-flake.overlays.default
             sharkvisOverlay
-            sharkvisGtkOverlay
-            mango.overlays.default
-            sharkmanagerOverlay
             sharkScrpOverlay
-            opencodeDesktopOverlay
+            sharkfetchOverlay
+            zenBrowserOverlay
           ];
 
           environment.systemPackages = [
-            pkgs.helium
             inputs.mocktail.packages.x86_64-linux.default
-            pkgs.shark-scrp
           ];
         })
       ];
@@ -108,10 +92,9 @@
       nixosConfigurations.machine1 = mkHost ./Machine/machine-config.nix;
       nixosConfigurations.machine2 = mkHost ./Machine2/machine-config.nix;
       packages.x86_64-linux.sharkvis = inputs.sharkvis.packages.x86_64-linux.default;
-      packages.x86_64-linux.sharkvis-gtk = inputs.sharkvis-gtk.packages.x86_64-linux.default;
       packages.x86_64-linux.mocktail = inputs.mocktail.packages.x86_64-linux.default;
-      packages.x86_64-linux.sharkmanager = inputs.sharkmanager.packages.x86_64-linux.default;
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
-      packages.x86_64-linux.opencode-desktop = inputs.opencode-desktop.packages.x86_64-linux.default;
+      packages.x86_64-linux.sharkfetch = inputs.sharkfetch.packages.x86_64-linux.default;
+      packages.x86_64-linux.zen-browser = inputs.zen-browser.packages.x86_64-linux.default or inputs.zen-browser.packages.x86_64-linux.zen-browser or inputs.zen-browser.packages.x86_64-linux.zen-browser-bin;
     };
 }

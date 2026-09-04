@@ -237,12 +237,11 @@ PanelWindow {
           Layout.preferredHeight: 28
           color: dndMa.containsMouse ? Theme.fg : "transparent"
           radius: Theme.rounding
-          Text {
+          QIcon {
             anchors.centerIn: parent
-            text: NotificationServer.dnd ? "󰂛" : "󰂚"
+            name: NotificationServer.dnd ? "notifications-disabled" : "notifications"
+            size: 16
             color: dndMa.containsMouse ? Theme.bg : Theme.fg
-            font.family: Theme.fontFamily
-            font.pixelSize: 14
           }
           MouseArea {
             id: dndMa
@@ -257,12 +256,11 @@ PanelWindow {
           Layout.preferredHeight: 28
           color: coffeeMa.containsMouse ? Theme.fg : "transparent"
           radius: Theme.rounding
-          Text {
+          QIcon {
             anchors.centerIn: parent
-            text: IdleManager.stayAwake ? "󰾪" : "󰅶"
+            name: IdleManager.stayAwake ? "coffee" : "coffee-off"
+            size: 16
             color: coffeeMa.containsMouse ? Theme.bg : Theme.fg
-            font.family: Theme.fontFamily
-            font.pixelSize: 14
           }
           MouseArea {
             id: coffeeMa
@@ -306,17 +304,21 @@ PanelWindow {
                 RowLayout {
                   Layout.fillWidth: true
                   spacing: 0
-                  Text {
-                    text: ""
-                    color: Theme.muted
-                    font.family: Theme.fontFamily
-                    font.pixelSize: 16
+                  Rectangle {
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: 32
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    color: prevMa.containsMouse ? Theme.fg : "transparent"
+                    radius: Theme.rounding
+                    QIcon {
+                      anchors.centerIn: parent
+                      name: "chevron-left"
+                      size: 16
+                      color: prevMa.containsMouse ? Theme.bg : Theme.fg
+                    }
                     MouseArea {
+                      id: prevMa
                       anchors.fill: parent
+                      hoverEnabled: true
                       cursorShape: Qt.PointingHandCursor
                       onClicked: {
                         const d = root.calDate
@@ -338,17 +340,21 @@ PanelWindow {
                       onClicked: root.calDate = new Date()
                     }
                   }
-                  Text {
-                    text: ""
-                    color: Theme.muted
-                    font.family: Theme.fontFamily
-                    font.pixelSize: 16
+                  Rectangle {
                     Layout.preferredWidth: 32
                     Layout.preferredHeight: 32
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    color: nextMa.containsMouse ? Theme.fg : "transparent"
+                    radius: Theme.rounding
+                    QIcon {
+                      anchors.centerIn: parent
+                      name: "chevron-right"
+                      size: 16
+                      color: nextMa.containsMouse ? Theme.bg : Theme.fg
+                    }
                     MouseArea {
+                      id: nextMa
                       anchors.fill: parent
+                      hoverEnabled: true
                       cursorShape: Qt.PointingHandCursor
                       onClicked: {
                         const d = root.calDate
@@ -565,10 +571,10 @@ PanelWindow {
 
               Repeater {
                 model: [
-                  { label: "CPU",  icon: "\uF4BC", idx: 0 },
-                  { label: "MEM",  icon: "\uEFC5", idx: 1 },
-                  { label: "DISK", icon: "\uF0A0", idx: 2 },
-                  { label: "GPU",  icon: "\uF2DB", idx: 3 }
+                  { label: "CPU",  icon: "brand-speedtest", idx: 0 },
+                  { label: "MEM",  icon: "cpu", idx: 1 },
+                  { label: "DISK", icon: "database", idx: 2 },
+                  { label: "GPU",  icon: "device-desktop", idx: 3 }
                 ]
                 delegate: Rectangle {
                   required property var modelData
@@ -585,7 +591,8 @@ PanelWindow {
                     RowLayout {
                       Layout.fillWidth: true
                       spacing: 0
-                      Text { text: modelData.icon + "  " + modelData.label; color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: 10 }
+                      Item { Layout.preferredWidth: 14; Layout.preferredHeight: 14; QIcon { anchors.centerIn: parent; name: modelData.icon; size: 14; color: Theme.fg } }
+                      Text { text: "  " + modelData.label; color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: 10 }
                       Item { Layout.fillWidth: true; height: 1 }
                       Text {
                         text: { const v = root.sysVals[modelData.idx]; return v !== undefined && v !== "--" ? v + "%" : "--" }
@@ -606,7 +613,7 @@ PanelWindow {
                           ctx.beginPath(); ctx.strokeStyle = Theme.border; ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke()
                           if (pct > 0) { ctx.beginPath(); ctx.strokeStyle = Theme.fg; ctx.arc(cx, cy, r, -Math.PI/2, -Math.PI/2 + Math.PI*2*pct); ctx.stroke() }
                         }
-                        Text { anchors.centerIn: parent; text: modelData.icon; color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: 18 }
+                        QIcon { anchors.centerIn: parent; name: modelData.icon; size: 18; color: Theme.fg }
                       }
                     }
 
@@ -779,12 +786,11 @@ PanelWindow {
                             Item {
                               Layout.preferredWidth: 44
                               Layout.fillHeight: true
-                              Text {
+                              QIcon {
                                 anchors.centerIn: parent
-                                text: "⏮"
+                                name: "player-skip-back"
+                                size: 18
                                 color: Theme.fg
-                                font.family: Theme.fontFamily
-                                font.pixelSize: 20
                               }
                               MouseArea {
                                 anchors.fill: parent
@@ -797,12 +803,11 @@ PanelWindow {
                             Item {
                               Layout.preferredWidth: 56
                               Layout.fillHeight: true
-                              Text {
+                              QIcon {
                                 anchors.centerIn: parent
-                                text: mediaSingle.cur && mediaSingle.cur.isPlaying ? "⏸" : "▶"
+                                name: mediaSingle.cur && mediaSingle.cur.isPlaying ? "player-pause" : "player-play"
+                                size: 22
                                 color: Theme.fg
-                                font.family: Theme.fontFamily
-                                font.pixelSize: 26
                               }
                               MouseArea {
                                 anchors.fill: parent
@@ -815,12 +820,11 @@ PanelWindow {
                             Item {
                               Layout.preferredWidth: 44
                               Layout.fillHeight: true
-                              Text {
+                              QIcon {
                                 anchors.centerIn: parent
-                                text: "⏭"
+                                name: "player-skip-forward"
+                                size: 18
                                 color: Theme.fg
-                                font.family: Theme.fontFamily
-                                font.pixelSize: 20
                               }
                               MouseArea {
                                 anchors.fill: parent

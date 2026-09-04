@@ -273,7 +273,7 @@ Scope {
     exclusionMode: ExclusionMode.Ignore
     color: "transparent"
     WlrLayershell.namespace: "quickshell-clipboard"
-    WlrLayershell.layer: WlrLayer.Top
+    WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
     visible: root.open || root.closePending
 
@@ -326,13 +326,16 @@ Scope {
             anchors.leftMargin: 6
             anchors.rightMargin: 6
             spacing: 6
-            Text {
-              text: "󰍉"
-              color: "#ffffff"
-              font.family: root.fontFamily
-              font.pixelSize: 14
-              verticalAlignment: Text.AlignVCenter
+            Item {
+              Layout.preferredWidth: 16
+              Layout.preferredHeight: 16
               Layout.alignment: Qt.AlignVCenter
+              QIcon {
+                anchors.centerIn: parent
+                name: "search"
+                size: 16
+                color: "#ffffff"
+              }
             }
             Item {
               Layout.fillWidth: true

@@ -315,16 +315,16 @@ Scope {
             Rectangle {
               anchors.fill: parent
               color: modelData.filePath === root.selectedImage ? "#59ffffff" : "transparent"
-              border.width: root.selIdx === index ? 2 : 0
-              border.color: "#ffffff"
+              border.width: (root.selIdx === index || thumbMa.containsMouse) ? 2 : 0
+              border.color: root.selIdx === index ? "#ffffff" : "#888888"
             }
 
             MouseArea {
+              id: thumbMa
               anchors.fill: parent
               hoverEnabled: true
               cursorShape: Qt.PointingHandCursor
-              onEntered: root.selIdx = index
-              onClicked: root.apply(index)
+              onClicked: { root.selIdx = index; root.apply(index) }
             }
           }
 

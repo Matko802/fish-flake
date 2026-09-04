@@ -17,7 +17,7 @@
     ./zed/zed-config.nix
     ./fetch/fetch-config.nix
     ./thunar/thunar-config.nix
-    ./desktop/mango/mango-config.nix
+    ./desktop/niri/niri-config.nix
     ./desktop/cliphist/cliphist-config.nix
     ./desktop/hyprpicker/hyprpicker-config.nix
     ./desktop/libnotify/libnotify-config.nix
@@ -72,6 +72,8 @@
   services.udisks2.enable = true;
   services.upower.enable = true;
   services.gnome.gnome-keyring.enable = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
+  security.pam.services.login.enableGnomeKeyring = true;
   programs.dconf.enable = true;
 
   hardware.enableRedistributableFirmware = true;
@@ -164,21 +166,22 @@
     shell = pkgs.fish;
     extraGroups = [ "networkmanager" "wheel" "i2c" ];
     packages = with pkgs; [
+      opencode-desktop
       zapzap
       prismlauncher
       librewolf
+      helium
       kdePackages.kate
       git
       protonplus
       mpv
-      opencode-desktop
       yt-dlp
       fuse
       cava
       cavasik
       sharkvis
-      sharkvis-gtk
-      sharkmanager
+      shark-scrp
+      sharkfetch
       pear-desktop
       equibop
       godot
@@ -202,6 +205,8 @@
       onlyoffice-desktopeditors
       itch
       zed-editor
+      element-desktop
+      inputs.zen-browser.packages.x86_64-linux.default
     ];
   };
 
@@ -211,7 +216,6 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-    fluffychat
     (discord.override {
       withEquicord = true;
       withOpenASAR = true;
