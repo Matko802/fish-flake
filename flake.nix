@@ -53,7 +53,6 @@
       sharkvisOverlay = sharkvis.overlays.default;
       sharkScrpOverlay = shark-scrp.overlays.default;
       sharkfetchOverlay = sharkfetch.overlays.default;
-      zenBrowserOverlay = inputs.zen-browser.overlays.default or (final: prev: {});
 
       sharedModules = [
 
@@ -71,7 +70,6 @@
             sharkvisOverlay
             sharkScrpOverlay
             sharkfetchOverlay
-            zenBrowserOverlay
           ];
 
           environment.systemPackages = [
@@ -95,6 +93,6 @@
       packages.x86_64-linux.mocktail = inputs.mocktail.packages.x86_64-linux.default;
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
       packages.x86_64-linux.sharkfetch = inputs.sharkfetch.packages.x86_64-linux.default;
-      packages.x86_64-linux.zen-browser = inputs.zen-browser.packages.x86_64-linux.default or inputs.zen-browser.packages.x86_64-linux.zen-browser or inputs.zen-browser.packages.x86_64-linux.zen-browser-bin;
+      packages.x86_64-linux.zen-browser = inputs.zen-browser.packages.x86_64-linux.default;
     };
 }

@@ -140,7 +140,7 @@ binds {
     Mod+Escape { spawn "kitty" "-e" "btop"; }
     Mod+M { spawn "quickshell" "ipc" "call" "power" "toggle"; }
     Mod+E { spawn "thunar"; }
-    Mod+B { spawn "helium"; }
+    Mod+B { spawn "zen-beta"; }
     Mod+Shift+B { spawn "quickshell" "ipc" "call" "bar" "toggle"; }
     Mod+T { toggle-window-floating; }
     Mod+Period { spawn "quickshell" "ipc" "call" "emoji" "toggle"; }

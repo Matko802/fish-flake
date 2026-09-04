@@ -101,11 +101,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788201755,
-        "narHash": "sha256-K+1viQilGb7hCsp/HxmLECS4Jjihw7sHGh+AXCcuxqo=",
+        "lastModified": 1788523865,
+        "narHash": "sha256-bnQOXcosVroPM2/W1AGlyZx/X+/ibk9qBnHaJO48e9o=",
         "ref": "main",
-        "rev": "035c7fe1d4d49547e978d34603db044ca34ecba5",
-        "revCount": 88,
+        "rev": "3284cf9fc1e8af2577700983e0cc3379ca8a0f02",
+        "revCount": 89,
         "type": "git",
         "url": "https://github.com/komaruworld/mocktail"
       },
@@ -244,11 +244,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788495182,
-        "narHash": "sha256-zN89JVJ52KYwQTj60+uSZgwLC//tRNB1llJPSc43jfo=",
+        "lastModified": 1788538986,
+        "narHash": "sha256-wN53AFUGa4Kzpg4hUtuE3wgN4/XdoJg3/MZjA24uw7o=",
         "owner": "Matko802",
         "repo": "sharkfetch",
-        "rev": "a295b9dfde58c0f1679ff6d409285725de9e7040",
+        "rev": "e490aa30ec155410ebbbd8e9bb703f1b1752eea2",
         "type": "github"
       },
       "original": {
@@ -264,11 +264,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788452801,
-        "narHash": "sha256-O/sPyk6kIdN9yDSsUBbH9PrzsEtkyfHOFnv73RwrRn8=",
+        "lastModified": 1788534632,
+        "narHash": "sha256-nERLpRlFJcsfSIjL7zY+bFSZ1tzcvfRfILWvqi5S4q0=",
         "owner": "Matko802",
         "repo": "sharkvis",
-        "rev": "3a4f248951fb96467aa3fac9da359b3c98288de5",
+        "rev": "eace745861f3d0bc57405f0d6f718ec2eb03559b",
         "type": "github"
       },
       "original": {

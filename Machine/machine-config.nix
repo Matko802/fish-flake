@@ -169,7 +169,6 @@
       opencode-desktop
       zapzap
       prismlauncher
-      librewolf
       helium
       kdePackages.kate
       git
