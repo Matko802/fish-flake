@@ -2,6 +2,10 @@
 { pkgs, inputs, ... }:
 
 {
+  environment.variables = {
+    RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
+  };
+
   imports = [
     ./hardware-configuration.nix
     ./disk/disk-config.nix
@@ -16,7 +20,7 @@
     ./helix/helix-config.nix
     ./zed/zed-config.nix
     ./fetch/fetch-config.nix
-    ./thunar/thunar-config.nix
+    ./nautilus/nautilus-config.nix
     ./desktop/niri/niri-config.nix
     ./desktop/cliphist/cliphist-config.nix
     ./desktop/hyprpicker/hyprpicker-config.nix
@@ -24,6 +28,7 @@
     ./desktop/quickshell/quickshell-config.nix
     ./gtk/gtk-config.nix
     ./qtengine/qtengine-config.nix
+    ./artixy/artixy-config.nix
     ./virtualization/kvm/kvm-config.nix
     ./virtualization/virtualbox/virtualbox-config.nix
     ./flatpak/flatpak-config.nix
@@ -71,6 +76,14 @@
   programs.kdeconnect.enable = true;
   services.udisks2.enable = true;
   services.upower.enable = true;
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+  };
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+  };
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
   security.pam.services.login.enableGnomeKeyring = true;
@@ -97,6 +110,11 @@
   programs.fish.enable = true;
 
   networking.networkmanager.enable = true;
+  systemd.services.NetworkManager-wait-online.enable = false;
+  services.journald.settings.Journal = {
+    SystemMaxUse = "1G";
+    SystemMaxFileSize = "100M";
+  };
 
   # Timezone
   time.timeZone = "Europe/Bratislava";
@@ -120,7 +138,7 @@
   # You can disable this if you're only using the Wayland session.
     services.xserver.enable = false;
 
-  services.displayManager.regreet.enable = true;
+  services.displayManager.ly.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -180,7 +198,9 @@
       cavasik
       sharkvis
       shark-scrp
-      sharkfetch
+      jefetch
+      sharkmanager
+      artixy
       pear-desktop
       equibop
       godot
@@ -203,9 +223,9 @@
       fetch
       onlyoffice-desktopeditors
       itch
-      zed-editor
       element-desktop
-      inputs.zen-browser.packages.x86_64-linux.default
+      librewolf
+      seahorse
     ];
   };
 
@@ -223,6 +243,7 @@
     usbutils
     p7zip
     cargo
+    rustup
     rustc
     gcc
     appimage-run

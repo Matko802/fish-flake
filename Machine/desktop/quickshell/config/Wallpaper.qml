@@ -2,8 +2,6 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 
-// Background-layer window that renders the current wallpaper with a
-// crossfade whenever WallpaperState.path changes.
 PanelWindow {
   id: window
 
@@ -40,19 +38,17 @@ PanelWindow {
       imgB.opacity = img === imgB ? 1 : 0
     }
 
-    // A failed load must never take down the currently visible wallpaper:
-    // clear the pending request and retry, in case the file was momentarily
-    // unavailable (late-mounted drive, still being copied, etc).
     function checkError(img) {
       if (bg.pending !== img)
         return
       bg.pending = null
-      if (bg.retryCount < bg.maxRetries) {
-        bg.retryCount += 1
-        retryTimer.img = img
-        retryTimer.url = img.source
-        retryTimer.restart()
-      }
+      if (bg.retryCount >= bg.maxRetries)
+        return
+      bg.retryCount += 1
+      retryTimer.img = img
+      retryTimer.url = String(img.source)
+      retryTimer.interval = Math.min(15000, 1500 * Math.pow(2, bg.retryCount - 1))
+      retryTimer.restart()
     }
 
     function onImageStatus(img) {
@@ -70,15 +66,15 @@ PanelWindow {
       property string url: ""
 
       onTriggered: {
-        // A newer pick superseded this request while it was failing.
         if (bg.pending !== null)
           return
-        if (retryTimer.img !== img || img.source !== url)
+        const target = retryTimer.img
+        if (!target || String(target.source) !== retryTimer.url)
           return
-        img.source = ""
-        img.source = url
-        bg.pending = img
-        bg.checkReady(img)
+        target.source = ""
+        target.source = retryTimer.url
+        bg.pending = target
+        bg.checkReady(target)
       }
     }
 
@@ -103,8 +99,6 @@ PanelWindow {
 
     Component.onCompleted: bg.show(WallpaperState.path)
 
-    // Decode at a sane cap so 6K/8K wallpapers don't take seconds to load
-    // (long black gap during the initial crossfade).
     Image {
       id: imgA
       anchors.fill: parent

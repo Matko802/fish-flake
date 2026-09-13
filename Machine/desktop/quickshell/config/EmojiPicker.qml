@@ -16,8 +16,6 @@ Scope {
   readonly property int cellSize: 44
   readonly property int visibleRows: 5
 
-  // Keep the surface mapped briefly after a key/mouse-initiated close so the
-  // triggering key's press+release both land here instead of the refocused app.
   property bool closePending: false
 
   function requestClose() {
@@ -89,8 +87,6 @@ Scope {
     }
   }
 
-  // bemoji-style database, one entry per line:
-  // "<emoji> <main name>\t<search keywords>"
   readonly property string dataPath: {
     const u = Qt.resolvedUrl("emojis.txt").toString()
     return u.startsWith("file://") ? decodeURIComponent(u.slice(7)) : u
@@ -134,10 +130,8 @@ Scope {
     return j === q.length
   }
 
-  // Lowercased search strings, computed once when rows loads (not per keystroke).
   readonly property var lcSearch: root.rows.map((_, i) => root.searchText(i).toLowerCase())
 
-  // Resolved indices into allEmojis/rows.
   readonly property var results: {
     const q = query.toLowerCase().trim()
     const idxs = []
@@ -158,8 +152,16 @@ Scope {
       root.hoverIdx = -1
   }
   onSelIdxChanged: {
-    if (grid)
-      grid.positionViewAtIndex(root.selIdx, GridView.Contain)
+    const g = grid
+    if (!g) return
+    const visH = g.height
+    if (visH <= 0) return
+    const top = Math.floor(root.selIdx / root.cols) * g.cellHeight
+    let y = g.contentY
+    if (top < y) y = top
+    else if (top + g.cellHeight > y + visH) y = top + g.cellHeight - visH
+    const maxY = Math.max(0, g.contentHeight - visH)
+    g.contentY = Math.max(0, Math.min(maxY, y))
   }
 
   PanelWindow {
@@ -268,12 +270,10 @@ Scope {
                 Keys.onEscapePressed: event => { root.requestClose(); event.accepted = true }
                 Keys.onReturnPressed: root.pick(root.selIdx)
                 Keys.onEnterPressed: root.pick(root.selIdx)
-                Keys.onDownPressed: event => {
-                  grid.forceActiveFocus()
-                  root.hoverIdx = -1
-                  root.selIdx = Math.min(root.results.length - 1, root.cols - 1)
-                  event.accepted = true
-                }
+                Keys.onUpPressed: root.selIdx = Math.max(0, root.selIdx - root.cols)
+                Keys.onDownPressed: root.selIdx = Math.min(root.results.length - 1, root.selIdx + root.cols)
+                Keys.onLeftPressed: root.selIdx = Math.max(0, root.selIdx - 1)
+                Keys.onRightPressed: root.selIdx = Math.min(root.results.length - 1, root.selIdx + 1)
               }
             }
           }
@@ -282,37 +282,16 @@ Scope {
         GridView {
           id: grid
           Layout.fillWidth: true
-          Layout.preferredHeight: Math.min(Math.ceil(root.results.length / root.cols), root.visibleRows) * root.cellSize
-          Behavior on Layout.preferredHeight { enabled: root.open && !root.closePending; NumberAnimation { duration: 90; easing.type: Easing.OutCubic } }
+          Layout.preferredHeight: root.results.length === 0 ? 0 : Math.min(Math.ceil(root.results.length / root.cols), root.visibleRows) * root.cellSize
+          visible: root.results.length > 0
+          Behavior on Layout.preferredHeight { enabled: root.query !== "" && root.open && !root.closePending; NumberAnimation { duration: 90; easing.type: Theme.easingOut } }
           clip: true
           interactive: true
+          flickableDirection: Flickable.VerticalFlick
           cellWidth: root.cellSize
           cellHeight: root.cellSize
           model: root.results
-
-          Keys.onEscapePressed: event => { root.requestClose(); event.accepted = true }
-          Keys.onReturnPressed: root.pick(root.selIdx)
-          Keys.onEnterPressed: root.pick(root.selIdx)
-          Keys.onPressed: event => {
-            if (event.key === Qt.Key_Up && root.selIdx < root.cols) {
-              search.forceActiveFocus()
-              root.hoverIdx = -1
-              event.accepted = true
-              return
-            }
-            const step = event.key === Qt.Key_Left ? -1
-                : event.key === Qt.Key_Right ? 1
-                : event.key === Qt.Key_Up ? -root.cols
-                : event.key === Qt.Key_Down ? root.cols
-                : event.key === Qt.Key_PageUp ? -root.cols * root.visibleRows
-                : event.key === Qt.Key_PageDown ? root.cols * root.visibleRows
-                : 0
-            if (step !== 0) {
-              root.hoverIdx = -1
-              root.selIdx = Math.max(0, Math.min(root.results.length - 1, root.selIdx + step))
-              event.accepted = true
-            }
-          }
+          highlightMoveDuration: 0
 
           delegate: Rectangle {
             required property var modelData
@@ -325,7 +304,7 @@ Scope {
 
             Text {
               anchors.centerIn: parent
-              text: root.allEmojis[parent.modelData]
+              text: root.allEmojis[parent.modelData] ?? ""
               font.pixelSize: 22
             }
 
@@ -333,7 +312,7 @@ Scope {
               anchors.fill: parent
               hoverEnabled: true
               cursorShape: Qt.PointingHandCursor
-              onEntered: { root.hoverIdx = index; root.selIdx = index }
+              onEntered: root.hoverIdx = index
               onExited: { if (root.hoverIdx === index) root.hoverIdx = -1 }
               onClicked: root.pick(index)
             }
@@ -341,6 +320,7 @@ Scope {
         }
 
         Text {
+          visible: root.results.length > 0
           Layout.fillWidth: true
           Layout.preferredHeight: 18
           elide: Text.ElideRight
@@ -349,7 +329,7 @@ Scope {
           color: "#ffffff"
           text: {
             const i = root.results[root.selIdx]
-            return i !== undefined && root.rows.length > 0 ? root.nameOf(i) : "no matches"
+            return i !== undefined ? root.nameOf(i) : ""
           }
         }
       }

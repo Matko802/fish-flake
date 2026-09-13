@@ -30,7 +30,6 @@ Scope {
   }
 
   function sigIcon(s) {
-    // Map signal strength 0-100 to a discrete wifi icon name using the catalog levels.
     const names = ["wifi-none", "wifi-weak", "wifi-ok", "wifi-good", "wifi-excellent"]
     let idx = Math.floor(s / 20)
     idx = Math.min(4, Math.max(0, idx))
@@ -39,7 +38,6 @@ Scope {
     return names[idx]
   }
 
-  // Waybar-style "{bandwidthDownBytes} B/s" formatting.
   function fmtRate(r) {
     r = Math.max(0, Math.round(r))
     if (r < 1024)

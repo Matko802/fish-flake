@@ -8,14 +8,11 @@ Scope {
   id: root
 
   property bool dnd: false
-  // Live Notification objects, kept for history + action invocation.
   property var notifications: []
   property var hiddenToasts: []
 
-  // Count of notifications that actually carry content (no empty placeholders).
   property int meaningfulCount: root.notifications.filter(n => n && isMeaningful(n)).length
 
-  // A notification is only worth keeping if it has a summary, body, or image.
   function isMeaningful(n) {
     if (!n) return false
     const s = (n.summary || "").trim()
@@ -24,9 +21,6 @@ Scope {
     return s !== "" || b !== "" || im !== ""
   }
 
-  // The only model the toast stack binds to. Incremental insert/remove means
-  // a new toast adds one delegate without recreating the others — so existing
-  // cards never re-run their entrance animation.
   ListModel { id: popupModel }
   property alias popupModel: popupModel
 
@@ -39,9 +33,7 @@ Scope {
 
     onNotification: notif => {
       notif.tracked = true
-      // ignore empty placeholders (apps send these during update cycles)
       if (!root.isMeaningful(notif)) return
-      // dedupe by id — a replace/update reuses the same id, don't stack copies
       root.notifications = root.notifications.filter(n => n && n.id !== notif.id)
       root.notifications = [notif, ...root.notifications]
       console.log("QS notif", notif.id, notif.summary, "popup before", popupModel.count)
@@ -75,15 +67,12 @@ Scope {
     return -1
   }
 
-  // Called by a card after its dismiss animation finishes.
-  // Keeps the entry in `notifications` so history doesn't vanish.
   function removePopup(id) {
     const i = findPopupIndex(id)
     if (i >= 0) popupModel.remove(i)
     root.hiddenToasts = root.hiddenToasts.filter(x => x !== id)
   }
 
-  // Hide from the toast stack but keep in history (quick settings open, dnd).
   function hideToast(id) {
     if (!root.hiddenToasts.includes(id)) root.hiddenToasts = [...root.hiddenToasts, id]
     const i = findPopupIndex(id)
@@ -129,13 +118,14 @@ Scope {
 
   function toggleDnd() { root.setDnd(!root.dnd) }
 
-  // ---- mango WM focus ---------------------------------------------------
   Process { id: focusProc; running: false }
   function focusApp(raw) {
     if (!raw) return
     const app = String(raw).replace(/"/g, '\\"')
-    const cmd = 'app="' + app + '"; id=$(mmsg get all-clients 2>/dev/null | python3 -c "import json,sys; a=sys.argv[1].lower(); d=json.load(sys.stdin); cs=d.get(\'clients\',[]); m=[c for c in cs if a==c.get(\'appid\',\'\').lower() or a in c.get(\'appid\',\'\').lower() or a in c.get(\'title\',\'\').lower()]; print(m[0][\'id\'] if m else \'\')" "$app" 2>/dev/null); [ -n "$id" ] && mmsg dispatch focusid client,$id 2>/dev/null || true'
-    focusProc.command = ["bash", "-c", cmd]
+    focusProc.command = ["sh", "-c",
+      "ID=$(niri msg -j windows | tr '}' '\\n' | grep -i '" + app + "' | head -1 | grep -o '\"id\":[0-9]*' | cut -d: -f2)" +
+      " && [ -n \"$ID\" ] && niri msg action focus-window --id \"$ID\" 2>/dev/null"
+    ]
     focusProc.running = true
   }
 

@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  fontName,
   ...
 }:
 let
@@ -16,6 +15,7 @@ in {
   ];
 
   environment.systemPackages = with pkgs; [
+    zed-editor
     nil
     nixfmt
     nixd

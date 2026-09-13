@@ -19,8 +19,16 @@
       url = "github:Matko802/sharkvis";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sharkfetch = {
-      url = "github:Matko802/sharkfetch";
+    jefetch = {
+      url = "github:Matko802/jefetch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    sharkmanager = {
+      url = "github:Matko802/sharkmanager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    artixy = {
+      url = "github:Matko802/artixy";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mocktail = {
@@ -29,10 +37,6 @@
     };
     shark-scrp = {
       url = "github:Matko802/shark-scrp";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -46,13 +50,17 @@
       sharkvis,
       mocktail,
       shark-scrp,
-      sharkfetch,
+      jefetch,
+      sharkmanager,
+      artixy,
       ...
     }@inputs:
     let
       sharkvisOverlay = sharkvis.overlays.default;
       sharkScrpOverlay = shark-scrp.overlays.default;
-      sharkfetchOverlay = sharkfetch.overlays.default;
+      jefetchOverlay = jefetch.overlays.default;
+      sharkmanagerOverlay = sharkmanager.overlays.default;
+      artixyOverlay = artixy.overlays.default;
 
       sharedModules = [
 
@@ -69,7 +77,9 @@
             helium-flake.overlays.default
             sharkvisOverlay
             sharkScrpOverlay
-            sharkfetchOverlay
+            jefetchOverlay
+            sharkmanagerOverlay
+            artixyOverlay
           ];
 
           environment.systemPackages = [
@@ -92,7 +102,8 @@
       packages.x86_64-linux.sharkvis = inputs.sharkvis.packages.x86_64-linux.default;
       packages.x86_64-linux.mocktail = inputs.mocktail.packages.x86_64-linux.default;
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
-      packages.x86_64-linux.sharkfetch = inputs.sharkfetch.packages.x86_64-linux.default;
-      packages.x86_64-linux.zen-browser = inputs.zen-browser.packages.x86_64-linux.default;
+      packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
+      packages.x86_64-linux.sharkmanager = inputs.sharkmanager.packages.x86_64-linux.default;
+      packages.x86_64-linux.artixy = inputs.artixy.packages.x86_64-linux.default;
     };
 }

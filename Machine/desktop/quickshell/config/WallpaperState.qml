@@ -12,13 +12,14 @@ Scope {
     id: stateFile
 
     path: Quickshell.env("HOME") + "/.cache/quickshell-wallpaper"
-    watchChanges: false
+    watchChanges: true
     printErrors: false
     onLoaded: {
       const p = text().trim()
       if (p !== "")
         root.path = p
     }
+    onFileChanged: reload()
   }
 
   function set(p) {

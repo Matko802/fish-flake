@@ -3,9 +3,6 @@ import Quickshell
 import Quickshell.Wayland
 import QtQuick.Layouts
 
-// Toast stack — Omarchy Quattro pattern: a ListModel fed by NotificationServer
-// so a new toast only instantiates one delegate; existing cards keep their
-// state and never re-run their entrance animation. Sharp black/white theme.
 PanelWindow {
   id: root
   anchors.top: true
@@ -20,7 +17,6 @@ PanelWindow {
 
   visible: NotificationServer.popupModel.count > 0 && !ControlState.open && !ClockState.open
 
-  // Click-through everywhere except the toast column.
   mask: Region { item: popupColumn }
 
   Connections {
@@ -65,14 +61,10 @@ PanelWindow {
         Layout.alignment: Qt.AlignRight
         implicitHeight: card.implicitHeight
 
-        // All toasts live 5s, then the whole batch dismisses together.
         readonly property double lifetime: 5000
         property real remaining: 1.0
         readonly property bool ticking: lifetime > 0 && !card.hovered && !ControlState.open && !ClockState.open
 
-        // Only a freshly-created card (a genuinely new notification) starts
-        // with a full lifetime. Re-binding summary/body on insert must NOT reset
-        // the countdown, otherwise new notifications "un-stop" every visible card.
         Component.onCompleted: cardSlot.remaining = 1.0
 
         Timer {
@@ -88,8 +80,6 @@ PanelWindow {
           }
         }
 
-        // Only this new card animates in (set in card's Component.onCompleted);
-        // siblings were not recreated, so they stay put.
         function dismiss() { if (!card.dismissing) card.dismiss() }
 
         NotificationPopup {
@@ -112,8 +102,6 @@ PanelWindow {
     }
   }
 
-  // Dismiss every visible toast at once (all animate out, then each removes
-  // its own row via onDismissed).
   function dismissAllPopups() {
     for (let i = 0; i < rep.count; i++) {
       const s = rep.itemAt(i)

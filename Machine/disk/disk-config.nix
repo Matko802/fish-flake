@@ -18,14 +18,10 @@
       options = [ "subvol=nix" "noatime" "compress=zstd" ];
     };
 
-    swapDevices = [{
+    swapDevices = lib.mkForce [{
       device = "/swapfile";
-      size = 6144; # 6 GB
+      size = 6144;
     }];
 
-    zramSwap = {
-      enable = true;
-      memoryMax = 2 * 1024 * 1024 * 1024;
-    };
   };
 }

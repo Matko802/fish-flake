@@ -1,9 +1,10 @@
 { pkgs, ... }: {
   environment.systemPackages = with pkgs; [
-    thunar
-    thunar-archive-plugin
-    thunar-volman
-    tumbler
+    nautilus
+    file-roller
+    sushi
+    ffmpegthumbnailer
+    bubblewrap
     libmtp
     rar
   ];

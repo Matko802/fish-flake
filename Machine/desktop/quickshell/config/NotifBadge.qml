@@ -31,7 +31,6 @@ Item {
   MouseArea {
     anchors.fill: parent
     onClicked: {
-      // Open the control-center on this screen (where notifications history lives).
       const win = root.QsWindow ? root.QsWindow.window : null
       ControlState.toggle(win)
     }

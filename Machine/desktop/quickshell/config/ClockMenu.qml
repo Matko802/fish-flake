@@ -27,7 +27,6 @@ PanelWindow {
   property int activeTab: 0
   property date calDate: new Date()
   property int mediaIdx: 0
-  // keep mediaIdx in bounds and auto-switch to newest playing
   onMediaIdxChanged: {
     if (mediaIdx < 0) mediaIdx = 0
     if (Mpris.players.values && Mpris.players.values.length > 0 && mediaIdx >= Mpris.players.values.length) mediaIdx = Mpris.players.values.length - 1
@@ -37,7 +36,6 @@ PanelWindow {
     target: Mpris.players
     function onValuesChanged() {
       if (Mpris.players.values && root.mediaIdx >= Mpris.players.values.length) root.mediaIdx = Math.max(0, Mpris.players.values.length - 1)
-      // when new audio starts, switch to it if it's playing
       if (Mpris.players.values && Mpris.players.values.length > 0) {
         const last = Mpris.players.values ? Mpris.players.values.length - 1 : -1
         const p = Mpris.players.values[last]
@@ -202,7 +200,6 @@ PanelWindow {
       anchors.margins: 16
       spacing: 0
 
-      // ===== Tab bar =====
       RowLayout {
         Layout.fillWidth: true
         spacing: 0
@@ -272,7 +269,6 @@ PanelWindow {
         }
       }
 
-      // ===== Swipeable content =====
       Item {
         id: swipeContainer
         Layout.fillWidth: true
@@ -286,12 +282,10 @@ PanelWindow {
             NumberAnimation { duration: 200; easing.type: Theme.easingOut }
           }
 
-          // ----- Tab 0: Calendar + Notifications -----
           Item {
             width: swipeContainer.width
             height: swipeContainer.height
 
-            // Calendar â left half
             ColumnLayout {
               anchors.left: parent.left
               anchors.right: parent.horizontalCenter
@@ -410,7 +404,6 @@ PanelWindow {
                 }
               }
 
-              // Notifications â right half
               Item {
                 anchors.left: parent.horizontalCenter
                 anchors.leftMargin: 8
@@ -540,10 +533,6 @@ PanelWindow {
                     }
                   }
                 }
-                Item {
-                  Layout.fillWidth: true
-                  Layout.fillHeight: true
-                }
                 }
 
                 Text {
@@ -557,7 +546,6 @@ PanelWindow {
               }
             }
 
-          // ----- Tab 1: System -----
           Item {
             width: swipeContainer.width
             height: swipeContainer.height
@@ -638,7 +626,6 @@ PanelWindow {
             }
           }
 
-          // ----- Tab 2: Media -----
           Item {
             width: swipeContainer.width
             height: swipeContainer.height
@@ -649,7 +636,6 @@ PanelWindow {
 
 
 
-              // Tabbed single player view (arrows next to icon)
               Item {
                 id: mediaSingle
                 Layout.fillWidth: true
@@ -661,14 +647,12 @@ PanelWindow {
                     anchors.fill: parent
                     spacing: 0
 
-                    // BODY
                     RowLayout {
                       id: msBody
                       Layout.fillWidth: true
                       Layout.fillHeight: true
                       spacing: 0
 
-                      // LEFT — info + terminal + controls + progress (always present; grows when expanded)
                        ColumnLayout {
                           id: msLeft
                           Layout.fillWidth: true
@@ -678,7 +662,6 @@ PanelWindow {
                           Layout.bottomMargin: 8
                           spacing: 8
 
-                        // title
                         ColumnLayout {
                           visible: true
                           spacing: 8
@@ -771,7 +754,6 @@ PanelWindow {
                           }
                         }
 
-                        // transport controls
                         Rectangle {
                           Layout.alignment: Qt.AlignHCenter
                           Layout.topMargin: -8
@@ -948,7 +930,6 @@ PanelWindow {
                         }
                       }
 
-                      // RIGHT — artwork with tab arrows
                       Item {
                         id: msRight
                         visible: true

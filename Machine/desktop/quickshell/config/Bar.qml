@@ -87,8 +87,6 @@ Item {
     Tray {}
     Language {}
 
-    // GNOME-like connected quick-settings button: volume + network + battery
-    // Single hover highlight behind all icons.
     Rectangle {
       id: quickSettingsBtn
       Layout.fillHeight: true

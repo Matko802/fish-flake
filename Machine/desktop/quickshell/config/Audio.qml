@@ -13,8 +13,6 @@ Scope {
   readonly property bool sinkReady: sink && sink.ready && sink.audio && sink.audio.volumes.length > 0
   readonly property bool sourceReady: source && source.ready && source.audio && source.audio.volumes.length > 0
 
-  // Fallback state captured via wpctl so volume control + the OSD work instantly
-  // after a restart, before Quickshell's Pipewire service has connected.
   property int _vol: -1
   property bool _muted: false
   property int _micVol: -1
@@ -31,24 +29,21 @@ Scope {
   readonly property string micIcon: micMuted ? "mic-muted" : "mic"
 
   property int lastSound: 0
+  property int _volIdx: 0
 
   function playVolumeSound() {
     const now = Date.now()
-    if (now - lastSound < 250)
+    if (now - lastSound < 150)
       return
     lastSound = now
     Quickshell.execDetached(["pw-play", "/run/current-system/sw/share/sounds/freedesktop/stereo/audio-volume-change.oga"])
   }
 
-  // Seed fallback volume/mute from wpctl at startup (independent of the Pipewire
-  // node object, which may not be ready yet after a restart). The two get-volume
-  // calls emit sink first, then source.
   Process {
     id: volInit
     running: true
     command: ["sh", "-c", "wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null; wpctl get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null"]
     stdout: SplitParser {
-      property int idx: 0
       onRead: line => {
         const s = String(line)
         const m = s.match(/Volume:\s*([0-9.]+)(?:\s*\[MUTED\])?/)
@@ -56,14 +51,26 @@ Scope {
           return
         const val = Math.round(parseFloat(m[1]) * 100)
         const muted = /\[MUTED\]/.test(s)
-        if (root.volInit.idx === 0) {
+        if (root._volIdx === 0) {
           root._vol = val
           root._muted = muted
         } else {
           root._micVol = val
           root._micMuted = muted
         }
-        root.volInit.idx++
+        root._volIdx++
+      }
+    }
+  }
+
+  Timer {
+    interval: 2000
+    running: true
+    repeat: true
+    onTriggered: {
+      if (!root.sinkReady && !volInit.running) {
+        root._volIdx = 0
+        volInit.running = true
       }
     }
   }

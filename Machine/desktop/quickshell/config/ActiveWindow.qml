@@ -36,7 +36,6 @@ RowLayout {
     Layout.maximumWidth: 300
   }
 
-  // --- Niri/Mango detection (robust: just check binary) ---
   Process {
     id: niriCheck
     property bool isNiri: false
@@ -64,7 +63,6 @@ RowLayout {
     root.appId = String(appid || "")
   }
 
-  // --- Niri: poll focused-window ---
   Process {
     id: niriPoll
     running: false
@@ -74,20 +72,18 @@ RowLayout {
         try {
           const d = JSON.parse(text.trim())
           if (!d || d.title === undefined) {
-            // null or no focused window (empty workspace)
             setFromTitleId("", "")
             return
           }
           setFromTitleId(d.title, d.app_id)
         } catch (e) {
-          // ignore parse errors
         }
       }
     }
   }
   Timer {
     id: niriTimer
-    interval: 120
+    interval: 1000
     running: true
     repeat: true
     triggeredOnStart: true
@@ -97,7 +93,6 @@ RowLayout {
     }
   }
 
-  // --- Niri: event-stream for instant update (responsive) ---
   Process {
     id: niriWatch
     running: false
@@ -105,7 +100,6 @@ RowLayout {
     stdout: SplitParser {
       onRead: data => {
         if (data.length < 2) return
-        // Any window/workspace/title change should update immediately
         if (data.includes("Window") || data.includes("Workspace") || data.includes("Title")) {
           if (!niriPoll.running) niriPoll.running = true
           try {
@@ -116,14 +110,12 @@ RowLayout {
               const focused = arr.find(w => w.is_focused)
               if (focused) { setFromTitleId(focused.title, focused.app_id); return }
             }
-            // Single window events already handled; fallback poll will fetch focused-window
           } catch (e) {}
         }
       }
     }
   }
 
-  // --- Mango fallback ---
   Process {
     id: mangoWatch
     running: false

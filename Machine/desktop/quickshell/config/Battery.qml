@@ -2,8 +2,6 @@ import QtQuick
 import Quickshell
 import Quickshell.Services.UPower
 
-// Standalone battery icon-name provider. Not currently instantiated; Bar.qml
-// renders the battery inline. Keep in sync if wired up later.
 Item {
   readonly property string batName: {
     try {

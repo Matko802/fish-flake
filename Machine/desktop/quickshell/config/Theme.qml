@@ -1,19 +1,35 @@
 pragma Singleton
 import QtQuick
 import Quickshell
+import Quickshell.Io
 
 Singleton {
-  // Font follows system `custom.fontName` via QUICKSHELL_FONT env (set in Nix).
+  id: root
+
   property string fontFamily: Quickshell.env("QUICKSHELL_FONT") || "DepartureMono Nerd Font"
 
-  // Active icon pack (see QIcon.qml). Swappable live from the settings menu.
-  property string iconTheme: "Papirus-Dark"
-  // Icon packs offered in the settings menu (must exist in the theme dirs).
+  property string iconTheme: "Tabler"
   readonly property var iconThemes: [
-    "Papirus-Dark", "Papirus", "Papirus-Light", "Adwaita", "breeze"
+    "Tabler", "Material"
   ]
 
-  // Tokens — sharp monochrome, inspired by Caelestia Tokens
+  FileView {
+    id: iconThemeFile
+
+    path: Quickshell.env("HOME") + "/.cache/quickshell-icon-theme"
+    watchChanges: false
+    printErrors: false
+    onLoaded: {
+      const v = text().trim()
+      if (root.iconThemes.indexOf(v) !== -1)
+        root.iconTheme = v
+    }
+  }
+
+  onIconThemeChanged: {
+    iconThemeFile.setText(root.iconTheme)
+  }
+
   readonly property int spacingXS: 4
   readonly property int spacing6: 6
   readonly property int spacingS: 8
@@ -28,11 +44,9 @@ Singleton {
   readonly property int animFast: 90
   readonly property int animDefault: 140
   readonly property int animSlow: 200
-  // easing
   readonly property int easingOut: Easing.OutCubic
   readonly property int easingIn: Easing.InCubic
   readonly property int easingDefault: Easing.OutCubic
-  // colors
   readonly property color bg: "#000000"
   readonly property color bgAlt: "#0a0a0a"
   readonly property color fg: "#ffffff"

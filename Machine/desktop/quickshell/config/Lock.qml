@@ -19,8 +19,6 @@ Scope {
     id: lockContext
 
     onUnlocked: {
-      // Unlock the screen before exiting, or the compositor will display a
-      // fallback lock you can't interact with.
       LockState.locked = false;
     }
   }
@@ -34,8 +32,6 @@ Scope {
         id: surf
         color: "#000000"
 
-        // 5-second "grace" after locking: any mouse movement or keypress
-        // unlocks without a password, like KDE Plasma's post-lock delay.
         property bool graceActive: false
 
         Timer {
@@ -102,7 +98,6 @@ Scope {
             font.pointSize: 72
             font.family: Theme.fontFamily
 
-            // updates the clock every second
             Timer {
               running: true
               repeat: true
@@ -152,14 +147,10 @@ Scope {
             echoMode: TextInput.Password
             inputMethodHints: Qt.ImhSensitiveData
 
-            // Update the text in the context when the text in the box changes.
             onTextChanged: lockContext.currentText = this.text;
 
-            // Try to unlock when enter is pressed.
             onAccepted: lockContext.tryUnlock();
 
-            // Update the text in the box to match the text in the context.
-            // This makes sure multiple monitors have the same text.
             Connections {
               target: lockContext
 

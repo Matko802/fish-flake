@@ -2,7 +2,6 @@
   programs.niri.enable = true;
   programs.niri.package = pkgs.niri;
 
-  # Tools used by keybinds/autostart (same set as mango had)
   environment.systemPackages = with pkgs; [
     grim
     slurp
@@ -11,7 +10,6 @@
     xwayland-satellite
     hyprpolkitagent
     playerctl
-    # quickshell stays via quickshell-config.nix
   ];
 
   systemd.tmpfiles.rules = [

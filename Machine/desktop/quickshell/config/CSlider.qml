@@ -25,14 +25,12 @@ Rectangle {
 
     readonly property real center: Math.round(9 + (width - 18) * root.shown)
 
-    // Filled portion
     Rectangle {
       width: Math.min(parent.width, parent.center + 7)
       height: parent.height
       color: "#ffffff"
     }
 
-    // Handle — big white cube, 14px, 2px inset like CToggle
     Rectangle {
       x: parent.center - 7
       anchors.verticalCenter: parent.verticalCenter
@@ -49,7 +47,6 @@ Rectangle {
     preventStealing: true
 
     function apply(mouse) {
-      // MouseArea extends `pad` past both edges; map back into track space.
       const v = Math.max(0, Math.min(1, (mouse.x - root.pad) / root.width))
       root.dragValue = v
       root.userSet(v)

@@ -17,14 +17,8 @@ PanelWindow {
   WlrLayershell.layer: WlrLayer.Overlay
   implicitWidth: 380
   implicitHeight: 200
-  // Keep the surface permanently mapped so the first show after a (re)start has
-  // no layer-surface remap delay. Click-through is handled by the mask: when
-  // bg is slid off-screen the mask region is empty, so the window captures no
-  // input and paints nothing.
   visible: true
 
-  // Mask input (and paint) to the box only; the rest of the 380x200 window is
-  // transparent and click-through.
   mask: Region { item: bg }
 
   function show() {

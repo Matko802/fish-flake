@@ -14,8 +14,6 @@ Row {
       width: 20
       height: 20
       color: modelData.urgent ? "#ff0000" : (modelData.active ? "#ffffff" : (hovered ? "#333333" : "transparent"))
-      border.color: hovered ? "#ffffff" : "transparent"
-      border.width: 1
 
       Text {
         anchors.centerIn: parent
@@ -30,7 +28,6 @@ Row {
         hoverEnabled: true
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked: mouse => {
-          // Niri if available, else mango mmsg
           if (niriCheck.isNiri) {
             if (mouse.button === Qt.RightButton)
               Quickshell.execDetached(["niri", "msg", "action", "focus-workspace", String(modelData.index)])
@@ -47,7 +44,6 @@ Row {
     }
   }
 
-  // Detect compositor once
   Process {
     id: niriCheck
     property bool isNiri: false
@@ -65,7 +61,6 @@ Row {
     }
   }
 
-  // Niri: initial fetch
   Process {
     id: niriInit
     running: false
@@ -80,27 +75,24 @@ Row {
     }
   }
 
-  // Niri: event-stream instant + poll fallback
   Process {
     id: niriWatch
     running: true
     command: ["sh", "-c", "command -v niri >/dev/null 2>&1 && stdbuf -oL niri msg -j event-stream 2>/dev/null || sleep 999999"]
     stdout: SplitParser {
       onRead: data => {
-        // Fast path for workspace changes
         try {
           const j = JSON.parse(data)
           const ws = j.WorkspacesChanged?.workspaces
           if (ws) { updateFromNiri(ws); return }
+          if (j.OverviewOpenedOrClosed !== undefined && !niriPoll.running) niriPoll.running = true
         } catch (e) {}
-        // Window open/close changes occupancy -> poll workspaces
         if (data.includes("Window") && !niriPoll.running) niriPoll.running = true
       }
     }
   }
-  // Fallback poll: faster for responsiveness (150ms)
   Timer {
-    interval: 150
+    interval: 2000
     running: niriCheck.isNiri
     repeat: true
     triggeredOnStart: true
@@ -134,7 +126,6 @@ Row {
     }
   }
 
-  // Mango fallback: all-tags
   Process {
     id: mangoWatch
     running: false

@@ -5963,6 +5963,10 @@ const CODEPOINTS = {
 };
 
 const ALIASES = {
+  "camera-photo": "camera",
+  "go-next": "arrow-right",
+  "preferences-desktop-theme": "palette",
+  "preferences-system": "settings",
   "audio-volume-high": "volume-high",
   "audio-volume-low": "volume-low",
   "audio-volume-medium": "volume-high",

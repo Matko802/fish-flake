@@ -20,8 +20,6 @@ Scope {
   readonly property string fontFamily: Theme.fontFamily
   readonly property color matchColor: "#cb4b16"
 
-  // Keep the surface mapped briefly after a key/mouse-initiated close so the
-  // triggering key's press+release both land here instead of the refocused app.
   property bool closePending: false
 
   function requestClose() {
@@ -119,7 +117,6 @@ Scope {
     root.tab = root.tab === "text" ? "images" : "text"
   }
 
-  // Items visible on one viewport of the image grid (used for page scrolling).
   function pageStep() {
     const g = imgGrid
     if (!g)
@@ -154,10 +151,6 @@ Scope {
     }
   }
 
-  // Build a thumbnail cache, streaming each id as soon as its thumbnail is
-  // ready (cached ones immediately, generated ones as magick finishes) so the
-  // grid fills in progressively instead of staying black until the whole batch
-  // completes. Generation runs in parallel (xargs -P 6).
   Process {
     id: thumbProc
     onStarted: root.thumbs = ({})
@@ -188,8 +181,6 @@ Scope {
     }
   }
 
-  // Skip entries that consist solely of emoji characters (e.g. from the
-  // emoji picker) so they never show up in the history list.
   function isEmojiOnly(s) {
     const t = s.replace(/\s+/g, "")
     if (t === "")
@@ -208,7 +199,6 @@ Scope {
     }
   }
 
-  // Lowercased previews, computed once when the list loads (not per keystroke).
   readonly property var lcPreviews: root.allEntries.map(l => root.preview(l).toLowerCase())
 
   readonly property var results: {
@@ -218,9 +208,6 @@ Scope {
   readonly property var textEntries: root.results.filter(l => !root.isImage(l))
   readonly property var imageEntries: root.results.filter(l => root.isImage(l))
 
-  // The active tab's entry list. Both the views and the keyboard navigation
-  // index into this, so selection/paste always line up (the bug was indexing
-  // results while the views showed a subset).
   readonly property var currentList: root.tab === "images" ? root.imageEntries : root.textEntries
 
   onTabChanged: {
@@ -234,24 +221,33 @@ Scope {
     root.hoverIdx = -1
   }
   onResultsChanged: {
-    if (root.selIdx >= root.currentList.length)
-      root.selIdx = Math.max(0, root.currentList.length - 1)
-    if (root.hoverIdx >= root.currentList.length)
+    const cl = root.currentList || []
+    if (root.selIdx >= cl.length)
+      root.selIdx = Math.max(0, cl.length - 1)
+    if (root.hoverIdx >= cl.length)
       root.hoverIdx = -1
   }
   onSelIdxChanged: {
+    let g = null, top = 0, itemH = 0
     if (root.tab === "images") {
-      const g = imgGrid
-      if (!g)
-        return
+      g = imgGrid
+      if (!g) return
       const cols = Math.max(1, Math.floor(g.width / g.cellWidth))
-      const row = Math.floor(root.selIdx / cols)
-      const y = row * g.cellHeight
-      const maxY = Math.max(0, g.contentHeight - g.height)
-      g.contentY = Math.min(Math.max(y, 0), maxY)
+      top = Math.floor(root.selIdx / cols) * g.cellHeight
+      itemH = g.cellHeight
     } else {
-      list.positionViewAtIndex(root.selIdx, ListView.Contain)
+      g = list
+      if (!g) return
+      top = root.selIdx * 28
+      itemH = 28
     }
+    const visH = g.height
+    if (visH <= 0) return
+    let y = g.contentY
+    if (top < y) y = top
+    else if (top + itemH > y + visH) y = top + itemH - visH
+    const maxY = Math.max(0, g.contentHeight - visH)
+    g.contentY = Math.max(0, Math.min(maxY, y))
   }
 
   TextMetrics {
@@ -404,10 +400,46 @@ Scope {
           }
         }
 
+        RowLayout {
+          Layout.fillWidth: true
+          spacing: 0
+          Repeater {
+            model: [
+              { label: "Text", idx: 0 },
+              { label: "Images", idx: 1 }
+            ]
+            delegate: Item {
+              required property var modelData
+              Layout.fillWidth: true
+              Layout.preferredHeight: 28
+              property bool active: root.tab === (modelData.idx === 0 ? "text" : "images")
+              Text {
+                anchors.centerIn: parent
+                text: modelData.label
+                color: parent.active ? Theme.fg : Theme.muted
+                font.family: root.fontFamily
+                font.pixelSize: 11
+              }
+              MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: root.tab = modelData.idx === 0 ? "text" : "images"
+              }
+            }
+          }
+        }
+
         Item {
           id: swipeContainer
           Layout.fillWidth: true
-          Layout.preferredHeight: 15 * 28
+          Layout.preferredHeight: {
+            const n = (root.currentList || []).length
+            if (n === 0) return 0
+            if (root.tab === "images") return Math.min(Math.ceil(n / 3) * root.imgCellH, 15 * 28)
+            return Math.min(n * 28, 15 * 28)
+          }
+          visible: (root.currentList || []).length > 0
+          Behavior on Layout.preferredHeight { enabled: root.query !== "" && root.open && !root.closePending; NumberAnimation { duration: 90; easing.type: Theme.easingOut } }
           clip: true
 
           Row {
@@ -494,8 +526,6 @@ Scope {
                     anchors.margins: 4
                     readonly property string _src: root.thumbs[root.idOf(modelData)] !== undefined ? "file://" + root.thumbDir + "/" + root.idOf(modelData) + ".png" : ""
                     source: _src
-                    // Decode at display size, not the thumbnail's native resolution.
-                    // This is the main win: far less CPU decode + much smaller GL textures.
                     sourceSize.width: imgGrid.cellWidth - 8
                     sourceSize.height: imgGrid.cellHeight - 8
                     fillMode: Image.PreserveAspectCrop
@@ -507,9 +537,9 @@ Scope {
                   Rectangle {
                     anchors.fill: parent
                     anchors.margins: 4
-                    border.width: isSel ? 2 : (isHover ? 1 : 0)
+                    color: isHover ? "#33ffffff" : "transparent"
+                    border.width: isSel ? 2 : 0
                     border.color: "#ffffff"
-                    color: "transparent"
                   }
 
                   MouseArea {
@@ -526,45 +556,6 @@ Scope {
           }
         }
 
-        Text {
-          visible: root.results.length === 0
-          Layout.fillWidth: true
-          Layout.preferredHeight: 22
-          verticalAlignment: TextInput.AlignVCenter
-          font.family: root.fontFamily
-          font.pointSize: 11
-          color: "#888888"
-          text: root.allEntries.length === 0 ? "clipboard empty" : "no matches"
-        }
-
-        RowLayout {
-          Layout.fillWidth: true
-          spacing: 0
-          Repeater {
-            model: [
-              { label: "Text", idx: 0 },
-              { label: "Images", idx: 1 }
-            ]
-            delegate: Item {
-              required property var modelData
-              Layout.fillWidth: true
-              Layout.preferredHeight: 28
-              property bool active: root.tab === (modelData.idx === 0 ? "text" : "images")
-              Text {
-                anchors.centerIn: parent
-                text: modelData.label
-                color: parent.active ? Theme.fg : Theme.muted
-                font.family: root.fontFamily
-                font.pixelSize: 11
-              }
-              MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: root.tab = modelData.idx === 0 ? "text" : "images"
-              }
-            }
-          }
-        }
       }
     }
   }

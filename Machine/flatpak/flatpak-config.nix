@@ -1,30 +1,22 @@
-# Declarative Flatpak app installs (system-wide)
-{ config, lib, ... }:
+# Declaratively ensure Flatpak apps are installed (system-wide).
+# Runs as a system activation script instead of a systemd service, so there
+# is no unit sitting in boot. Each app is skipped when already installed.
+{ lib, pkgs, ... }:
 
 let
-  flatpak = config.services.flatpak.package;
+  remoteName = "flathub";
+  remoteUrl = "https://flathub.org/repo/flathub.flatpakrepo";
 
   apps = [
     "org.vinegarhq.Sober"
   ];
 in
 {
-
-  systemd.services.flatpakInstall = lib.mkIf (apps != [ ]) {
-    description = "Declaratively install Flatpak apps";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-    path = [ flatpak ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-    };
-    script = ''
-      ${lib.getExe flatpak} remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-      ${lib.concatMapStringsSep "\n"
-        (app: "${lib.getExe flatpak} install -y flathub ${app}")
-        apps}
-    '';
-  };
+  system.activationScripts.flatpakApps.text = ''
+    ${lib.getExe pkgs.flatpak} remote-add --if-not-exists ${remoteName} ${remoteUrl} >/dev/null 2>&1 || true
+    ${lib.concatMapStringsSep "\n" (app: ''
+      if ! ${lib.getExe pkgs.flatpak} info ${app} >/dev/null 2>&1; then
+        ${lib.getExe pkgs.flatpak} install -y ${remoteName} ${app} || true
+      fi'') apps}
+  '';
 }

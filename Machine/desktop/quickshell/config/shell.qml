@@ -6,9 +6,7 @@ import QtQuick
 
 ShellRoot {
   id: root
-  // Top bar visible, hidden only in fullscreen (menus pop above on Overlay)
   property bool barEnabled: true
-  // True when a fullscreen app covers the screen (bar hides)
   property bool fullscreenActive: false
   readonly property bool barShown: barEnabled && (!root.fullscreenActive
     || launcher.open || ControlState.open || ClockState.open
@@ -28,8 +26,6 @@ ShellRoot {
     }
   }
 
-  // Niri fullscreen detection: focused window covering output size → hide bar.
-  // Responsive: event-stream triggers instant poll + fast 100ms fallback.
   function applyFs(d) {
     if (!d || !d.layout) { root.fullscreenActive = false; return }
     const ws = d.layout.window_size
@@ -58,7 +54,6 @@ ShellRoot {
       }
     }
   }
-  // Instant trigger on any window/workspace focus change
   Process {
     id: niriFsWatch
     running: true
@@ -67,12 +62,9 @@ ShellRoot {
       onRead: data => {
         if (data.includes("Window") || data.includes("Workspace") || data.includes("Overview") || data.includes("Fullscreen")) {
           if (!niriFsPoll.running) niriFsPoll.running = true
-          // Fast path: try to apply without extra round-trip when payload contains focused window
           try {
             const j = JSON.parse(data)
             const w = j.WindowOpenedOrChanged?.window || j.WindowFocusChanged || null
-            // WindowFocusChanged is just {id: N}, need full data -> fallback to poll, so ignore
-            // WindowsChanged contains array, extract focused directly
             const wins = j.WindowsChanged?.windows
             if (wins) {
               const f = wins.find(x => x.is_focused)
@@ -85,7 +77,6 @@ ShellRoot {
       }
     }
   }
-  Timer { interval: 100; running: true; repeat: true; triggeredOnStart: true; onTriggered: { if (!niriFsPoll.running) niriFsPoll.running = true } }
 
   Variants {
     model: Quickshell.screens
@@ -101,13 +92,11 @@ ShellRoot {
         color: "transparent"
         exclusionMode: ExclusionMode.Auto
         WlrLayershell.namespace: "quickshell"
-        // Always mapped to reserve 30px strut even when bar is hidden (fullscreen).
-        // Inner bar content is hidden via `barShown`, but the exclusive zone remains
-        // so tiled windows stay inset and don't jump. True fullscreen (`fullscreen-window`)
-        // still bypasses the strut and covers the area.
         visible: true
+        mask: Region { item: root.barShown ? barBg : null }
         WlrLayershell.layer: WlrLayer.Overlay
         Rectangle {
+          id: barBg
           anchors.fill: parent
           color: "#000000"
           opacity: root.barShown ? 1 : 0
@@ -129,9 +118,24 @@ ShellRoot {
   }
 
   ToastStack {}
-  VolumeOSD {}
-  ScreensharePicker {}
-  Wallpaper {}
+  Variants {
+    model: Quickshell.screens
+    delegate: Component {
+      VolumeOSD {
+        required property var modelData
+        screen: modelData
+      }
+    }
+  }
+  Variants {
+    model: Quickshell.screens
+    delegate: Component {
+      Wallpaper {
+        required property var modelData
+        screen: modelData
+      }
+    }
+  }
   Launcher {
     id: launcher
     onOpenChanged: if (open) { emojiPicker.requestClose(); clipboard.requestClose() }
@@ -149,8 +153,6 @@ ShellRoot {
     onChoose: action => {
       if (action === "wallpaper")
         wallpaperPicker.toggle()
-      else if (action === "launcher")
-        launcher.toggle()
       else if (action === "avatar")
         avatarPicker.toggle()
     }

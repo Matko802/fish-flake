@@ -2,12 +2,8 @@ import QtQuick
 import Qt5Compat.GraphicalEffects
 import "Icons.js" as Icons
 import "Tabler.js" as Tabler
+import "Material.js" as Material
 
-// Runtime-swappable, monochrome-tinted status icon.
-// Now supports Noctalia's Tabler icons (noctalia-tabler.ttf) for status icons.
-// If the logical name resolves to a Tabler glyph (via Tabler.js Codepoints + Aliases,
-// ported from Noctalia's glyph_registry.cpp), it renders as a Text glyph with the
-// Tabler font; otherwise it falls back to the SVG theme resolver (Icons.js) as before.
 
 Item {
   id: root
@@ -19,17 +15,40 @@ Item {
   implicitWidth: size
   implicitHeight: size
 
-  // Tabler font — same as Noctalia's assets/fonts/noctalia-tabler.ttf
+  FontLoader {
+    id: materialFont
+    source: "fonts/material-icons.ttf"
+  }
+
   FontLoader {
     id: tablerFont
     source: "fonts/noctalia-tabler.ttf"
   }
 
-  // Tabler glyph path — visible when name is a Tabler icon
+  readonly property bool useMaterial: Theme.iconTheme === "Material" && Material.has(root.name)
+  readonly property bool useMaterialOutlined: root.useMaterial && Material.isOutlined(root.name)
+
+  FontLoader {
+    id: outlinedMaterialFont
+    source: "fonts/material-icons-outlined.otf"
+  }
+
+  Text {
+    id: materialText
+    anchors.centerIn: parent
+    visible: root.useMaterial
+    text: Material.resolve(root.name)
+    color: root.color
+    font.family: root.useMaterialOutlined ? (outlinedMaterialFont.name || "Material Icons Outlined") : (materialFont.name || "Material Icons")
+    font.pixelSize: root.size
+    font.hintingPreference: Font.PreferNoHinting
+    renderType: Text.NativeRendering
+  }
+
   Text {
     id: tablerText
     anchors.centerIn: parent
-    visible: Tabler.has(root.name)
+    visible: !root.useMaterial && Tabler.has(root.name)
     text: Tabler.resolve(root.name)
     color: root.color
     font.family: tablerFont.name || "noctalia-tabler"
@@ -38,11 +57,10 @@ Item {
     renderType: Text.NativeRendering
   }
 
-  // SVG fallback path — visible when not a Tabler icon
   Image {
     id: img
     anchors.fill: parent
-    visible: !tablerText.visible
+    visible: !materialText.visible && !tablerText.visible
     fillMode: Image.PreserveAspectFit
     property var list: []
     property int idx: 0
@@ -71,26 +89,24 @@ Item {
     anchors.fill: parent
     source: img
     color: root.color
-    visible: !tablerText.visible
+    visible: !materialText.visible && !tablerText.visible
   }
 
   function reload() {
-    if (Tabler.has(root.name)) {
-      // Tabler path — no SVG resolve needed, just ensure text updates
-      tablerText.text = Tabler.resolve(root.name)
-    } else {
+    materialText.text = Material.has(root.name) ? Material.resolve(root.name) : ""
+    tablerText.text = Tabler.has(root.name) ? Tabler.resolve(root.name) : ""
+    if (!root.useMaterial && !Tabler.has(root.name))
       img.start(Icons.resolve(Theme.iconTheme, root.name))
-    }
   }
 
   onNameChanged: reload()
+  onUseMaterialChanged: reload()
   Component.onCompleted: reload()
 
   Connections {
     target: Theme
     function onIconThemeChanged() {
-      // Only SVG path depends on theme; Tabler is theme-independent (monochrome font)
-      if (!Tabler.has(root.name)) root.reload()
+      root.reload()
     }
   }
 }

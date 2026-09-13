@@ -17,8 +17,6 @@ Scope {
   readonly property string fontFamily: Theme.fontFamily
   readonly property color matchColor: "#cb4b16"
 
-  // Terminal handling — works with any installed terminal.
-  // Respects $TERMINAL, then xdg-terminal-exec, then common terminals.
   property var terminalCmd: ["kitty", "-e"]
   property int termProbeIdx: 0
   readonly property var termCandidates: [
@@ -68,23 +66,16 @@ Scope {
     }
   }
 
-  // Debounce the actual filter: typing stays responsive, but the list + resize
-  // animation only recompute after a short pause, so fast typing doesn't rebuild
-  // the ListView and restart the height animation on every keystroke.
   Timer {
     id: searchTimer
     interval: 60
     onTriggered: root.filterQuery = root.query
   }
 
-  // Runs the raw query as a shell command (used when no app matches).
   Process {
     id: cmdRunner
   }
 
-  // Keep the surface mapped briefly after a key/mouse-initiated close so the
-  // triggering key's press+release both land here instead of the refocused app
-  // (mango transfers held keys on focus change, e.g. Esc unfullscreening video).
   property bool closePending: false
 
   function requestClose() {
@@ -187,13 +178,11 @@ Scope {
     }
   }
 
-  // Sorted app list, computed once (not per keystroke).
   readonly property var sortedApps: {
     const all = DesktopEntries.applications.values.filter(e => !e.noDisplay)
     return all.slice().sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)
   }
 
-  // Lowercased names, computed once so typing only does a cheap includes().
   readonly property var lcNames: root.sortedApps.map(e => e.name.toLowerCase())
 
   readonly property var results: {
@@ -254,9 +243,6 @@ Scope {
       onTriggered: { if (root.open) search.forceActiveFocus() }
     }
 
-    // Full-screen click catcher: clicking outside the card dismisses the launcher,
-    // so the window never needs to be box-sized (which forced the layer surface
-    // to resize on every search result change -> janky animation).
     MouseArea {
       anchors.fill: parent
       onClicked: root.requestClose()

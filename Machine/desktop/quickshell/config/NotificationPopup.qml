@@ -2,7 +2,6 @@ import QtQuick
 import Quickshell
 import QtQuick.Layouts
 
-// Presentational toast card — refined like Caelestia, sharp monochrome
 Rectangle {
   id: root
   property int notifId: -1

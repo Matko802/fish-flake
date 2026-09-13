@@ -4,9 +4,6 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 
-// Normal file selector for the profile picture: browse any folder on disk
-// and pick any image. Opened via Settings → Profile picture / Choose
-// or `quickshell ipc call avatar toggle`.
 Scope {
   id: root
 
