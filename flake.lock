@@ -138,11 +138,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789485973,
-        "narHash": "sha256-VVSLqn4Bb2Y9QE8iyFTdnPz5zs7f4v76yAQNML1aa8o=",
+        "lastModified": 1789491144,
+        "narHash": "sha256-MhSU463ZSRiETa+tJYF46JXT96l2UXM+y03bAIFICAg=",
         "ref": "main",
-        "rev": "cdbf9ac1eb6e121e1f0d8c00a5f2439752e01944",
-        "revCount": 123,
+        "rev": "b54c896498b337be9eae8be875fb687ce30cb257",
+        "revCount": 125,
         "type": "git",
         "url": "https://github.com/komaruworld/mocktail"
       },

@@ -43,9 +43,17 @@
   networking.hostName = "fishy";
 
   boot.loader.limine.enable = true;
+  boot.loader.timeout = 2;
+  boot.loader.limine.maxGenerations = 25;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
   boot.kernelPackages = pkgs.cachyosKernels."linuxPackages-cachyos-latest";
+
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-rocm;
+    rocmOverrideGfx = "10.3.0";
+  };
 
   services.wivrn = {
     enable = true;
@@ -229,7 +237,6 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-    ollama-rocm
     (discord.override {
       withEquicord = true;
       withOpenASAR = true;
