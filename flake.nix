@@ -39,6 +39,10 @@
       url = "github:Matko802/shark-scrp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sharkshell = {
+      url = "path:/mnt/ssd/My-Files/Projects/sharkshell";
+      flake = false;
+    };
 
   };
 
@@ -53,6 +57,7 @@
       jefetch,
       sharkmanager,
       artixy,
+      sharkshell,
       ...
     }@inputs:
     let
@@ -100,6 +105,7 @@
       nixosConfigurations.machine1 = mkHost ./Machine/machine-config.nix;
       nixosConfigurations.machine2 = mkHost ./Machine2/machine-config.nix;
       packages.x86_64-linux.sharkvis = inputs.sharkvis.packages.x86_64-linux.default;
+      packages.x86_64-linux.sharkshell = (nixpkgs.legacyPackages.x86_64-linux.callPackage "${sharkshell}/packaging.nix" { }).sharkshell;
       packages.x86_64-linux.mocktail = inputs.mocktail.packages.x86_64-linux.default;
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;

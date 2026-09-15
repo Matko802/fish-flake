@@ -3,7 +3,7 @@
   programs.niri.package = pkgs.niri;
 
   environment.systemPackages = with pkgs; [
-    grim
+    wayshot
     slurp
     satty
     wl-clipboard

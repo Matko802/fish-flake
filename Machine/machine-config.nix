@@ -18,14 +18,13 @@
     ./kitty/kitty-config.nix
     ./mpv/mpv-config.nix
     ./helix/helix-config.nix
-    ./zed/zed-config.nix
     ./fetch/fetch-config.nix
     ./nautilus/nautilus-config.nix
     ./desktop/niri/niri-config.nix
     ./desktop/cliphist/cliphist-config.nix
     ./desktop/hyprpicker/hyprpicker-config.nix
     ./desktop/libnotify/libnotify-config.nix
-    ./desktop/quickshell/quickshell-config.nix
+    "${inputs.sharkshell}/sharkshell.nix"
     ./gtk/gtk-config.nix
     ./qtengine/qtengine-config.nix
     ./artixy/artixy-config.nix
@@ -48,11 +47,6 @@
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
   boot.kernelPackages = pkgs.cachyosKernels."linuxPackages-cachyos-latest";
 
-  services.ollama = {
-    enable = true;
-    package = pkgs.ollama-rocm;
-    rocmOverrideGfx = "10.3.0";
-  };
   services.wivrn = {
     enable = true;
     openFirewall = true;
@@ -235,6 +229,7 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    ollama-rocm
     (discord.override {
       withEquicord = true;
       withOpenASAR = true;
@@ -271,6 +266,7 @@
     sound-theme-freedesktop
     ventoy
     kitty
+    zed-editor
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

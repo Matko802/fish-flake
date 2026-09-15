@@ -153,10 +153,11 @@ binds {
     Mod+Shift+F { fullscreen-window; }
     Mod+W { toggle-overview; }
     Mod+V { spawn "quickshell" "ipc" "call" "clipboard" "toggle"; }
+    Mod+N { spawn "quickshell" "ipc" "call" "clock" "toggle"; }
     Mod+P { spawn "hyprpicker" "--autocopy"; }
 
-    Print { spawn "sh" "-c" "grim - | satty --filename - --output-filename '/home/matko/Obrázky/Screenshots/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png' --early-exit --actions-on-enter save-to-clipboard --save-after-copy --copy-command 'wl-copy'"; }
-    Shift+Print { spawn "sh" "-c" "grim -g \"$(slurp)\" - | satty --filename - --output-filename '/home/matko/Obrázky/Screenshots/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png' --early-exit --actions-on-enter save-to-clipboard --save-after-copy --copy-command 'wl-copy'"; }
+    Print { spawn "sh" "-c" "wayshot --silent - | satty --filename - --output-filename '/home/matko/Obrázky/Screenshots/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png' --early-exit --actions-on-enter save-to-clipboard --save-after-copy --copy-command 'wl-copy'"; }
+    Shift+Print { spawn "sh" "-c" "wayshot --silent - -g | satty --filename - --output-filename '/home/matko/Obrázky/Screenshots/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png' --early-exit --actions-on-enter save-to-clipboard --save-after-copy --copy-command 'wl-copy'"; }
 
     XF86PowerOff { spawn "quickshell" "ipc" "call" "power" "toggle"; }
     XF86Calculator { spawn "kcalc"; }
@@ -169,6 +170,8 @@ binds {
     Mod+Shift+Right { move-column-right; }
     Mod+Shift+Up { move-window-up; }
     Mod+Shift+Down { move-window-down; }
+    Mod+Ctrl+Up { consume-window-into-column; }
+    Mod+Ctrl+Down { expel-window-from-column; }
     Mod+Alt+Right { set-column-width "+10%"; }
     Mod+Alt+Left { set-column-width "-10%"; }
     Mod+Alt+Up { set-window-height "-10%"; }

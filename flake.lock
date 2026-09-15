@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789326780,
-        "narHash": "sha256-nDyOMP1A9X59RbGIO1wofqNFwf0SCOr16UbI3T7m+fo=",
+        "lastModified": 1789488776,
+        "narHash": "sha256-RCOeUzZMC0C7bjmoeZm2C5HD997FIFqlpDPQqTEjFic=",
         "owner": "Matko802",
         "repo": "artixy",
-        "rev": "79ff99ef0bc685095856001d735492f54ed4cd2b",
+        "rev": "ac4f7236adc97c0bc7816c9848f69d6066f6363b",
         "type": "github"
       },
       "original": {
@@ -117,11 +117,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789320507,
-        "narHash": "sha256-NkzaddL1Aw7P/pzBcp9jx+NcGqxW5xm2m8QSh9Mt1jc=",
+        "lastModified": 1789453770,
+        "narHash": "sha256-d0yv8L7g4JYVzefPAk+Yb+87oDYVjYUq+3rSzMaP99k=",
         "owner": "Matko802",
         "repo": "jefetch",
-        "rev": "631bc730588cce897c522825ee10f5745479048c",
+        "rev": "01169edb6c5c1afb8e69fa6b1f697b0154f10070",
         "type": "github"
       },
       "original": {
@@ -138,11 +138,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789299161,
-        "narHash": "sha256-AWusEt5B7F8ppiu2MJGsLOxkv1BvDC/2fYmzqPh8uhU=",
+        "lastModified": 1789485973,
+        "narHash": "sha256-VVSLqn4Bb2Y9QE8iyFTdnPz5zs7f4v76yAQNML1aa8o=",
         "ref": "main",
-        "rev": "017f79398d8c4084c143d8ef5a6ca5bcf5bfcb38",
-        "revCount": 113,
+        "rev": "cdbf9ac1eb6e121e1f0d8c00a5f2439752e01944",
+        "revCount": 123,
         "type": "git",
         "url": "https://github.com/komaruworld/mocktail"
       },
@@ -177,11 +177,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1789149629,
-        "narHash": "sha256-H6GwaZzZf+4npqv0tph94w9tZddSjFjmQrVsW0z78uk=",
+        "lastModified": 1789286504,
+        "narHash": "sha256-eiEK7cKZORNEvX0GeF3RtNEF/JXhgf2RqSp3230q13E=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "eaad089433ca2bb662274377d33df3d0e51ef28b",
+        "rev": "ef34387ddd751e1ab8857adf4676492d32eb24ec",
         "type": "github"
       },
       "original": {
@@ -252,6 +252,7 @@
         "qtengine": "qtengine",
         "shark-scrp": "shark-scrp",
         "sharkmanager": "sharkmanager",
+        "sharkshell": "sharkshell",
         "sharkvis": "sharkvis"
       }
     },
@@ -318,6 +319,19 @@
         "type": "github"
       }
     },
+    "sharkshell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789453889,
+        "narHash": "sha256-kffgkUb3s4GMad0lzE2HBQ9/rvE+Bh3kX0LLnIhjjN0=",
+        "path": "/mnt/ssd/My-Files/Projects/sharkshell",
+        "type": "path"
+      },
+      "original": {
+        "path": "/mnt/ssd/My-Files/Projects/sharkshell",
+        "type": "path"
+      }
+    },
     "sharkvis": {
       "inputs": {
         "nixpkgs": [
@@ -325,11 +339,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788974036,
-        "narHash": "sha256-Dc62VGN6xu4ZEKwkLiVFFOeo82njFyvXJni+xomGly0=",
+        "lastModified": 1789453757,
+        "narHash": "sha256-khoXEE3CrjHmYkk1dfAYLFLH1ZG9i3rDRUppvfKgZnM=",
         "owner": "Matko802",
         "repo": "sharkvis",
-        "rev": "c21b47235243c47a0ce29ea40cdf3d6dbfb54947",
+        "rev": "2b2f4993d62902397a6174a429c59eb9c22585e0",
         "type": "github"
       },
       "original": {
