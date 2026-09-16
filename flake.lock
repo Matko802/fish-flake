@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789498863,
-        "narHash": "sha256-mDQMScXrxazeGYHsqjVGe8158DBIIMW1JDV77vCznP8=",
+        "lastModified": 1789574557,
+        "narHash": "sha256-bDnah/5siMglsIf438CsJl3moKJlGu/tUXhyYFUv5dQ=",
         "owner": "Matko802",
         "repo": "artixy",
-        "rev": "3f97f94058d4c818723afb320c51dece01bf80cd",
+        "rev": "57ca8e57670715b0905a3c6bd720462bd6b732e9",
         "type": "github"
       },
       "original": {
@@ -468,11 +468,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1789573163,
-        "narHash": "sha256-E8XvcC0l+i9QtznQTn9VuSB7HapuknPNxLOYgmhMcKs=",
+        "lastModified": 1789574632,
+        "narHash": "sha256-SdHRtNdOYvyKencdjg+RG1+blIAlPbt0kl1BPWejWfA=",
         "owner": "Matko802",
         "repo": "tuimessager",
-        "rev": "03a62ad935c1e30230e880329e10a0947690e2dc",
+        "rev": "3e72cfa9f882e5467af288d41eed522a9b996c30",
         "type": "github"
       },
       "original": {

@@ -7,7 +7,6 @@
     slurp
     satty
     wl-clipboard
-    xwayland-satellite
     hyprpolkitagent
     playerctl
   ];

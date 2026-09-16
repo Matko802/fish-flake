@@ -13,7 +13,7 @@
     ./nh/nh-config.nix
     ./udev/udev-config.nix
     ./fastfetch/fastfetch-config.nix
-    ./fish/fish-config.nix
+    ./nushell/nushell-config.nix
     ./Starship/starship-config.nix
     ./kitty/kitty-config.nix
     ./mpv/mpv-config.nix
@@ -112,8 +112,7 @@
 
   services.flatpak.enable = true;
 
-  # Fish
-  programs.fish.enable = true;
+  # Nushell (enabled in ./nushell/nushell-config.nix)
 
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
@@ -187,7 +186,7 @@
   users.users."matko" = {
     isNormalUser = true;
     description = "Matko";
-    shell = pkgs.fish;
+    shell = pkgs.nushell;
     extraGroups = [ "networkmanager" "wheel" "i2c" ];
     packages = with pkgs; [
       opencode-desktop
