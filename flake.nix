@@ -35,6 +35,10 @@
       url = "git+https://github.com/komaruworld/mocktail?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    niri = {
+      url = "github:YaLTeR/niri";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     shark-scrp = {
       url = "github:Matko802/shark-scrp";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,6 +46,10 @@
     sharkshell = {
       url = "path:/mnt/ssd/My-Files/Projects/sharkshell";
       flake = false;
+    };
+    tuimessager = {
+      url = "github:Matko802/tuimessager";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
   };
@@ -58,6 +66,7 @@
       sharkmanager,
       artixy,
       sharkshell,
+      tuimessager,
       ...
     }@inputs:
     let
@@ -66,9 +75,9 @@
       jefetchOverlay = jefetch.overlays.default;
       sharkmanagerOverlay = sharkmanager.overlays.default;
       artixyOverlay = artixy.overlays.default;
+      tuimessagerOverlay = tuimessager.overlays.default;
 
       sharedModules = [
-
         ({ ... }: {
           nix.settings = {
             max-jobs = "auto";
@@ -80,11 +89,13 @@
 
           nixpkgs.overlays = [
             helium-flake.overlays.default
+            inputs.niri.overlays.default
             sharkvisOverlay
             sharkScrpOverlay
             jefetchOverlay
             sharkmanagerOverlay
             artixyOverlay
+            tuimessagerOverlay
           ];
 
           environment.systemPackages = [
@@ -111,5 +122,7 @@
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
       packages.x86_64-linux.sharkmanager = inputs.sharkmanager.packages.x86_64-linux.default;
       packages.x86_64-linux.artixy = inputs.artixy.packages.x86_64-linux.default;
+      packages.x86_64-linux.tuimessager = inputs.tuimessager.packages.x86_64-linux.default;
+      packages.x86_64-linux.tuimessager-server = inputs.tuimessager.packages.x86_64-linux.tuimessager-server;
     };
 }

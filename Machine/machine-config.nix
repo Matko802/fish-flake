@@ -75,7 +75,11 @@
   programs.gamemode.enable = true;
   programs.gamescope.enable = true;
 
-  programs.kdeconnect.enable = true;
+  programs.localsend = {
+      enable = true;
+      openFirewall = true;
+    };
+
   services.udisks2.enable = true;
   services.upower.enable = true;
   virtualisation.podman = {
@@ -203,6 +207,8 @@
       jefetch
       sharkmanager
       artixy
+      tuimessager
+      tuimessager-server
       pear-desktop
       equibop
       godot
