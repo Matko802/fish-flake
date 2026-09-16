@@ -206,8 +206,6 @@
       jefetch
       sharkmanager
       artixy
-      tuimessager
-      tuimessager-server
       pear-desktop
       equibop
       godot

@@ -47,10 +47,6 @@
       url = "path:/mnt/ssd/My-Files/Projects/sharkshell";
       flake = false;
     };
-    tuimessager = {
-      url = "github:Matko802/tuimessager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
   };
 
@@ -66,7 +62,6 @@
       sharkmanager,
       artixy,
       sharkshell,
-      tuimessager,
       ...
     }@inputs:
     let
@@ -75,7 +70,6 @@
       jefetchOverlay = jefetch.overlays.default;
       sharkmanagerOverlay = sharkmanager.overlays.default;
       artixyOverlay = artixy.overlays.default;
-      tuimessagerOverlay = tuimessager.overlays.default;
 
       sharedModules = [
         ({ ... }: {
@@ -95,7 +89,6 @@
             jefetchOverlay
             sharkmanagerOverlay
             artixyOverlay
-            tuimessagerOverlay
           ];
 
           environment.systemPackages = [
@@ -122,7 +115,5 @@
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
       packages.x86_64-linux.sharkmanager = inputs.sharkmanager.packages.x86_64-linux.default;
       packages.x86_64-linux.artixy = inputs.artixy.packages.x86_64-linux.default;
-      packages.x86_64-linux.tuimessager = inputs.tuimessager.packages.x86_64-linux.default;
-      packages.x86_64-linux.tuimessager-server = inputs.tuimessager.packages.x86_64-linux.tuimessager-server;
     };
 }
