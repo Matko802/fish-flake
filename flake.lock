@@ -468,11 +468,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1789582127,
-        "narHash": "sha256-abj1YaVoVt8Wi6PYsq576VdTnplnT2QgTYrRWP8G720=",
+        "lastModified": 1789582731,
+        "narHash": "sha256-eBsNZJXNaG3P8LTDl8cei6c1hkeHzL/YfiIIv14ftPk=",
         "owner": "Matko802",
         "repo": "tuimessager",
-        "rev": "e731c0dfe128d0681a0e144eef8296e0ae7ed1f3",
+        "rev": "c8d1d9055b9fd43e8b88dac5fb94f583d3190bef",
         "type": "github"
       },
       "original": {
