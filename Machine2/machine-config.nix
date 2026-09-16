@@ -12,12 +12,12 @@
 
   services.xserver.libinput.enable = true;
 
-  programs.nushell.enable = true;
+  programs.fish.enable = true;
 
   users.users."matko" = {
     isNormalUser = true;
     description = "Matko";
-    shell = pkgs.nushell;
+    shell = pkgs.fish;
     extraGroups = [ "networkmanager" "wheel" ];
   };
 

@@ -39,6 +39,10 @@
       url = "github:YaLTeR/niri";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    xwayland-satellite = {
+      url = "github:Supreeeme/xwayland-satellite";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     shark-scrp = {
       url = "github:Matko802/shark-scrp";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -84,6 +88,7 @@
           nixpkgs.overlays = [
             helium-flake.overlays.default
             inputs.niri.overlays.default
+            inputs.xwayland-satellite.overlays.default
             sharkvisOverlay
             sharkScrpOverlay
             jefetchOverlay
