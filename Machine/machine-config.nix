@@ -12,15 +12,14 @@
     ./fonts/fonts-config.nix
     ./nh/nh-config.nix
     ./udev/udev-config.nix
-    ./fastfetch/fastfetch-config.nix
     ./fish/fish-config.nix
     ./Starship/starship-config.nix
     ./kitty/kitty-config.nix
     ./mpv/mpv-config.nix
     ./helix/helix-config.nix
-    ./fetch/fetch-config.nix
     ./nautilus/nautilus-config.nix
     ./desktop/niri/niri-config.nix
+    ./desktop/mango/mango-config.nix
     ./desktop/cliphist/cliphist-config.nix
     ./desktop/hyprpicker/hyprpicker-config.nix
     ./desktop/libnotify/libnotify-config.nix
@@ -29,16 +28,8 @@
     ./qtengine/qtengine-config.nix
     ./artixy/artixy-config.nix
     ./virtualization/kvm/kvm-config.nix
-    ./virtualization/virtualbox/virtualbox-config.nix
     ./flatpak/flatpak-config.nix
   ];
-
-  nixpkgs.overlays = [
-    inputs.nix-cachyos-kernel.overlays.pinned
-  ];
-
-  nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];
-  nix.settings.trusted-public-keys = [ "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" ];
 
   networking.hostName = "fishy";
 
@@ -47,7 +38,7 @@
   boot.loader.limine.maxGenerations = 25;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  boot.kernelPackages = pkgs.cachyosKernels."linuxPackages-cachyos-latest";
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   services.ollama = {
     enable = true;
@@ -177,7 +168,6 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    jack.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -190,7 +180,6 @@
     shell = pkgs.fish;
     extraGroups = [ "networkmanager" "wheel" "i2c" ];
     packages = with pkgs; [
-      opencode-desktop
       zapzap
       prismlauncher
       helium
@@ -205,10 +194,11 @@
       sharkvis
       shark-scrp
       jefetch
+      fetch
+      fastfetch
       sharkmanager
       artixy
       pear-desktop
-      equibop
       godot
       litellm
       kdePackages.filelight
@@ -225,8 +215,7 @@
       inkscape
       blender
       audacity
-      lmms
-      fetch
+      lmms-appimage
       onlyoffice-desktopeditors
       itch
       element-desktop
@@ -241,21 +230,23 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    python3
+    evcxr
+    rustup
+    rustc
+    tldr
+    cargo
+    gcc
     (discord.override {
-      withEquicord = true;
+      withVencord = true;
       withOpenASAR = true;
     })
     fresh-editor
     usbutils
     p7zip
-    cargo
-    rustup
-    rustc
-    gcc
     appimage-run
     rpi-imager
     steamcmd
-    fastfetch
     btop
     starship
     wine-wayland
@@ -292,6 +283,14 @@
   programs.appimage = {
     enable = true;
     binfmt = true;
+  };
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "prohibit-password";
+      PasswordAuthentication = true;
+    };
   };
 
   # Custom DNS

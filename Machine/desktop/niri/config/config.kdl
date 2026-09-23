@@ -1,3 +1,7 @@
+include optional=true "/home/matko/.config/niri-dynamic/borders.kdl"
+include optional=true "/home/matko/.config/niri-dynamic/transparency.kdl"
+include optional=true "/home/matko/.config/niri-dynamic/blur.kdl"
+
 input {
     keyboard {
         xkb {
@@ -19,7 +23,7 @@ input {
         accel-profile "adaptive"
         accel-speed 0.0
     }
-    focus-follows-mouse max-scroll-amount="0%"
+    focus-follows-mouse max-scroll-amount="1%"
 }
 
 output "DP-1" {
@@ -32,17 +36,25 @@ layout {
     gaps 8
     center-focused-column "never"
     preset-column-widths {
+        proportion 0.25
         proportion 0.33333
         proportion 0.5
         proportion 0.66667
+        proportion 0.75
+        proportion 1.0
+    }
+    preset-window-heights {
+        proportion 0.25
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+        proportion 0.75
         proportion 1.0
     }
     default-column-width { proportion 0.5; }
     focus-ring { off; }
     border {
         width 2
-        active-color "#ffffffff"
-        inactive-color "#444444ff"
         urgent-color "#ff0000ff"
     }
     struts {}
@@ -92,12 +104,6 @@ window-rule {
     open-floating true
 }
 window-rule {
-    match app-id=r#"satty"#
-    open-floating true
-    default-column-width { fixed 900; }
-    default-window-height { fixed 800; }
-}
-window-rule {
     match app-id=r#"tensaku"#
     open-floating true
     default-column-width { fixed 900; }
@@ -133,7 +139,6 @@ window-rule {
     default-column-width { fixed 900; }
     default-window-height { fixed 800; }
 }
-
 binds {
     Mod+Return { spawn "kitty"; }
     Mod+C { spawn "zeditor"; }
@@ -156,8 +161,9 @@ binds {
     Mod+N { spawn "quickshell" "ipc" "call" "clock" "toggle"; }
     Mod+P { spawn "hyprpicker" "--autocopy"; }
 
-    Print { spawn "sh" "-c" "wayshot --silent - | satty --filename - --output-filename '/home/matko/Obrázky/Screenshots/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png' --early-exit --actions-on-enter save-to-clipboard --save-after-copy --copy-command 'wl-copy'"; }
-    Shift+Print { spawn "sh" "-c" "wayshot --silent - -g | satty --filename - --output-filename '/home/matko/Obrázky/Screenshots/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png' --early-exit --actions-on-enter save-to-clipboard --save-after-copy --copy-command 'wl-copy'"; }
+    Print { screenshot-screen; }
+    Ctrl+Shift+Print { screenshot-window; }
+    Shift+Print { screenshot; }
 
     XF86PowerOff { spawn "quickshell" "ipc" "call" "power" "toggle"; }
     XF86Calculator { spawn "kcalc"; }
@@ -176,6 +182,8 @@ binds {
     Mod+Alt+Left { set-column-width "-10%"; }
     Mod+Alt+Up { set-window-height "-10%"; }
     Mod+Alt+Down { set-window-height "+10%"; }
+    Mod+A { switch-preset-column-width; }
+    Mod+D { switch-preset-window-height; }
 
     Mod+1 { focus-workspace 1; }
     Mod+2 { focus-workspace 2; }
