@@ -19,14 +19,12 @@
     ./helix/helix-config.nix
     ./nautilus/nautilus-config.nix
     ./desktop/niri/niri-config.nix
-    ./desktop/mango/mango-config.nix
     ./desktop/cliphist/cliphist-config.nix
     ./desktop/hyprpicker/hyprpicker-config.nix
     ./desktop/libnotify/libnotify-config.nix
     "${inputs.sharkshell}/sharkshell.nix"
     ./gtk/gtk-config.nix
     ./qtengine/qtengine-config.nix
-    ./artixy/artixy-config.nix
     ./virtualization/kvm/kvm-config.nix
     ./flatpak/flatpak-config.nix
   ];
@@ -197,7 +195,6 @@
       fetch
       fastfetch
       sharkmanager
-      artixy
       pear-desktop
       godot
       litellm
@@ -230,13 +227,11 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    nodejs
+    opencode
     python3
-    evcxr
-    rustup
-    rustc
-    tldr
-    cargo
-    gcc
+    clang-tools
+    vesktop
     (discord.override {
       withVencord = true;
       withOpenASAR = true;

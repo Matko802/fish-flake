@@ -23,16 +23,8 @@
       url = "github:Matko802/sharkmanager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    artixy = {
-      url = "github:Matko802/artixy";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     mocktail = {
       url = "git+https://github.com/komaruworld/mocktail?ref=main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    xwayland-satellite = {
-      url = "github:Supreeeme/xwayland-satellite";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     shark-scrp = {
@@ -61,7 +53,6 @@
       lmms-appimage,
       jefetch,
       sharkmanager,
-      artixy,
       sharkshell,
       ...
     }@inputs:
@@ -71,7 +62,6 @@
       lmmsAppimageOverlay = lmms-appimage.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       sharkmanagerOverlay = sharkmanager.overlays.default;
-      artixyOverlay = artixy.overlays.default;
 
       sharedModules = [
         ({ ... }: {
@@ -86,13 +76,11 @@
 
           nixpkgs.overlays = [
             helium-flake.overlays.default
-            inputs.xwayland-satellite.overlays.default
             sharkvisOverlay
             sharkScrpOverlay
             lmmsAppimageOverlay
             jefetchOverlay
             sharkmanagerOverlay
-            artixyOverlay
           ];
 
           environment.systemPackages = [
@@ -119,6 +107,5 @@
       packages.x86_64-linux.lmms-appimage = inputs.lmms-appimage.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
       packages.x86_64-linux.sharkmanager = inputs.sharkmanager.packages.x86_64-linux.default;
-      packages.x86_64-linux.artixy = inputs.artixy.packages.x86_64-linux.default;
     };
 }

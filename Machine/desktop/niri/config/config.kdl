@@ -68,6 +68,7 @@ gestures {
     }
 }
 
+spawn-at-startup "quickshell" "-p" "/home/matko/.config/qs-tray-watcher"
 spawn-at-startup "quickshell"
 spawn-at-startup "gsr-ui"
 spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist store"
@@ -81,15 +82,6 @@ animations {
 }
 
 window-rule {
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    default-column-width {}
-}
-window-rule {
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
-    open-floating true
-}
-
-window-rule {
     match app-id=r#"kcalc"#
     open-floating true
 }
@@ -100,35 +92,7 @@ window-rule {
     default-window-height { fixed 800; }
 }
 window-rule {
-    match app-id=r#"ytdownloader"#
-    open-floating true
-}
-window-rule {
-    match app-id=r#"tensaku"#
-    open-floating true
-    default-column-width { fixed 900; }
-    default-window-height { fixed 800; }
-}
-window-rule {
-    match app-id=r#"nm-connection-editor"#
-    open-floating true
-    default-column-width { fixed 900; }
-    default-window-height { fixed 800; }
-}
-window-rule {
-    match app-id=r#"org\.pulseaudio\.pavucontrol"#
-    open-floating true
-    default-column-width { fixed 900; }
-    default-window-height { fixed 800; }
-}
-window-rule {
     match app-id=r#"mpv"#
-    open-floating true
-    default-column-width { fixed 900; }
-    default-window-height { fixed 800; }
-}
-window-rule {
-    match app-id=r#"btop"#
     open-floating true
     default-column-width { fixed 900; }
     default-window-height { fixed 800; }
@@ -176,8 +140,8 @@ binds {
     Mod+Shift+Right { move-column-right; }
     Mod+Shift+Up { move-window-up; }
     Mod+Shift+Down { move-window-down; }
-    Mod+Ctrl+Up { consume-window-into-column; }
-    Mod+Ctrl+Down { expel-window-from-column; }
+    Mod+Ctrl+Right { consume-window-into-column; }
+    Mod+Ctrl+Left { expel-window-from-column; }
     Mod+Alt+Right { set-column-width "+10%"; }
     Mod+Alt+Left { set-column-width "-10%"; }
     Mod+Alt+Up { set-window-height "-10%"; }
@@ -227,8 +191,8 @@ binds {
     Mod+Shift+iacute { move-column-to-workspace 9; }
     Mod+Shift+eacute { move-column-to-workspace 10; }
 
-    Mod+Ctrl+Left { focus-workspace-up; }
-    Mod+Ctrl+Right { focus-workspace-down; }
+    Mod+Ctrl+Up { focus-workspace-up; }
+    Mod+Ctrl+Down { focus-workspace-down; }
     Mod+Page_Down { focus-workspace-down; }
     Mod+Page_Up { focus-workspace-up; }
 
