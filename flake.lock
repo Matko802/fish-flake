@@ -149,6 +149,26 @@
         "type": "github"
       }
     },
+    "pandora-launcher": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790698721,
+        "narHash": "sha256-oG0C4er3b/6W+VORyhDO8v02l7NyvfLWj4O6jt9vGFU=",
+        "owner": "Matko802",
+        "repo": "PandoraLauncher-Flake",
+        "rev": "0e75d3fb83f2cdc33535e9403cf9cd8b8b46e85f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Matko802",
+        "repo": "PandoraLauncher-Flake",
+        "type": "github"
+      }
+    },
     "qtengine": {
       "inputs": {
         "nixpkgs": [
@@ -176,6 +196,7 @@
         "lmms-appimage": "lmms-appimage",
         "mocktail": "mocktail",
         "nixpkgs": "nixpkgs",
+        "pandora-launcher": "pandora-launcher",
         "qtengine": "qtengine",
         "shark-scrp": "shark-scrp",
         "sharkmanager": "sharkmanager",

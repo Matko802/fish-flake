@@ -213,6 +213,7 @@
       blender
       audacity
       lmms-appimage
+      pandora-launcher
       onlyoffice-desktopeditors
       itch
       element-desktop

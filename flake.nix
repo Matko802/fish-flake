@@ -35,6 +35,10 @@
       url = "github:Matko802/lmms-appimage-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    pandora-launcher = {
+      url = "github:Matko802/PandoraLauncher-Flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sharkshell = {
       url = "path:/mnt/ssd/My-Files/Projects/sharkshell";
       flake = false;
@@ -51,6 +55,7 @@
       mocktail,
       shark-scrp,
       lmms-appimage,
+      pandora-launcher,
       jefetch,
       sharkmanager,
       sharkshell,
@@ -60,6 +65,7 @@
       sharkvisOverlay = sharkvis.overlays.default;
       sharkScrpOverlay = shark-scrp.overlays.default;
       lmmsAppimageOverlay = lmms-appimage.overlays.default;
+      pandoraLauncherOverlay = pandora-launcher.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       sharkmanagerOverlay = sharkmanager.overlays.default;
 
@@ -79,6 +85,7 @@
             sharkvisOverlay
             sharkScrpOverlay
             lmmsAppimageOverlay
+            pandoraLauncherOverlay
             jefetchOverlay
             sharkmanagerOverlay
           ];
@@ -105,6 +112,7 @@
       packages.x86_64-linux.mocktail = inputs.mocktail.packages.x86_64-linux.default;
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
       packages.x86_64-linux.lmms-appimage = inputs.lmms-appimage.packages.x86_64-linux.default;
+      packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
       packages.x86_64-linux.sharkmanager = inputs.sharkmanager.packages.x86_64-linux.default;
     };
