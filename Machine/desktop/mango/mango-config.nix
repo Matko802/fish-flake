@@ -1,20 +1,17 @@
 { config, pkgs, ... }: {
-  programs.niri.enable = true;
+  programs.mango.enable = true;
 
   environment.systemPackages = with pkgs; [
-    wl-clipboard
-    xwayland-satellite
+    grim
+    slurp
     hyprpolkitagent
     playerctl
     satty
-    libnotify
-    cliphist
-    hyprpicker
-    snixembed
+    wl-clipboard
   ];
 
   systemd.tmpfiles.rules = [
     "d ${config.users.users.matko.home}/.config 0755 ${config.users.users.matko.name} users -"
-    "L+ ${config.users.users.matko.home}/.config/niri - - - - ${./config}"
+    "L+ ${config.users.users.matko.home}/.config/mango - - - - ${./config}"
   ];
 }

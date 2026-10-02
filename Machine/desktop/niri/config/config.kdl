@@ -1,8 +1,9 @@
-include optional=true "/home/matko/.config/niri-dynamic/borders.kdl"
-include optional=true "/home/matko/.config/niri-dynamic/transparency.kdl"
-include optional=true "/home/matko/.config/niri-dynamic/blur.kdl"
+include optional=true "/home/matko/.config/sharkshell/niri/borders.kdl"
+include optional=true "/home/matko/.config/sharkshell/niri/transparency.kdl"
+include optional=true "/home/matko/.config/sharkshell/niri/blur.kdl"
 
 input {
+    disable-power-key-handling
     keyboard {
         xkb {
             layout "sk,us"
@@ -68,7 +69,6 @@ gestures {
     }
 }
 
-spawn-at-startup "quickshell" "-p" "/home/matko/.config/qs-tray-watcher"
 spawn-at-startup "quickshell"
 spawn-at-startup "gsr-ui"
 spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist store"
@@ -82,7 +82,7 @@ animations {
 }
 
 window-rule {
-    match app-id=r#"kcalc"#
+    match app-id=r#"org.gnome.Calculator"#
     open-floating true
 }
 window-rule {
@@ -98,7 +98,13 @@ window-rule {
     default-window-height { fixed 800; }
 }
 window-rule {
-    match app-id=r#"kitty"# title=r#"btop"#
+    match app-id=r#"^btop$"#
+    open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 800; }
+}
+window-rule {
+    match app-id=r#"com.gabm.satty"#
     open-floating true
     default-column-width { fixed 900; }
     default-window-height { fixed 800; }
@@ -107,30 +113,34 @@ binds {
     Mod+Return { spawn "kitty"; }
     Mod+C { spawn "zeditor"; }
     Mod+Q { close-window; }
-    Mod+L { spawn "quickshell" "ipc" "call" "lock" "lock"; }
+    Mod+L { spawn "lock"; }
     Mod+Shift+L { switch-layout "next"; }
-    Mod+Escape { spawn "kitty" "-e" "btop"; }
-    Mod+M { spawn "quickshell" "ipc" "call" "power" "toggle"; }
+    Mod+Escape { spawn "kitty" "--class" "btop" "-e" "btop"; }
+    Mod+M { spawn "powermenu"; }
     Mod+E { spawn "nautilus"; }
     Mod+B { spawn "librewolf"; }
-    Mod+Shift+B { spawn "quickshell" "ipc" "call" "bar" "toggle"; }
+    Mod+Shift+B { spawn "bar"; }
     Mod+T { toggle-window-floating; }
-    Mod+Period { spawn "quickshell" "ipc" "call" "emoji" "toggle"; }
-    Mod+Space { spawn "quickshell" "ipc" "call" "launcher" "toggle"; }
-    Mod+Alt+Space { spawn "quickshell" "ipc" "call" "settings" "toggle"; }
+    Mod+Period { spawn "emojipicker"; }
+    Mod+Space { spawn "launcher"; }
+    Mod+Alt+Space { spawn "settingsmenu"; }
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
     Mod+W { toggle-overview; }
-    Mod+V { spawn "quickshell" "ipc" "call" "clipboard" "toggle"; }
-    Mod+N { spawn "quickshell" "ipc" "call" "clock" "toggle"; }
+    Mod+V { spawn "clipboard"; }
+    Mod+N { spawn "clockmenu"; }
     Mod+P { spawn "hyprpicker" "--autocopy"; }
 
     Print { screenshot-screen; }
     Ctrl+Shift+Print { screenshot-window; }
-    Shift+Print { screenshot; }
+    // Interactive region screenshot (niri-native picker). Niri copies the shot to the
+    // clipboard itself, but as a fallback this waits for the capture event and
+    // re-copies the freshly saved file, so Shift+Print always lands on clipboard.
+    // Cancelling (Esc) produces no event, so nothing is copied.
+    Shift+Print { spawn "sh" "-c" "niri msg action screenshot & event=$(timeout 120 niri msg --json event-stream | grep -m 1 \"ScreenshotCaptured\"); if [ -n \"$event\" ]; then latest=$(ls -t \"$HOME/Pictures/Screenshots/\" 2>/dev/null | head -n 1); if [ -n \"$latest\" ]; then wl-copy --type image/png < \"$HOME/Pictures/Screenshots/$latest\"; fi; fi"; }
 
-    XF86PowerOff { spawn "quickshell" "ipc" "call" "power" "toggle"; }
-    XF86Calculator { spawn "kcalc"; }
+    XF86PowerOff allow-when-locked=true { spawn "powermenu"; }
+    XF86Calculator { spawn "gnome-calculator"; }
 
     Mod+Left { focus-column-left; }
     Mod+Right { focus-column-right; }
@@ -140,8 +150,8 @@ binds {
     Mod+Shift+Right { move-column-right; }
     Mod+Shift+Up { move-window-up; }
     Mod+Shift+Down { move-window-down; }
-    Mod+Ctrl+Right { consume-window-into-column; }
-    Mod+Ctrl+Left { expel-window-from-column; }
+    Mod+Ctrl+Up { consume-window-into-column; }
+    Mod+Ctrl+Down { expel-window-from-column; }
     Mod+Alt+Right { set-column-width "+10%"; }
     Mod+Alt+Left { set-column-width "-10%"; }
     Mod+Alt+Up { set-window-height "-10%"; }
@@ -191,21 +201,21 @@ binds {
     Mod+Shift+iacute { move-column-to-workspace 9; }
     Mod+Shift+eacute { move-column-to-workspace 10; }
 
-    Mod+Ctrl+Up { focus-workspace-up; }
-    Mod+Ctrl+Down { focus-workspace-down; }
+    Mod+Ctrl+Left { focus-workspace-up; }
+    Mod+Ctrl+Right { focus-workspace-down; }
     Mod+Page_Down { focus-workspace-down; }
     Mod+Page_Up { focus-workspace-up; }
 
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "sh" "-c" "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn "sh" "-c" "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"; }
-    XF86AudioMute allow-when-locked=true { spawn "sh" "-c" "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "-l" "1.0" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+    XF86AudioMute allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioPlay allow-when-locked=true { spawn "playerctl" "play-pause"; }
 }
 recent-windows {
     binds {
-        Mod+Tab         { next-window; }
-        Mod+Shift+Tab   { previous-window; }
-        Mod+semicolon       { next-window filter="app-id"; }
+        Mod+Tab { next-window; }
+        Mod+Shift+Tab { previous-window; }
+        Mod+semicolon { next-window filter="app-id"; }
         Mod+Shift+semicolon { previous-window filter="app-id"; }
     }
 }

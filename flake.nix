@@ -2,7 +2,7 @@
   description = "Matko's NixOS System Flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     helium-flake = {
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,6 +23,10 @@
       url = "github:Matko802/sharkmanager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    artixy = {
+      url = "github:Matko802/artixy";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     mocktail = {
       url = "git+https://github.com/komaruworld/mocktail?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,6 +41,10 @@
     };
     pandora-launcher = {
       url = "github:Matko802/PandoraLauncher-Flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    cordial = {
+      url = "path:/mnt/ssd/My-Files/Projects/cordial-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sharkshell = {
@@ -56,8 +64,10 @@
       shark-scrp,
       lmms-appimage,
       pandora-launcher,
+      cordial,
       jefetch,
       sharkmanager,
+      artixy,
       sharkshell,
       ...
     }@inputs:
@@ -66,8 +76,10 @@
       sharkScrpOverlay = shark-scrp.overlays.default;
       lmmsAppimageOverlay = lmms-appimage.overlays.default;
       pandoraLauncherOverlay = pandora-launcher.overlays.default;
+      cordialAppimageOverlay = cordial.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       sharkmanagerOverlay = sharkmanager.overlays.default;
+      artixyOverlay = artixy.overlays.default;
 
       sharedModules = [
         ({ ... }: {
@@ -86,8 +98,10 @@
             sharkScrpOverlay
             lmmsAppimageOverlay
             pandoraLauncherOverlay
+            cordialAppimageOverlay
             jefetchOverlay
             sharkmanagerOverlay
+            artixyOverlay
           ];
 
           environment.systemPackages = [
@@ -113,7 +127,9 @@
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
       packages.x86_64-linux.lmms-appimage = inputs.lmms-appimage.packages.x86_64-linux.default;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
+      packages.x86_64-linux.cordial = inputs.cordial.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
       packages.x86_64-linux.sharkmanager = inputs.sharkmanager.packages.x86_64-linux.default;
+      packages.x86_64-linux.artixy = inputs.artixy.packages.x86_64-linux.default;
     };
 }

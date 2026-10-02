@@ -1,20 +1,17 @@
 { config, pkgs, ... }: {
-  programs.niri.enable = true;
+  programs.hyprland.enable = true;
 
   environment.systemPackages = with pkgs; [
+    grim
+    slurp
+    satty
     wl-clipboard
-    xwayland-satellite
     hyprpolkitagent
     playerctl
-    satty
-    libnotify
-    cliphist
-    hyprpicker
-    snixembed
   ];
 
   systemd.tmpfiles.rules = [
     "d ${config.users.users.matko.home}/.config 0755 ${config.users.users.matko.name} users -"
-    "L+ ${config.users.users.matko.home}/.config/niri - - - - ${./config}"
+    "L+ ${config.users.users.matko.home}/.config/hypr - - - - ${./config}"
   ];
 }

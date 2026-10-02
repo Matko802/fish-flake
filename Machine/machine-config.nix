@@ -19,13 +19,13 @@
     ./helix/helix-config.nix
     ./nautilus/nautilus-config.nix
     ./desktop/niri/niri-config.nix
-    ./desktop/cliphist/cliphist-config.nix
-    ./desktop/hyprpicker/hyprpicker-config.nix
-    ./desktop/libnotify/libnotify-config.nix
+    ./desktop/hyprland/hyprland-config.nix
+    ./desktop/mango/mango-config.nix
     "${inputs.sharkshell}/sharkshell.nix"
     ./gtk/gtk-config.nix
     ./qtengine/qtengine-config.nix
     ./virtualization/kvm/kvm-config.nix
+    ./virtualization/waydroid/waydroid-config.nix
     ./flatpak/flatpak-config.nix
   ];
 
@@ -129,13 +129,13 @@
     LC_TIME = "sk_SK.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-    services.xserver.enable = false;
 
+  # Login screen
   services.displayManager.ly.enable = true;
 
-  # Configure keymap in X11
+
+  # Fuck X11 Stuff
+  services.xserver.enable = false;
   services.xserver.xkb = {
     layout = "sk";
     variant = "qwerty";
@@ -147,8 +147,7 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
+  # Root login
   security.doas = {
       enable = true;
       extraRules = [
@@ -168,10 +167,7 @@
     pulse.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # User account
   users.users."matko" = {
     isNormalUser = true;
     description = "Matko";
@@ -195,6 +191,7 @@
       fetch
       fastfetch
       sharkmanager
+      artixy
       pear-desktop
       godot
       litellm
@@ -211,9 +208,11 @@
       gimp
       inkscape
       blender
+      blockbench
       audacity
       lmms-appimage
       pandora-launcher
+      cordial
       onlyoffice-desktopeditors
       itch
       element-desktop
@@ -251,7 +250,7 @@
     proton-vpn
     lutris
     unzip
-    kdePackages.kcalc
+    gnome-calculator
     gparted
     umu-launcher
     faugus-launcher
@@ -289,6 +288,11 @@
     };
   };
 
+  # Let niri own the power button (bind opens the power menu):
+  # niri must not suspend on it, and logind must ignore it.
+  services.logind.settings.Login = {
+    HandlePowerKey = "ignore";
+  };
   # Custom DNS
   services.resolved = {
     enable = true;

@@ -1,5 +1,42 @@
 {
   "nodes": {
+    "artixy": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790448906,
+        "narHash": "sha256-QgPAWtYkEqSBUkjEP5r05HSwYWr33UezjsSCYpvi+zQ=",
+        "owner": "Matko802",
+        "repo": "artixy",
+        "rev": "38cf034b8bdcc1434af6b41b498a7f249239c747",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Matko802",
+        "repo": "artixy",
+        "type": "github"
+      }
+    },
+    "cordial": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790952966,
+        "narHash": "sha256-QJfgX1KEVkaU9lSfCJ2RveuFQDXx6RinmTW/BDyBxcY=",
+        "path": "/mnt/ssd/My-Files/Projects/cordial-nix",
+        "type": "path"
+      },
+      "original": {
+        "path": "/mnt/ssd/My-Files/Projects/cordial-nix",
+        "type": "path"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -63,11 +100,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790426533,
-        "narHash": "sha256-Kcy3nRYqOS1hVSaeZbrS5/VN76CDGwthZ/YOM0XfnEM=",
+        "lastModified": 1790913517,
+        "narHash": "sha256-TMJ5AI25zQX0L7xsNBbBbn4+zdPVueinLVwFKik1Mc8=",
         "owner": "Matko802",
         "repo": "jefetch",
-        "rev": "a692d2cf57f0b0e5d18dae7730bc15da6a39a20c",
+        "rev": "daabfd91d14c6351cf8b0802fcea7ddc5684f68f",
         "type": "github"
       },
       "original": {
@@ -121,17 +158,14 @@
     "nixpkgs": {
       "locked": {
         "lastModified": 1790323409,
-        "narHash": "sha256-VVTPf+Hyd5ebpjBMHmrLMSBIeW6ls48Bqtosj7CNKLA=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
+        "narHash": "sha256-m4DGo58Fza5ImOegtWOeE18nhpSO1IGzsVA6Lpsb4zw=",
         "rev": "e94cb152ed51bd6e24eb4a41f1460252beb52cd2",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1079315.e94cb152ed51/nixexprs.tar.xz"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
       }
     },
     "nixpkgs-lib": {
@@ -191,6 +225,8 @@
     },
     "root": {
       "inputs": {
+        "artixy": "artixy",
+        "cordial": "cordial",
         "helium-flake": "helium-flake",
         "jefetch": "jefetch",
         "lmms-appimage": "lmms-appimage",
@@ -270,8 +306,8 @@
     "sharkshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1790424881,
-        "narHash": "sha256-JY1ne1ub0LCnYs+HVozRXE0RmJ+jXVUbK8fhkz3OTj8=",
+        "lastModified": 1790950554,
+        "narHash": "sha256-CKhXIin7TpORJ7OuwkwOW+Ohe9oHqwzgmhtOUwRZsTU=",
         "path": "/mnt/ssd/My-Files/Projects/sharkshell",
         "type": "path"
       },
@@ -287,11 +323,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790413284,
-        "narHash": "sha256-EEeNNaaflA1eKWzJlahM1ctlpLpAkbyZb1VVhDF4CD0=",
+        "lastModified": 1790913621,
+        "narHash": "sha256-sQf86EKbab+Nye/gqYNb9JogkCp83CJW2AJHrsiojcY=",
         "owner": "Matko802",
         "repo": "sharkvis",
-        "rev": "10f84b661d2027104f453f66a1ee09ee3d192c93",
+        "rev": "a0fb9b95017df0b1d9c9f47290261aeef18649d3",
         "type": "github"
       },
       "original": {
