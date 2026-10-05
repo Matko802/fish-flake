@@ -124,11 +124,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1791207205,
-        "narHash": "sha256-UB/GGKFxUlBo4Seg1EsfpoUSR0X8KB7ZJDDGw6RBDHE=",
+        "lastModified": 1791208125,
+        "narHash": "sha256-Ir936fz7Nce339usk+rFWgHU8hM0g2KZUiBQAdjPQHs=",
         "owner": "Matko802",
         "repo": "mixinstuff",
-        "rev": "2aed2d1d80c7701147b12c62667e6d1f1542b45a",
+        "rev": "11d13baa6e8c4ed81fb3cffaa1b2b6d479002888",
         "type": "github"
       },
       "original": {
