@@ -307,11 +307,11 @@
     "sharkshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1791144107,
-        "narHash": "sha256-xg9LASemllL0XWkoYjSw5ZS2ctHCGii0ltTowmQSHyU=",
+        "lastModified": 1791182041,
+        "narHash": "sha256-Q6wvEkmaIL/jPCbZAi6+dh57OKBjno1Mxrc1o7WMLl0=",
         "owner": "Matko802",
         "repo": "sharkshell",
-        "rev": "5e7f993d5d6e66cc37781c054e5b02cdd6564911",
+        "rev": "959ce15e360d3b92017a4d849bfeafeaaddf5539",
         "type": "github"
       },
       "original": {
@@ -327,11 +327,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791144005,
-        "narHash": "sha256-0TwgZ6GgJkGyjDQe/eK5ELISKs1WA8V0Rx7wu53/Km4=",
+        "lastModified": 1791179521,
+        "narHash": "sha256-XSW8vActQC1v5OBlIULXBSB+q2bFuhuPoRkMd29zr3M=",
         "owner": "Matko802",
         "repo": "sharkvis",
-        "rev": "998095fcf2ac55c868e527047b3b9d01231bb456",
+        "rev": "3da83ca14913fbbc8cb79e95b00160b491e7f6b4",
         "type": "github"
       },
       "original": {
@@ -348,11 +348,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791177417,
-        "narHash": "sha256-Nyha83ROKtnymfEoiOi1rkWZMZV0kTCf/966UzK2gpM=",
+        "lastModified": 1791182484,
+        "narHash": "sha256-FcbHT4OwcwaodUZyQ1WigoOWRlFH53UxYi3VGi8muko=",
         "owner": "Matko802",
         "repo": "SpatialFlow",
-        "rev": "79ddd719b67e0f8e2018a3437d3599fbd18681a7",
+        "rev": "05323cbf20018bad51bdf1cdcd66850d9277d4e3",
         "type": "github"
       },
       "original": {

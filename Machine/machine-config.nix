@@ -211,7 +211,6 @@
       lmms-appimage
       pandora-launcher
       spatialflow
-      spatialflow-rust
       onlyoffice-desktopeditors
       itch
       element-desktop
