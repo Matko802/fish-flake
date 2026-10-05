@@ -19,8 +19,6 @@
     ./helix/helix-config.nix
     ./nautilus/nautilus-config.nix
     ./desktop/niri/niri-config.nix
-    ./desktop/hyprland/hyprland-config.nix
-    ./desktop/mango/mango-config.nix
     "${inputs.sharkshell}/sharkshell.nix"
     ./gtk/gtk-config.nix
     ./qtengine/qtengine-config.nix
@@ -212,7 +210,7 @@
       audacity
       lmms-appimage
       pandora-launcher
-      cordial
+      spatialflow
       onlyoffice-desktopeditors
       itch
       element-desktop
