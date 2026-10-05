@@ -307,11 +307,11 @@
     "sharkshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1791182041,
-        "narHash": "sha256-Q6wvEkmaIL/jPCbZAi6+dh57OKBjno1Mxrc1o7WMLl0=",
+        "lastModified": 1791184891,
+        "narHash": "sha256-7FAzUbVMjpk9HFvaHD5TwZ4ALkejl1xtRDMsGiho4+E=",
         "owner": "Matko802",
         "repo": "sharkshell",
-        "rev": "959ce15e360d3b92017a4d849bfeafeaaddf5539",
+        "rev": "e3adb807ba3307d632c2ae97678c940711fc9b27",
         "type": "github"
       },
       "original": {
@@ -348,11 +348,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791182484,
-        "narHash": "sha256-FcbHT4OwcwaodUZyQ1WigoOWRlFH53UxYi3VGi8muko=",
+        "lastModified": 1791185255,
+        "narHash": "sha256-BFAcbZj//kdCttmJV0E8kCnjRTWZwHUm4FbIF9gJPPg=",
         "owner": "Matko802",
         "repo": "SpatialFlow",
-        "rev": "05323cbf20018bad51bdf1cdcd66850d9277d4e3",
+        "rev": "90a56d9ecb56ed51dd1fe5add4f175e1e23a8858",
         "type": "github"
       },
       "original": {
