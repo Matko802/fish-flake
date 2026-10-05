@@ -348,11 +348,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791198248,
-        "narHash": "sha256-Bhhwd5kPlONAAGlCzp81AOkXAqBcJAMypXM6zuBwDTI=",
+        "lastModified": 1791200870,
+        "narHash": "sha256-HLShn8vRo09fkhG8lR9yV6IuBIkz3xi/dGoiB5mplhk=",
         "owner": "Matko802",
         "repo": "SpatialFlow",
-        "rev": "5d9666b894aeb8102f3d25e90d3c86d605c7e2a8",
+        "rev": "541aac82712101ebb6d25c52af1d5f113a9f5603",
         "type": "github"
       },
       "original": {
