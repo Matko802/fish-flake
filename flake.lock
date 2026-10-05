@@ -131,28 +131,6 @@
         "type": "github"
       }
     },
-    "mixinstuff": {
-      "inputs": {
-        "crane": "crane",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "utils": "utils"
-      },
-      "locked": {
-        "lastModified": 1791210084,
-        "narHash": "sha256-9kQmTGuoaB68WOFiUeFSVmhDFu6gdkNf4QkLgh66MOU=",
-        "owner": "Matko802",
-        "repo": "mixinstuff",
-        "rev": "b6c1a06d489d81fa8afc74544bfdb2a19edc6265",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Matko802",
-        "repo": "mixinstuff",
-        "type": "github"
-      }
-    },
     "mocktail": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -173,6 +151,28 @@
         "ref": "main",
         "type": "git",
         "url": "https://github.com/komaruworld/mocktail"
+      }
+    },
+    "musishark": {
+      "inputs": {
+        "crane": "crane",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "utils": "utils"
+      },
+      "locked": {
+        "lastModified": 1791211995,
+        "narHash": "sha256-l3pRcneMF+O+2G2db0e5KiIXG4Y5ZqE9r1WPr3qqwq4=",
+        "owner": "Matko802",
+        "repo": "musishark",
+        "rev": "019006dfb2da7dbe5dd00edae935fb9ecf7ad57c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Matko802",
+        "repo": "musishark",
+        "type": "github"
       }
     },
     "nixpkgs": {
@@ -249,8 +249,8 @@
         "helium-flake": "helium-flake",
         "jefetch": "jefetch",
         "lmms-appimage": "lmms-appimage",
-        "mixinstuff": "mixinstuff",
         "mocktail": "mocktail",
+        "musishark": "musishark",
         "nixpkgs": "nixpkgs",
         "pandora-launcher": "pandora-launcher",
         "qtengine": "qtengine",

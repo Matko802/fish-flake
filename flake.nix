@@ -39,8 +39,8 @@
       url = "github:Matko802/lmms-appimage-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    mixinstuff = {
-      url = "github:Matko802/mixinstuff";
+    musishark = {
+      url = "github:Matko802/musishark";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     pandora-launcher = {
@@ -63,7 +63,7 @@
       mocktail,
       shark-scrp,
       lmms-appimage,
-      mixinstuff,
+      musishark,
       pandora-launcher,
       jefetch,
       sharkmanager,
@@ -75,7 +75,7 @@
       sharkvisOverlay = sharkvis.overlays.default;
       sharkScrpOverlay = shark-scrp.overlays.default;
       lmmsAppimageOverlay = lmms-appimage.overlays.default;
-      mixinstuffOverlay = mixinstuff.overlays.default;
+      musisharkOverlay = musishark.overlays.default;
       pandoraLauncherOverlay = pandora-launcher.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       sharkmanagerOverlay = sharkmanager.overlays.default;
@@ -98,7 +98,7 @@
             sharkScrpOverlay
             lmmsAppimageOverlay
             pandoraLauncherOverlay
-            mixinstuffOverlay
+            musisharkOverlay
             jefetchOverlay
             sharkmanagerOverlay
             artixyOverlay
@@ -126,7 +126,7 @@
       packages.x86_64-linux.mocktail = inputs.mocktail.packages.x86_64-linux.default;
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
       packages.x86_64-linux.lmms-appimage = inputs.lmms-appimage.packages.x86_64-linux.default;
-      packages.x86_64-linux.mixinstuff = inputs.mixinstuff.packages.x86_64-linux.default;
+      packages.x86_64-linux.musishark = inputs.musishark.packages.x86_64-linux.default;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
       packages.x86_64-linux.sharkmanager = inputs.sharkmanager.packages.x86_64-linux.default;

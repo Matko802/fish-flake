@@ -209,7 +209,7 @@
       audacity
       lmms-appimage
       pandora-launcher
-      mixinstuff
+      musishark
       onlyoffice-desktopeditors
       itch
       element-desktop
