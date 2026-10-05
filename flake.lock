@@ -20,6 +20,21 @@
         "type": "github"
       }
     },
+    "crane": {
+      "locked": {
+        "lastModified": 1790899423,
+        "narHash": "sha256-THGtz65UGJU+sonZidRboyCMk+9DclpMF7pwL4uDV4M=",
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "47b6b27ed9a3a9181415e4367d0c30ab2a0e0250",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ipetkov",
+        "repo": "crane",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -118,17 +133,18 @@
     },
     "mixinstuff": {
       "inputs": {
+        "crane": "crane",
         "nixpkgs": [
           "nixpkgs"
         ],
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1791208296,
-        "narHash": "sha256-/adfZ61mpplEPSXkUx853136Pc9Z7ZsVVg7XRNfhiQg=",
+        "lastModified": 1791210084,
+        "narHash": "sha256-9kQmTGuoaB68WOFiUeFSVmhDFu6gdkNf4QkLgh66MOU=",
         "owner": "Matko802",
         "repo": "mixinstuff",
-        "rev": "e1a74094bf0b99196ce05ff3b949468cc707b861",
+        "rev": "b6c1a06d489d81fa8afc74544bfdb2a19edc6265",
         "type": "github"
       },
       "original": {
@@ -330,11 +346,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791179521,
-        "narHash": "sha256-XSW8vActQC1v5OBlIULXBSB+q2bFuhuPoRkMd29zr3M=",
+        "lastModified": 1791207654,
+        "narHash": "sha256-WYsJ7h5J2BSOaGXqnGIEwV2aN/4DTj/W1Mqk8lagNM4=",
         "owner": "Matko802",
         "repo": "sharkvis",
-        "rev": "3da83ca14913fbbc8cb79e95b00160b491e7f6b4",
+        "rev": "a9da23de360699e2d59aee33b95a0f338b57fa50",
         "type": "github"
       },
       "original": {
