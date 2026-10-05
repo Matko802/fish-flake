@@ -1,4 +1,3 @@
-# PC (fishy) configuration
 { pkgs, inputs, ... }:
 
 {
@@ -193,7 +192,7 @@
       pear-desktop
       godot
       litellm
-      kdePackages.filelight
+      baobab
       uv
       ffmpeg-full
       wayvr
@@ -210,7 +209,7 @@
       audacity
       lmms-appimage
       pandora-launcher
-      spatialflow
+      mixinstuff
       onlyoffice-desktopeditors
       itch
       element-desktop

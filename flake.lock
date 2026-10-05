@@ -40,24 +40,6 @@
     },
     "flake-utils": {
       "inputs": {
-        "systems": "systems"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "flake-utils_2": {
-      "inputs": {
         "systems": "systems_2"
       },
       "locked": {
@@ -131,6 +113,27 @@
       "original": {
         "owner": "Matko802",
         "repo": "lmms-appimage-nix",
+        "type": "github"
+      }
+    },
+    "mixinstuff": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "utils": "utils"
+      },
+      "locked": {
+        "lastModified": 1791206042,
+        "narHash": "sha256-mkaoq+19/Ii3voQkcavsExXXl/EdffGOTws0W1nOY5M=",
+        "owner": "Matko802",
+        "repo": "mixinstuff",
+        "rev": "2a083c55f39e408d20addf7afe12753756f5e902",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Matko802",
+        "repo": "mixinstuff",
         "type": "github"
       }
     },
@@ -230,6 +233,7 @@
         "helium-flake": "helium-flake",
         "jefetch": "jefetch",
         "lmms-appimage": "lmms-appimage",
+        "mixinstuff": "mixinstuff",
         "mocktail": "mocktail",
         "nixpkgs": "nixpkgs",
         "pandora-launcher": "pandora-launcher",
@@ -237,8 +241,7 @@
         "shark-scrp": "shark-scrp",
         "sharkmanager": "sharkmanager",
         "sharkshell": "sharkshell",
-        "sharkvis": "sharkvis",
-        "spatialflow": "spatialflow"
+        "sharkvis": "sharkvis"
       }
     },
     "rust-overlay": {
@@ -340,27 +343,6 @@
         "type": "github"
       }
     },
-    "spatialflow": {
-      "inputs": {
-        "flake-utils": "flake-utils_2",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1791203673,
-        "narHash": "sha256-fM+FVix8VyUHKkdgHW+8dxa2/XbXO/yOBAIfJrkIdBI=",
-        "owner": "Matko802",
-        "repo": "SpatialFlow",
-        "rev": "d03694780bfb34055d361e8c07a731af9f303656",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Matko802",
-        "repo": "SpatialFlow",
-        "type": "github"
-      }
-    },
     "systems": {
       "locked": {
         "lastModified": 1681028828,
@@ -388,6 +370,24 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
         "type": "github"
       }
     }
