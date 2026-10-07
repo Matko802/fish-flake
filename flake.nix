@@ -7,6 +7,10 @@
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     qtengine = {
       url = "github:kossLAN/qtengine";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,6 +63,7 @@
       self,
       nixpkgs,
       helium-flake,
+      zen-browser,
       sharkvis,
       mocktail,
       shark-scrp,
@@ -124,6 +129,7 @@
       packages.x86_64-linux.sharkvis = inputs.sharkvis.packages.x86_64-linux.default;
       packages.x86_64-linux.sharkshell = (nixpkgs.legacyPackages.x86_64-linux.callPackage "${sharkshell}/packaging.nix" { }).sharkshell;
       packages.x86_64-linux.mocktail = inputs.mocktail.packages.x86_64-linux.default;
+      packages.x86_64-linux.zen-browser = inputs.zen-browser.packages.x86_64-linux.default;
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
       packages.x86_64-linux.lmms-appimage = inputs.lmms-appimage.packages.x86_64-linux.default;
       packages.x86_64-linux.musishark = inputs.musishark.packages.x86_64-linux.default;

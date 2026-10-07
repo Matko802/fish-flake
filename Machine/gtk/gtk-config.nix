@@ -3,6 +3,15 @@
 let
     themeName = "MatkosAmoled";
     colorSchemePath = ../KDE-Colours/config/MatkosAmoled.colors;
+    gtkSettings = ''
+      [Settings]
+      gtk-theme-name=${themeName}
+      gtk-icon-theme-name=Papirus-Dark
+      gtk-font-name=${fontName} 10
+      gtk-cursor-theme-name=Adwaita
+      gtk-cursor-theme-size=24
+      gtk-application-prefer-dark-theme=1
+    '';
     amoledTheme = pkgs.runCommand "MatkosAmoled" {
         nativeBuildInputs = [
             (pkgs.python3.withPackages (ps: [ ps.pycairo ]))
@@ -13,7 +22,7 @@ let
         src = pkgs.kdePackages.breeze-gtk.src;
         colorScheme = colorSchemePath;
     } ''
-        mkdir -p $out/share/themes/${themeName}-
+        mkdir -p $out/share/themes/${themeName}
         cp -r ${pkgs.adw-gtk3}/share/themes/adw-gtk3-dark/. $out/share/themes/${themeName}/
         chmod -R u+w $out/share/themes/${themeName}
         python3 - "$colorScheme" > overrides.css <<'PY'
@@ -131,25 +140,29 @@ in
   environment.systemPackages = with pkgs; [
     amoledTheme
     papirus-icon-theme
+    adwaita-icon-theme
+    hicolor-icon-theme
+    gnome-themes-extra
+    gsettings-desktop-schemas
+    gtk3
+    gtk4
   ];
 
-  environment.etc."xdg/gtk-3.0/settings.ini".text = ''
-    [Settings]
-    gtk-theme-name=${themeName}
-    gtk-icon-theme-name=Papirus-Dark
-    gtk-font-name=${fontName} 10
-    gtk-cursor-theme-name=Adwaita
-    gtk-cursor-theme-size=24
-    gtk-application-prefer-dark-theme=1
-  '';
+  environment.etc."xdg/gtk-3.0/settings.ini".text = gtkSettings;
 
-  environment.etc."xdg/gtk-4.0/settings.ini".text = config.environment.etc."xdg/gtk-3.0/settings.ini".text;
+  environment.etc."xdg/gtk-4.0/settings.ini".text = gtkSettings;
 
   environment.variables.GTK_THEME = themeName;
 
   environment.sessionVariables = {
+    GTK_THEME = themeName;
     XCURSOR_THEME = "Adwaita";
     XCURSOR_SIZE = "24";
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
   xdg.icons.fallbackCursorThemes = [ "Adwaita" ];
@@ -169,11 +182,6 @@ in
         };
       };
       locks = [
-        "/org/gnome/desktop/interface/color-scheme"
-        "/org/gnome/desktop/interface/gtk-theme"
-        "/org/gnome/desktop/interface/icon-theme"
-        "/org/gnome/desktop/interface/font-name"
-        "/org/gnome/desktop/interface/monospace-font-name"
         "/org/gnome/desktop/interface/document-font-name"
         "/org/gnome/desktop/interface/cursor-theme"
         "/org/gnome/desktop/interface/cursor-size"
@@ -193,20 +201,40 @@ in
 
       ln -sfn "${amoledTheme}/share/themes/${themeName}" "$HOME/.local/share/themes/${themeName}"
       ln -sfn "${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark" "$HOME/.local/share/icons/Papirus-Dark"
+      ln -sfn "${pkgs.papirus-icon-theme}/share/icons/Papirus" "$HOME/.local/share/icons/Papirus"
       ln -sfn "${pkgs.adwaita-icon-theme}/share/icons/Adwaita" "$HOME/.local/share/icons/Adwaita"
-      ln -sfn "${amoledTheme}/share/themes/${themeName}/user-overrides.css" "$HOME/.config/gtk-4.0/gtk.css"
-      ln -sfn "${amoledTheme}/share/themes/${themeName}/user-overrides.css" "$HOME/.config/gtk-3.0/gtk.css"
       ln -sfn "${../KDE-Colours/config/MatkosAmoled.colors}" "$HOME/.local/share/color-schemes/MatkosAmoled.colors"
 
-      cat > "$HOME/.local/share/flatpak/overrides/global" <<'EOF'
-[Context]
-filesystems=xdg-config/gtk-3.0:ro;xdg-config/gtk-4.0:ro;xdg-config/kdeglobals:ro;xdg-data/color-schemes:ro;xdg-data/themes:ro;xdg-data/icons:ro;/nix/store:ro;
+      if [ -L "$HOME/.config/gtk-3.0/gtk.css" ]; then rm -f "$HOME/.config/gtk-3.0/gtk.css"; fi
+      if [ -L "$HOME/.config/gtk-4.0/gtk.css" ]; then rm -f "$HOME/.config/gtk-4.0/gtk.css"; fi
+      if [ -L "$HOME/.config/gtk-4.0/assets" ]; then rm -f "$HOME/.config/gtk-4.0/assets"; fi
+      if [ -L "$HOME/.config/gtk-3.0/settings.ini" ]; then rm -f "$HOME/.config/gtk-3.0/settings.ini"; fi
+      if [ -L "$HOME/.config/gtk-4.0/settings.ini" ]; then rm -f "$HOME/.config/gtk-4.0/settings.ini"; fi
 
-[Environment]
-GTK_THEME=${themeName}
-ICON_THEME=Papirus-Dark
-QT_QPA_PLATFORMTHEME=kde
-EOF
+      if [ ! -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
+      cat > "$HOME/.config/gtk-3.0/settings.ini" <<EOF
+      [Settings]
+      gtk-theme-name=${themeName}
+      gtk-icon-theme-name=Papirus-Dark
+      gtk-font-name=${fontName} 10
+      gtk-cursor-theme-name=Adwaita
+      gtk-cursor-theme-size=24
+      gtk-application-prefer-dark-theme=1
+      EOF
+      fi
+      if [ ! -f "$HOME/.config/gtk-4.0/settings.ini" ]; then
+      cp -f "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
+      fi
+
+      cat > "$HOME/.local/share/flatpak/overrides/global" <<EOF
+      [Context]
+      filesystems=xdg-config/gtk-3.0:ro;xdg-config/gtk-4.0:ro;xdg-config/kdeglobals:ro;xdg-data/color-schemes:ro;xdg-data/themes:ro;xdg-data/icons:ro;/nix/store:ro;
+
+      [Environment]
+      GTK_THEME=${themeName}
+      ICON_THEME=Papirus-Dark
+      QT_QPA_PLATFORMTHEME=kde
+      EOF
     '';
   };
 
@@ -214,6 +242,7 @@ EOF
     mkdir -p /usr/share/themes /usr/share/icons /usr/share/color-schemes
     ln -sfn /run/current-system/sw/share/themes/${themeName} /usr/share/themes/${themeName}
     ln -sfn ${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark /usr/share/icons/Papirus-Dark
+    ln -sfn ${pkgs.papirus-icon-theme}/share/icons/Papirus /usr/share/icons/Papirus
     ln -sfn ${pkgs.adwaita-icon-theme}/share/icons/Adwaita /usr/share/icons/Adwaita
     ln -sfn ${../KDE-Colours/config/MatkosAmoled.colors} /usr/share/color-schemes/MatkosAmoled.colors
   '';

@@ -162,11 +162,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1791218595,
-        "narHash": "sha256-fpzWmztkSgH9qHI3nhN6MQjo1Mol7tEE1kackA6pbao=",
+        "lastModified": 1791316859,
+        "narHash": "sha256-P3Zyxm09GKGYBvovf0vRr/glI07DTNJrGq4Zkm4AOtw=",
         "owner": "Matko802",
         "repo": "musishark",
-        "rev": "138a7b579bab5e28e2199e7fcc41e21737d26bdc",
+        "rev": "e21f29cdce27dc8b59eb18fd95aac1d5d5ef9ca8",
         "type": "github"
       },
       "original": {
@@ -257,7 +257,8 @@
         "shark-scrp": "shark-scrp",
         "sharkmanager": "sharkmanager",
         "sharkshell": "sharkshell",
-        "sharkvis": "sharkvis"
+        "sharkvis": "sharkvis",
+        "zen-browser": "zen-browser"
       }
     },
     "rust-overlay": {
@@ -326,11 +327,11 @@
     "sharkshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1791218459,
-        "narHash": "sha256-FsJ9NRAHJrmGrbpYhvRH8PaWfDwi5a7japW1Q727nAM=",
+        "lastModified": 1791316072,
+        "narHash": "sha256-oFZ/VXR46RnnFRPo7/SEtJ7d3Z7IQi93V2YkkTev688=",
         "owner": "Matko802",
         "repo": "sharkshell",
-        "rev": "7b6c84126fa1b9db2de779d677cd76b1f4c091da",
+        "rev": "e161785203b7d47f7f6034ce112cc47a96e79072",
         "type": "github"
       },
       "original": {
@@ -404,6 +405,26 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791109428,
+        "narHash": "sha256-9Wlecihq1JF26Le4xw1q75pQ4z0Pw88rRmUjeHzQXjY=",
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
+        "rev": "4bbcd79d8104040a2e510f81199210070900ebcd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
         "type": "github"
       }
     }

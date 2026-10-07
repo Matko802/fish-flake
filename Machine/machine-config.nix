@@ -18,11 +18,11 @@
     ./helix/helix-config.nix
     ./nautilus/nautilus-config.nix
     ./desktop/niri/niri-config.nix
-    "${inputs.sharkshell}/sharkshell.nix"
+    ./sharkshell/sharkshell.nix
     ./gtk/gtk-config.nix
     ./qtengine/qtengine-config.nix
     ./virtualization/kvm/kvm-config.nix
-    ./virtualization/waydroid/waydroid-config.nix
+./virtualization/waydroid/waydroid-config.nix
     ./flatpak/flatpak-config.nix
   ];
 
@@ -213,7 +213,7 @@
       onlyoffice-desktopeditors
       itch
       element-desktop
-      librewolf
+      inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       seahorse
     ];
   };

@@ -118,7 +118,7 @@ binds {
     Mod+Escape { spawn "kitty" "--class" "btop" "-e" "btop"; }
     Mod+M { spawn "powermenu"; }
     Mod+E { spawn "nautilus"; }
-    Mod+B { spawn "librewolf"; }
+    Mod+B { spawn "zen"; }
     Mod+Shift+B { spawn "bar"; }
     Mod+T { toggle-window-floating; }
     Mod+Period { spawn "emojipicker"; }
@@ -133,10 +133,6 @@ binds {
 
     Print { screenshot-screen; }
     Ctrl+Shift+Print { screenshot-window; }
-    // Interactive region screenshot (niri-native picker). Niri copies the shot to the
-    // clipboard itself, but as a fallback this waits for the capture event and
-    // re-copies the freshly saved file, so Shift+Print always lands on clipboard.
-    // Cancelling (Esc) produces no event, so nothing is copied.
     Shift+Print { spawn "sh" "-c" "niri msg action screenshot & event=$(timeout 120 niri msg --json event-stream | grep -m 1 \"ScreenshotCaptured\"); if [ -n \"$event\" ]; then latest=$(ls -t \"$HOME/Pictures/Screenshots/\" 2>/dev/null | head -n 1); if [ -n \"$latest\" ]; then wl-copy --type image/png < \"$HOME/Pictures/Screenshots/$latest\"; fi; fi"; }
 
     XF86PowerOff allow-when-locked=true { spawn "powermenu"; }
