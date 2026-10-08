@@ -2,7 +2,9 @@
 
 let
     themeName = "MatkosAmoled";
+    themeNameLight = "MatkosAmoledLight";
     colorSchemePath = ../KDE-Colours/config/MatkosAmoled.colors;
+    colorSchemeLightPath = ../KDE-Colours/config/MatkosAmoledLight.colors;
     gtkSettings = ''
       [Settings]
       gtk-theme-name=${themeName}
@@ -12,7 +14,7 @@ let
       gtk-cursor-theme-size=24
       gtk-application-prefer-dark-theme=1
     '';
-    amoledTheme = pkgs.runCommand "MatkosAmoled" {
+    mkAmoledTheme = { themeName, adwTheme, colorScheme, backBg, backFg, border, darkerShade, shadeColor, scrollbarOutline }: pkgs.runCommand themeName {
         nativeBuildInputs = [
             (pkgs.python3.withPackages (ps: [ ps.pycairo ]))
             pkgs.gnutar
@@ -20,10 +22,10 @@ let
         ];
         adw = pkgs.adw-gtk3;
         src = pkgs.kdePackages.breeze-gtk.src;
-        colorScheme = colorSchemePath;
+        inherit colorScheme;
     } ''
         mkdir -p $out/share/themes/${themeName}
-        cp -r ${pkgs.adw-gtk3}/share/themes/adw-gtk3-dark/. $out/share/themes/${themeName}/
+        cp -r ${pkgs.adw-gtk3}/share/themes/${adwTheme}/. $out/share/themes/${themeName}/
         chmod -R u+w $out/share/themes/${themeName}
         python3 - "$colorScheme" > overrides.css <<'PY'
     import sys, configparser
@@ -43,9 +45,9 @@ let
     sel_fg  = col('Colors:Selection', 'ForegroundNormal')
     hdr_bg  = colf('Colors:Header', 'BackgroundNormal', win_bg)
     hdr_fg  = colf('Colors:Header', 'ForegroundNormal', win_fg)
-    back_bg = "#030303"
-    back_fg = "#acacac"
-    border  = "#0d0d0d"
+    back_bg = "${backBg}"
+    back_fg = "${backFg}"
+    border = "${border}"
     out = []
     def d(name, val):
         out.append("@define-color %s %s;" % (name, val))
@@ -58,7 +60,7 @@ let
     d("headerbar_border_color", hdr_bg)
     d("headerbar_backdrop_color", back_bg)
     d("headerbar_shade_color", back_bg)
-    d("headerbar_darker_shade_color", "#050505")
+    d("headerbar_darker_shade_color", "${darkerShade}")
     d("dialog_bg_color", win_bg)
     d("dialog_fg_color", win_fg)
     d("popover_bg_color", win_bg)
@@ -79,8 +81,8 @@ let
     d("accent_bg_color", sel_bg)
     d("accent_fg_color", sel_fg)
     d("accent_color", sel_bg)
-    d("shade_color", "rgba(0,0,0,0.36)")
-    d("scrollbar_outline_color", "rgba(255,255,255,0.10)")
+    d("shade_color", "${shadeColor}")
+    d("scrollbar_outline_color", "${scrollbarOutline}")
     d("theme_bg_color", win_bg)
     d("theme_fg_color", win_fg)
     d("theme_base_color", view_bg)
@@ -93,7 +95,7 @@ let
     d("theme_unfocused_text_color", back_fg)
     d("theme_unfocused_selected_bg_color", sel_bg)
     d("theme_unfocused_selected_fg_color", sel_fg)
-    print("\n\n/* MatkosAmoled overrides */\n" + "\n".join(out))
+    print("\n\n/* ${themeName} overrides */\n" + "\n".join(out))
     PY
 
     cat >> overrides.css <<'EOF'
@@ -127,18 +129,41 @@ let
     cat > $out/share/themes/${themeName}/index.theme <<'EOF'
     [Desktop Entry]
     Type=X-GNOME-Metatheme
-    Name=MatkosAmoled
+    Name=${themeName}
     Encoding=UTF-8
 
     [X-GNOME-Metatheme]
-    GtkTheme=MatkosAmoled
+    GtkTheme=${themeName}
     IconTheme=Papirus-Dark
     EOF
     '';
+    amoledTheme = mkAmoledTheme {
+      inherit themeName;
+      adwTheme = "adw-gtk3-dark";
+      colorScheme = colorSchemePath;
+      backBg = "#030303";
+      backFg = "#acacac";
+      border = "#0d0d0d";
+      darkerShade = "#050505";
+      shadeColor = "rgba(0,0,0,0.36)";
+      scrollbarOutline = "rgba(255,255,255,0.10)";
+    };
+    amoledThemeLight = mkAmoledTheme {
+      themeName = themeNameLight;
+      adwTheme = "adw-gtk3";
+      colorScheme = colorSchemeLightPath;
+      backBg = "#d8d8d8";
+      backFg = "#666666";
+      border = "#c4c4c4";
+      darkerShade = "#d0d0d0";
+      shadeColor = "rgba(0,0,0,0.12)";
+      scrollbarOutline = "rgba(0,0,0,0.10)";
+    };
 in
 {
   environment.systemPackages = with pkgs; [
     amoledTheme
+    amoledThemeLight
     papirus-icon-theme
     adwaita-icon-theme
     hicolor-icon-theme
@@ -152,10 +177,7 @@ in
 
   environment.etc."xdg/gtk-4.0/settings.ini".text = gtkSettings;
 
-  environment.variables.GTK_THEME = themeName;
-
   environment.sessionVariables = {
-    GTK_THEME = themeName;
     XCURSOR_THEME = "Adwaita";
     XCURSOR_SIZE = "24";
   };
@@ -200,10 +222,12 @@ in
       mkdir -p "$HOME/.local/share/themes" "$HOME/.local/share/icons" "$HOME/.local/share/flatpak/overrides" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0" "$HOME/.local/share/color-schemes"
 
       ln -sfn "${amoledTheme}/share/themes/${themeName}" "$HOME/.local/share/themes/${themeName}"
+      ln -sfn "${amoledThemeLight}/share/themes/${themeNameLight}" "$HOME/.local/share/themes/${themeNameLight}"
       ln -sfn "${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark" "$HOME/.local/share/icons/Papirus-Dark"
       ln -sfn "${pkgs.papirus-icon-theme}/share/icons/Papirus" "$HOME/.local/share/icons/Papirus"
       ln -sfn "${pkgs.adwaita-icon-theme}/share/icons/Adwaita" "$HOME/.local/share/icons/Adwaita"
       ln -sfn "${../KDE-Colours/config/MatkosAmoled.colors}" "$HOME/.local/share/color-schemes/MatkosAmoled.colors"
+      ln -sfn "${../KDE-Colours/config/MatkosAmoledLight.colors}" "$HOME/.local/share/color-schemes/MatkosAmoledLight.colors"
 
       if [ -L "$HOME/.config/gtk-3.0/gtk.css" ]; then rm -f "$HOME/.config/gtk-3.0/gtk.css"; fi
       if [ -L "$HOME/.config/gtk-4.0/gtk.css" ]; then rm -f "$HOME/.config/gtk-4.0/gtk.css"; fi
@@ -241,10 +265,12 @@ in
   system.activationScripts.matkosAmoledTheme = lib.stringAfter [ "etc" ] ''
     mkdir -p /usr/share/themes /usr/share/icons /usr/share/color-schemes
     ln -sfn /run/current-system/sw/share/themes/${themeName} /usr/share/themes/${themeName}
+    ln -sfn /run/current-system/sw/share/themes/${themeNameLight} /usr/share/themes/${themeNameLight}
     ln -sfn ${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark /usr/share/icons/Papirus-Dark
     ln -sfn ${pkgs.papirus-icon-theme}/share/icons/Papirus /usr/share/icons/Papirus
     ln -sfn ${pkgs.adwaita-icon-theme}/share/icons/Adwaita /usr/share/icons/Adwaita
     ln -sfn ${../KDE-Colours/config/MatkosAmoled.colors} /usr/share/color-schemes/MatkosAmoled.colors
+    ln -sfn ${../KDE-Colours/config/MatkosAmoledLight.colors} /usr/share/color-schemes/MatkosAmoledLight.colors
   '';
   systemd.user.targets.nixos-fake-graphical-session.wantedBy = [ "default.target" ];
 }
