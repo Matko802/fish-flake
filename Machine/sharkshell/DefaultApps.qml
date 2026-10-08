@@ -102,6 +102,29 @@ Scope {
     termListFile.setText(id + "\n")
   }
 
+  function setApp(cat, id) {
+    if (cat === "browser") root.setBrowser(id)
+    else if (cat === "files") root.setFiles(id)
+    else if (cat === "mail") root.setMail(id)
+    else if (cat === "terminal") root.setTerminal(id)
+  }
+
+  function currentIdOf(cat) {
+    if (cat === "browser") return root.browserId
+    if (cat === "files") return root.filesId
+    if (cat === "mail") return root.mailId
+    if (cat === "terminal") return root.termChoice
+    return ""
+  }
+
+  function optsFor(cat) {
+    if (cat === "browser") return root.browsers
+    if (cat === "files") return root.fileManagers
+    if (cat === "mail") return root.mailClients
+    if (cat === "terminal") return root.terminals
+    return []
+  }
+
   readonly property var terminalCmd: {
     if (root.termChoice === "") return []
     var e = root.findEntry(root.termChoice)

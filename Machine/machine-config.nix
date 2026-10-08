@@ -214,6 +214,7 @@
       itch
       element-desktop
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs."rused-browser".packages.${pkgs.stdenv.hostPlatform.system}.default
       seahorse
     ];
   };
@@ -284,9 +285,9 @@
       PasswordAuthentication = true;
     };
   };
-
-  # Let niri own the power button (bind opens the power menu):
-  # niri must not suspend on it, and logind must ignore it.
+  programs.mosh = {
+      enable = true;
+    };
   services.logind.settings.Login = {
     HandlePowerKey = "ignore";
   };

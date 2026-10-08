@@ -41,7 +41,7 @@ function wcFit(C, hex, bg, ratio, dark) {
   return C.ensureContrastOnLight(hex, bg, ratio);
 }
 
-function wcPickHue(C, pool, targetHue, usedHues) {
+function wcPickHueFrom(C, pool, targetHue, usedHues) {
   var cands = [];
   for (var i = 0; i < pool.length; i++) {
     var hsl = C.toHsl(pool[i]);
@@ -82,6 +82,12 @@ function wcPickHue(C, pool, targetHue, usedHues) {
   if (!best) return null;
   if (C.hueDist(C.hueDeg(best), targetHue) > 65) return null;
   return best;
+}
+
+function wcPickHue(C, wall, rest, targetHue, usedHues) {
+  var c = wcPickHueFrom(C, wall, targetHue, usedHues);
+  if (c) return c;
+  return wcPickHueFrom(C, rest, targetHue, usedHues);
 }
 
 function wcPickGrey(C, pool, targetL) {
@@ -327,7 +333,13 @@ function buildTerminalTheme(C, wallColors, roles, palettes, darkMode) {
 
   var bg = wcRole(roles, C, "background") || (dark ? "#000000" : "#ffffff");
   var fg = wcRole(roles, C, "on_surface") || (dark ? "#ffffff" : "#000000");
-  var mono = pool.length === 0 || wcMaxSat(C, pool) < 0.10;
+  var mono = wc.length > 0 ? wcMaxSat(C, wc) < 0.10 : wcMaxSat(C, pool) < 0.10;
+
+  function wcNeutral(C, hex) {
+    var hsl = C.toHsl(hex);
+    if (!hsl) return String(hex);
+    return C.fromHsl(0, 0, hsl.l);
+  }
 
   var black = C.pickDarkest(pool.concat([bg, "#000000"])) || "#000000";
   var brightWhite = dark ? "#ffffff" : "#000000";
@@ -350,8 +362,12 @@ function buildTerminalTheme(C, wallColors, roles, palettes, darkMode) {
     var usedHues = [];
     var got = {};
     var need = [["red", 0], ["green", 120], ["blue", 215], ["yellow", 55], ["magenta", 300], ["cyan", 185]];
+    var rest = [];
+    for (var ri = 0; ri < pool.length; ri++) {
+      if (wc.indexOf(pool[ri]) < 0) rest.push(pool[ri]);
+    }
     for (var h = 0; h < need.length; h++) {
-      var gc = wcPickHue(C, pool, need[h][1], usedHues);
+      var gc = wcPickHue(C, wc, rest, need[h][1], usedHues);
       got[need[h][0]] = gc;
       if (gc) usedHues.push(C.hueDeg(gc));
     }
@@ -435,17 +451,78 @@ function buildTerminalTheme(C, wallColors, roles, palettes, darkMode) {
   var invSurf = wcRole(roles, C, "inverse_surface") || fg;
   var invOnSurf = wcRole(roles, C, "inverse_on_surface") || bg;
 
+  var bgN = mono ? wcNeutral(C, bg) : bg;
+  var fgN = mono ? wcNeutral(C, fg) : fg;
+
   return {
     source: "wallpaper-only colors",
-    background: bg,
-    foreground: fg,
-    cursor: primary,
-    selBg: primaryContainer,
-    selFg: onPrimaryContainer,
+    background: bgN,
+    foreground: fgN,
+    cursor: mono ? fgN : primary,
+    selBg: mono ? grey : primaryContainer,
+    selFg: mono ? bgN : onPrimaryContainer,
     ansi: ansi,
-    tabActiveFg: invOnSurf,
-    tabActiveBg: primary,
-    tabInactiveFg: onSurfVar,
-    tabInactiveBg: surface
+    tabActiveFg: mono ? bgN : invOnSurf,
+    tabActiveBg: mono ? fgN : primary,
+    tabInactiveFg: mono ? grey : onSurfVar,
+    tabInactiveBg: mono ? bgN : surface
   };
+}
+
+function wcContrastFg(C, bgHex) {
+  return C.luminance(bgHex) < 0.45 ? "#ffffff" : "#000000";
+}
+
+function wcMix3(C, a, b, t) {
+  if (typeof C.mix === "function") return String(C.mix(a, b, t));
+  var ca = C.toRgb(a);
+  var cb = C.toRgb(b);
+  if (!ca) return String(b);
+  if (!cb) return String(a);
+  function hx(v) {
+    var h = Math.round(Math.min(255, Math.max(0, v))).toString(16);
+    return h.length < 2 ? "0" + h : h;
+  }
+  return "#" + hx(ca.r + (cb.r - ca.r) * t) + hx(ca.g + (cb.g - ca.g) * t) + hx(ca.b + (cb.b - ca.b) * t);
+}
+
+function buildCustomRoles(C, bg, fg, accent, dark) {
+  var B = C.isValid(bg) ? String(bg).toLowerCase() : (dark ? "#000000" : "#ededed");
+  var F = C.isValid(fg) ? String(fg).toLowerCase() : wcContrastFg(C, B);
+  var A = C.isValid(accent) ? String(accent).toLowerCase() : "#3daee9";
+  if (B.charAt(0) !== "#") B = "#" + B;
+  if (F.charAt(0) !== "#") F = "#" + F;
+  if (A.charAt(0) !== "#") A = "#" + A;
+  var onA = wcContrastFg(C, A);
+  var cont = wcMix3(C, A, B, 0.55);
+  var onCont = wcContrastFg(C, cont);
+  var map = {
+    background: B,
+    on_background: F,
+    surface: wcMix3(C, B, F, 0.05),
+    surface_container: wcMix3(C, B, F, 0.16),
+    surface_container_low: wcMix3(C, B, F, 0.10),
+    surface_container_high: wcMix3(C, B, F, 0.24),
+    surface_container_highest: wcMix3(C, B, F, 0.32),
+    surface_container_lowest: B,
+    on_surface: F,
+    on_surface_variant: wcMix3(C, F, B, 0.35),
+    primary: A,
+    on_primary: onA,
+    primary_container: cont,
+    on_primary_container: onCont,
+    secondary: A,
+    tertiary: A,
+    error: dark ? "#ffb4ab" : "#ba1a1a",
+    on_error: dark ? "#690005" : "#ffffff",
+    inverse_surface: F,
+    inverse_on_surface: B
+  };
+  return map;
+}
+
+function customLightPair(C, bg, accent) {
+  var lb = wcMix3(C, bg, "#ffffff", 0.88);
+  var la = wcMix3(C, accent, "#000000", 0.18);
+  return { bg: lb, fg: "#202020", accent: la };
 }

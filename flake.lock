@@ -78,11 +78,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790867198,
-        "narHash": "sha256-rFhx3cPykTUPDRV5Fm8Ag9QnLSKXRLCCoVM6brCHx04=",
+        "lastModified": 1791121350,
+        "narHash": "sha256-vYGn78EPCbb01BkzyV/9HA/ll0YgOsG+sQa3RpJ5mhU=",
         "owner": "oxcl",
         "repo": "nix-flake-helium-browser",
-        "rev": "4b3125382e27115791d1f66537ed36b8648429dc",
+        "rev": "730e14328f617876510a4ec0724a4a34560fe4ae",
         "type": "github"
       },
       "original": {
@@ -139,11 +139,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790949147,
-        "narHash": "sha256-VfQVwWWADXYMtv5ACYyt98QxGmenLkDkADhD/n+WttM=",
+        "lastModified": 1791465221,
+        "narHash": "sha256-j6metWw9Q4vDpAbGA3ykm9Prb3CCU/kPTZbaMRRi1Zo=",
         "ref": "main",
-        "rev": "6f8344a28b27feadf66f65c35f3ab575f8afd231",
-        "revCount": 140,
+        "rev": "3e6f63ea93c17893ecc5d343223d849e1476818a",
+        "revCount": 147,
         "type": "git",
         "url": "https://github.com/komaruworld/mocktail"
       },
@@ -162,11 +162,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1791403300,
-        "narHash": "sha256-tUc1tMSBa7JG08A8XLzrMl8CWWIDfT+UPHzKj1NNrm4=",
+        "lastModified": 1791470917,
+        "narHash": "sha256-BBT8tVCCgeMS/GaC0rvGkaD0SWYlXDGncLk3Jd81rts=",
         "owner": "Matko802",
         "repo": "musishark",
-        "rev": "456a63347aea7b2b4f8cdb90e1490440752a81d4",
+        "rev": "07aa4f30356c21db5558084271344abef229b18a",
         "type": "github"
       },
       "original": {
@@ -177,11 +177,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1790822859,
-        "narHash": "sha256-VBA0QerzzmL+4wxgtwiCdiLwLpJg2/9xOxhgO3BRJQA=",
-        "rev": "c59305bab2065cfecc4944690d9eedbb56f3a9fa",
+        "lastModified": 1791260994,
+        "narHash": "sha256-MFBjw66d4h06MvpW6lIl7RwarLteD0sk859CncGwb1Q=",
+        "rev": "151fa4e8ddfdd8dd25d945ad94ed54a13de9f6e4",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1083223.c59305bab206/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1086391.151fa4e8ddfd/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -230,11 +230,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790355032,
-        "narHash": "sha256-9nhKFJ9AUxIS7wZ3be7Vxy36Q+4lgihB/RLooJ41niE=",
+        "lastModified": 1791344020,
+        "narHash": "sha256-X6ysVuwPHY7YvKgLesgsW8VpMbj0xmtEhWSnUH6UfTU=",
         "owner": "kossLAN",
         "repo": "qtengine",
-        "rev": "167e7d9a27cdc8005ef2bd4d5d317b9da01b853f",
+        "rev": "3dc142ab265e1d84d74da1782c3e46a8d1d35add",
         "type": "github"
       },
       "original": {
@@ -254,11 +254,29 @@
         "nixpkgs": "nixpkgs",
         "pandora-launcher": "pandora-launcher",
         "qtengine": "qtengine",
+        "rused-browser": "rused-browser",
         "shark-scrp": "shark-scrp",
         "sharkmanager": "sharkmanager",
         "sharkshell": "sharkshell",
         "sharkvis": "sharkvis",
         "zen-browser": "zen-browser"
+      }
+    },
+    "rused-browser": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791478916,
+        "narHash": "sha256-NrkYWIeAMv6FfiC5wGedwHYgaRd8vlxb1ZN5D/EN3ZU=",
+        "path": "/mnt/ssd/My-Files/Projects/rused-browser",
+        "type": "path"
+      },
+      "original": {
+        "path": "/mnt/ssd/My-Files/Projects/rused-browser",
+        "type": "path"
       }
     },
     "rust-overlay": {
@@ -289,11 +307,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791396786,
-        "narHash": "sha256-jkvi7jlIyYBq6iWAJ956PSb70d7QPLonCn3q9mYUj7w=",
+        "lastModified": 1791478854,
+        "narHash": "sha256-iwwXHSfUpBfHkZ2EJw6xIJQPfSYX8x84zsGt9JKIALQ=",
         "owner": "Matko802",
         "repo": "shark-scrp",
-        "rev": "9734d8905fee57c8b6f6ac25dc7f7290c6e8e64c",
+        "rev": "cb2162d6f8691ec2fb4c8820e17111d064ae1e03",
         "type": "github"
       },
       "original": {
@@ -415,11 +433,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791109428,
-        "narHash": "sha256-9Wlecihq1JF26Le4xw1q75pQ4z0Pw88rRmUjeHzQXjY=",
+        "lastModified": 1791457665,
+        "narHash": "sha256-SBP+XEJ336/HkV4RRDLdJJ9MeWokE5K+lppnTo4SFoA=",
         "owner": "youwen5",
         "repo": "zen-browser-flake",
-        "rev": "4bbcd79d8104040a2e510f81199210070900ebcd",
+        "rev": "0ae74880377f493555038d52edd9c90178e05186",
         "type": "github"
       },
       "original": {
