@@ -35,6 +35,10 @@
       url = "path:/mnt/ssd/My-Files/Projects/rused-browser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    letmecord = {
+      url = "path:/mnt/ssd/My-Files/Projects/letmecord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     mocktail = {
       url = "git+https://github.com/komaruworld/mocktail?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -142,5 +146,6 @@
       packages.x86_64-linux.sharkmanager = inputs.sharkmanager.packages.x86_64-linux.default;
       packages.x86_64-linux.artixy = inputs.artixy.packages.x86_64-linux.default;
       packages.x86_64-linux.rused-browser = inputs."rused-browser".packages.x86_64-linux.default;
+      packages.x86_64-linux.letmecord = inputs.letmecord.packages.x86_64-linux.default;
     };
 }
