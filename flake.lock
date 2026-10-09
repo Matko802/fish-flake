@@ -111,6 +111,23 @@
         "type": "github"
       }
     },
+    "letmecord": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791565912,
+        "narHash": "sha256-zAjzd5t3ME2hE56AYfyg/9GflwTLEKGGUejTNpmpsyU=",
+        "path": "/mnt/ssd/My-Files/Projects/letmecord",
+        "type": "path"
+      },
+      "original": {
+        "path": "/mnt/ssd/My-Files/Projects/letmecord",
+        "type": "path"
+      }
+    },
     "lmms-appimage": {
       "inputs": {
         "nixpkgs": [
@@ -248,6 +265,7 @@
         "artixy": "artixy",
         "helium-flake": "helium-flake",
         "jefetch": "jefetch",
+        "letmecord": "letmecord",
         "lmms-appimage": "lmms-appimage",
         "mocktail": "mocktail",
         "musishark": "musishark",
