@@ -22,7 +22,6 @@
     ./gtk/gtk-config.nix
     ./qtengine/qtengine-config.nix
     ./virtualization/kvm/kvm-config.nix
-./virtualization/waydroid/waydroid-config.nix
     ./flatpak/flatpak-config.nix
   ];
 
