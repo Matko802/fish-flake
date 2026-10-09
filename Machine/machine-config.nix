@@ -215,7 +215,6 @@
       element-desktop
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       inputs."rused-browser".packages.${pkgs.stdenv.hostPlatform.system}.default
-      inputs.letmecord.packages.${pkgs.stdenv.hostPlatform.system}.default
       seahorse
     ];
   };
