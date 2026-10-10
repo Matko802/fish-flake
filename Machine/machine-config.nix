@@ -71,10 +71,6 @@
     enable = true;
     dockerCompat = true;
   };
-  zramSwap = {
-    enable = true;
-    memoryPercent = 50;
-  };
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
   security.pam.services.login.enableGnomeKeyring = true;
@@ -186,8 +182,6 @@
       jefetch
       fetch
       fastfetch
-      sharkmanager
-      artixy
       pear-desktop
       godot
       litellm
@@ -209,11 +203,11 @@
       lmms-appimage
       pandora-launcher
       musishark
+      ruwa
       onlyoffice-desktopeditors
       itch
       element-desktop
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-      inputs."rused-browser".packages.${pkgs.stdenv.hostPlatform.system}.default
       seahorse
     ];
   };

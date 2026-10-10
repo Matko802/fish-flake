@@ -23,18 +23,6 @@
       url = "github:Matko802/jefetch";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sharkmanager = {
-      url = "github:Matko802/sharkmanager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    artixy = {
-      url = "github:Matko802/artixy";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    rused-browser = {
-      url = "path:/mnt/ssd/My-Files/Projects/rused-browser";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     mocktail = {
       url = "git+https://github.com/komaruworld/mocktail?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -49,6 +37,10 @@
     };
     musishark = {
       url = "github:Matko802/musishark";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ruwa = {
+      url = "github:Matko802/ruwa";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     pandora-launcher = {
@@ -73,10 +65,9 @@
       shark-scrp,
       lmms-appimage,
       musishark,
+      ruwa,
       pandora-launcher,
       jefetch,
-      sharkmanager,
-      artixy,
       sharkshell,
       ...
     }@inputs:
@@ -85,10 +76,9 @@
       sharkScrpOverlay = shark-scrp.overlays.default;
       lmmsAppimageOverlay = lmms-appimage.overlays.default;
       musisharkOverlay = musishark.overlays.default;
+      ruwaOverlay = ruwa.overlays.default;
       pandoraLauncherOverlay = pandora-launcher.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
-      sharkmanagerOverlay = sharkmanager.overlays.default;
-      artixyOverlay = artixy.overlays.default;
 
       sharedModules = [
         ({ ... }: {
@@ -108,9 +98,8 @@
             lmmsAppimageOverlay
             pandoraLauncherOverlay
             musisharkOverlay
+            ruwaOverlay
             jefetchOverlay
-            sharkmanagerOverlay
-            artixyOverlay
           ];
 
           environment.systemPackages = [
@@ -137,10 +126,8 @@
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
       packages.x86_64-linux.lmms-appimage = inputs.lmms-appimage.packages.x86_64-linux.default;
       packages.x86_64-linux.musishark = inputs.musishark.packages.x86_64-linux.default;
+      packages.x86_64-linux.ruwa = inputs.ruwa.packages.x86_64-linux.default;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
-      packages.x86_64-linux.sharkmanager = inputs.sharkmanager.packages.x86_64-linux.default;
-      packages.x86_64-linux.artixy = inputs.artixy.packages.x86_64-linux.default;
-      packages.x86_64-linux.rused-browser = inputs."rused-browser".packages.x86_64-linux.default;
     };
 }
