@@ -204,7 +204,6 @@
       pandora-launcher
       musishark
       ruwa
-      ruwa-neutron
       onlyoffice-desktopeditors
       itch
       element-desktop
