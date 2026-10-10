@@ -127,6 +127,7 @@
       packages.x86_64-linux.lmms-appimage = inputs.lmms-appimage.packages.x86_64-linux.default;
       packages.x86_64-linux.musishark = inputs.musishark.packages.x86_64-linux.default;
       packages.x86_64-linux.ruwa = inputs.ruwa.packages.x86_64-linux.default;
+      packages.x86_64-linux.ruwa-neutron = inputs.ruwa.packages.x86_64-linux.neutron;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
     };
