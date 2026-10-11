@@ -479,11 +479,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791706920,
-        "narHash": "sha256-UTyX9JixE/UuB+qS9XZpG6a5NYVgIDPC57kGZyMh3wE=",
+        "lastModified": 1791707581,
+        "narHash": "sha256-fRIhynCgOmKyRJDsCf1MiTfjA1uuWm3vhynPYxRL1nU=",
         "owner": "Matko802",
         "repo": "ruwa",
-        "rev": "ae84e020b5069aed734d468df16ca8082ebc4dc5",
+        "rev": "1e38bc5895441203e7872ee37b0ca40352312341",
         "type": "github"
       },
       "original": {
