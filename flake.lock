@@ -15,6 +15,23 @@
         "type": "github"
       }
     },
+    "cz-agent-gui": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791715671,
+        "narHash": "sha256-M4A4BRZp7nWUCOd21vYE9O9dirwj7/Tb2QnOiUvidXg=",
+        "path": "/mnt/ssd/My-Files/Projects/cz-agent-gui-flake",
+        "type": "path"
+      },
+      "original": {
+        "path": "/mnt/ssd/My-Files/Projects/cz-agent-gui-flake",
+        "type": "path"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -342,7 +359,7 @@
         "type": "github"
       }
     },
-    "nixpkgs-unstable": {
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1791594108,
         "narHash": "sha256-V0WmebqwEeAVZMqxfv7Dq7hpKkPPM19W50xQf3D1Kf4=",
@@ -353,19 +370,6 @@
       "original": {
         "type": "tarball",
         "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
-      }
-    },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1791549541,
-        "narHash": "sha256-oADz+iVvVvE6aADkqywUEdNruts0BdExqgF20/0nd5o=",
-        "rev": "f584496e0120c1c67803e66379a133cc0fe711f6",
-        "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.11628.f584496e0120/nixexprs.tar.xz"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://channels.nixos.org/nixos-26.05/nixexprs.tar.xz"
       }
     },
     "pandora-launcher": {
@@ -398,11 +402,11 @@
         "std": "std"
       },
       "locked": {
-        "lastModified": 1791206513,
-        "narHash": "sha256-30v5epkeajP/rrDQiCSMRlndjhlX/ec/EUwADMY69z0=",
+        "lastModified": 1791717137,
+        "narHash": "sha256-9F+e9mF7Qclj5fIJKnar+MlmTWuyEFLTrBvOPt0r7GQ=",
         "owner": "Daaboulex",
         "repo": "proton-cachyos-nix",
-        "rev": "c60c073d4f047645e9b054f6d19eda22af58b31b",
+        "rev": "9a8bc6bbcb8eefbf9db75858ba6ee043a186e9c1",
         "type": "github"
       },
       "original": {
@@ -433,6 +437,7 @@
     },
     "root": {
       "inputs": {
+        "cz-agent-gui": "cz-agent-gui",
         "helium-flake": "helium-flake",
         "jefetch": "jefetch",
         "lmms-appimage": "lmms-appimage",
@@ -440,7 +445,6 @@
         "musishark": "musishark",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-unstable": "nixpkgs-unstable",
         "pandora-launcher": "pandora-launcher",
         "proton-cachyos": "proton-cachyos",
         "qtengine": "qtengine",
@@ -479,11 +483,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791708567,
-        "narHash": "sha256-tQCOfRBe4KqHfk/eyDLQ4FMAU4p6Wa7rczrR4IwyTN8=",
+        "lastModified": 1791715735,
+        "narHash": "sha256-WL+pNpvTpLvT+2hPdzsM+sABHVRp4K3zJWTmm38CiVU=",
         "owner": "Matko802",
         "repo": "ruwa",
-        "rev": "3e74a8e3c62c658f535ca25fd7534fcb38c570af",
+        "rev": "4ee7e8295d4c65ec3a8ba8027771fca6123be2d8",
         "type": "github"
       },
       "original": {

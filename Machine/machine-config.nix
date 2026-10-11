@@ -23,7 +23,15 @@
     ./qtengine/qtengine-config.nix
     ./virtualization/kvm/kvm-config.nix
     ./flatpak/flatpak-config.nix
+    ./gpu-screen-recorder/gsr-config.nix
+    ./gaming/gaming-config.nix
+    inputs.cz-agent-gui.nixosModules.default
   ];
+
+  services.cz-agent-gui = {
+    enable = true;
+    user = "matko";
+  };
 
   networking.hostName = "fishy";
 
@@ -32,7 +40,7 @@
   boot.loader.limine.maxGenerations = 25;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
   services.ollama = {
     enable = true;
@@ -46,16 +54,14 @@
     autoStart = true;
   };
 
-  programs.gpu-screen-recorder = {
-    enable = true;
-    ui.enable = true;
-  };
-
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
+    extraCompatPackages = with pkgs; [ proton-cachyos proton-ge-bin ];
   };
+
+  xdg.mime.defaultApplications."inode/directory" = "org.gnome.Nautilus.desktop";
 
   programs.gamemode.enable = true;
   programs.gamescope.enable = true;
@@ -171,7 +177,6 @@
       helium
       kdePackages.kate
       git
-      protonplus
       mpv
       yt-dlp
       fuse
@@ -202,6 +207,8 @@
       audacity
       lmms-appimage
       pandora-launcher
+      rootapp
+      cz-agent-gui
       musishark
       ruwa
       onlyoffice-desktopeditors

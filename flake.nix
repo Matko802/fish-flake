@@ -47,9 +47,24 @@
       url = "github:Matko802/PandoraLauncher-Flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    rootapp = {
+      url = "github:Matko802/rootapp-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    cz-agent-gui = {
+      url = "path:/mnt/ssd/My-Files/Projects/cz-agent-gui-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sharkshell = {
       url = "github:Matko802/sharkshell";
       flake = false;
+    };
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+    };
+    proton-cachyos = {
+      url = "github:Daaboulex/proton-cachyos-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
   };
@@ -67,8 +82,12 @@
       musishark,
       ruwa,
       pandora-launcher,
+      rootapp,
+      cz-agent-gui,
       jefetch,
       sharkshell,
+      nix-cachyos-kernel,
+      proton-cachyos,
       ...
     }@inputs:
     let
@@ -78,7 +97,10 @@
       musisharkOverlay = musishark.overlays.default;
       ruwaOverlay = ruwa.overlays.default;
       pandoraLauncherOverlay = pandora-launcher.overlays.default;
+      rootappOverlay = rootapp.overlays.default;
+      czAgentGuiOverlay = cz-agent-gui.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
+      protonCachyosOverlay = proton-cachyos.overlays.default;
 
       sharedModules = [
         ({ ... }: {
@@ -89,6 +111,12 @@
             auto-optimise-store = true;
             keep-outputs = true;
             keep-derivations = true;
+            extra-substituters = [
+              "https://attic.xuyh0120.win/lantian"
+            ];
+            extra-trusted-public-keys = [
+              "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+            ];
           };
 
           nixpkgs.overlays = [
@@ -97,9 +125,13 @@
             sharkScrpOverlay
             lmmsAppimageOverlay
             pandoraLauncherOverlay
+            rootappOverlay
+            czAgentGuiOverlay
             musisharkOverlay
             ruwaOverlay
             jefetchOverlay
+            nix-cachyos-kernel.overlays.pinned
+            protonCachyosOverlay
           ];
 
           environment.systemPackages = [
@@ -128,6 +160,8 @@
       packages.x86_64-linux.musishark = inputs.musishark.packages.x86_64-linux.default;
       packages.x86_64-linux.ruwa = inputs.ruwa.packages.x86_64-linux.default;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
+      packages.x86_64-linux.rootapp = inputs.rootapp.packages.x86_64-linux.default;
+      packages.x86_64-linux.cz-agent-gui = inputs.cz-agent-gui.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
     };
 }
