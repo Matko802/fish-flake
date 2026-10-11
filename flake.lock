@@ -342,6 +342,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-stable": {
+      "locked": {
+        "lastModified": 1791426274,
+        "narHash": "sha256-MWhktfFtFE8Jl7bf9Pkp7TR5MSdYCjCswSo0Gkb4ywc=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7c8764b7c7b09b34f632464276218ef9090eaa11",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-26.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1791456040,
@@ -427,6 +443,7 @@
         "musishark": "musishark",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-stable": "nixpkgs-stable",
         "pandora-launcher": "pandora-launcher",
         "proton-cachyos": "proton-cachyos",
         "qtengine": "qtengine",
@@ -465,11 +482,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791658704,
-        "narHash": "sha256-ZShfdhYoveuzsUpNUfAOnmxNShYXcf7Ypu1I4xJ34FU=",
+        "lastModified": 1791696315,
+        "narHash": "sha256-4hbfsJbmHMUOYxhW7gLDUdW2cZPk68E7BOPzl3rmVGY=",
         "owner": "Matko802",
         "repo": "ruwa",
-        "rev": "aa34005e1887ed8140617e59f81f6223060d600a",
+        "rev": "795089a29638d3e8cd3ebfe878d13d4871104ef9",
         "type": "github"
       },
       "original": {
