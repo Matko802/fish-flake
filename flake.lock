@@ -418,11 +418,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791344020,
-        "narHash": "sha256-X6ysVuwPHY7YvKgLesgsW8VpMbj0xmtEhWSnUH6UfTU=",
+        "lastModified": 1791682090,
+        "narHash": "sha256-8C+R9ZLwMeH+69cn4uxsvBUVewVSrmF55zZazS9KLP0=",
         "owner": "kossLAN",
         "repo": "qtengine",
-        "rev": "3dc142ab265e1d84d74da1782c3e46a8d1d35add",
+        "rev": "1a8b9c5fd7ab695c71b1ac236953491088e152fb",
         "type": "github"
       },
       "original": {
@@ -459,11 +459,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791658064,
-        "narHash": "sha256-1Z/70KFz9wAFKghOG5bt+KPI98MC5NEBxtEXJkzOB+g=",
+        "lastModified": 1791706351,
+        "narHash": "sha256-v/i5eNpR2VwtHzQEXBUi4XarWoy0IOgq07YGti4YIXQ=",
         "owner": "Matko802",
         "repo": "rootapp-flake",
-        "rev": "222fb735f03a34d5fed2690f79619b60386cb8d3",
+        "rev": "11876b2b7af4ba4050b535c2e1c65080acb2fd12",
         "type": "github"
       },
       "original": {
@@ -479,11 +479,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791705790,
-        "narHash": "sha256-m0Zp7lLTNEMsA6RalgcRmoM2K+5YQjgiayeWA5jJZNY=",
+        "lastModified": 1791706920,
+        "narHash": "sha256-UTyX9JixE/UuB+qS9XZpG6a5NYVgIDPC57kGZyMh3wE=",
         "owner": "Matko802",
         "repo": "ruwa",
-        "rev": "ce3824b43630ec91fc5ae7e937eebc9691932484",
+        "rev": "ae84e020b5069aed734d468df16ca8082ebc4dc5",
         "type": "github"
       },
       "original": {
