@@ -24,14 +24,7 @@
     ./virtualization/kvm/kvm-config.nix
     ./flatpak/flatpak-config.nix
     ./gpu-screen-recorder/gsr-config.nix
-    ./gaming/gaming-config.nix
-    inputs.cz-agent-gui.nixosModules.default
   ];
-
-  services.cz-agent-gui = {
-    enable = true;
-    user = "matko";
-  };
 
   networking.hostName = "fishy";
 
@@ -40,7 +33,7 @@
   boot.loader.limine.maxGenerations = 25;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   services.ollama = {
     enable = true;
@@ -73,6 +66,7 @@
 
   services.udisks2.enable = true;
   services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;
@@ -93,7 +87,7 @@
     openFirewall = true;
     publish = {
       enable = true;
-      userServices = true; # Allows non-root user apps like WiVRn to broadcast mDNS services
+      userServices = true;
     };
   };
 
@@ -104,15 +98,13 @@
 
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
-  services.journald.settings.Journal = {
-    SystemMaxUse = "1G";
-    SystemMaxFileSize = "100M";
-  };
+  services.journald.extraConfig = ''
+    SystemMaxUse=1G
+    SystemMaxFileSize=100M
+  '';
 
   # Timezone
   time.timeZone = "Europe/Bratislava";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "sk_SK.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -130,7 +122,6 @@
 
   # Login screen
   services.displayManager.ly.enable = true;
-
 
   # Fuck X11 Stuff
   services.xserver.enable = false;
@@ -172,7 +163,7 @@
     shell = pkgs.fish;
     extraGroups = [ "networkmanager" "wheel" "i2c" ];
     packages = with pkgs; [
-      zapzap
+      ruwa
       prismlauncher
       helium
       kdePackages.kate
@@ -180,12 +171,10 @@
       mpv
       yt-dlp
       fuse
-      cava
-      cavasik
       sharkvis
       shark-scrp
       jefetch
-      fetch
+      unstable.fetch
       fastfetch
       pear-desktop
       godot
@@ -208,9 +197,7 @@
       lmms-appimage
       pandora-launcher
       rootapp
-      cz-agent-gui
       musishark
-      ruwa
       onlyoffice-desktopeditors
       itch
       element-desktop
@@ -221,7 +208,7 @@
 
   # Allow packages that are not free
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.17" ];
+  nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.17" "ventoy-1.1.12" ];
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
@@ -234,7 +221,6 @@
       withVencord = true;
       withOpenASAR = true;
     })
-    fresh-editor
     usbutils
     p7zip
     appimage-run

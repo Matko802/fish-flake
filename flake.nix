@@ -2,7 +2,8 @@
   description = "Matko's NixOS System Flake";
 
   inputs = {
-    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
+    nixpkgs.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.xz";
+    nixpkgs-unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     helium-flake = {
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -51,16 +52,13 @@
       url = "github:Matko802/rootapp-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    cz-agent-gui = {
-      url = "path:/mnt/ssd/My-Files/Projects/cz-agent-gui-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     sharkshell = {
       url = "github:Matko802/sharkshell";
       flake = false;
     };
     nix-cachyos-kernel = {
       url = "github:xddxdd/nix-cachyos-kernel/release";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     proton-cachyos = {
       url = "github:Daaboulex/proton-cachyos-nix";
@@ -73,8 +71,10 @@
     {
       self,
       nixpkgs,
+      nixpkgs-unstable,
       helium-flake,
       zen-browser,
+      qtengine,
       sharkvis,
       mocktail,
       shark-scrp,
@@ -83,7 +83,6 @@
       ruwa,
       pandora-launcher,
       rootapp,
-      cz-agent-gui,
       jefetch,
       sharkshell,
       nix-cachyos-kernel,
@@ -91,6 +90,17 @@
       ...
     }@inputs:
     let
+      system = "x86_64-linux";
+      unstableConfig = {
+        allowUnfree = true;
+        permittedInsecurePackages = [ "ventoy-1.1.17" "ventoy-1.1.12" ];
+      };
+      unstableOverlay = final: prev: {
+        unstable = import nixpkgs-unstable {
+          inherit system;
+          config = unstableConfig;
+        };
+      };
       sharkvisOverlay = sharkvis.overlays.default;
       sharkScrpOverlay = shark-scrp.overlays.default;
       lmmsAppimageOverlay = lmms-appimage.overlays.default;
@@ -98,7 +108,6 @@
       ruwaOverlay = ruwa.overlays.default;
       pandoraLauncherOverlay = pandora-launcher.overlays.default;
       rootappOverlay = rootapp.overlays.default;
-      czAgentGuiOverlay = cz-agent-gui.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       protonCachyosOverlay = proton-cachyos.overlays.default;
 
@@ -120,13 +129,13 @@
           };
 
           nixpkgs.overlays = [
+            unstableOverlay
             helium-flake.overlays.default
             sharkvisOverlay
             sharkScrpOverlay
             lmmsAppimageOverlay
             pandoraLauncherOverlay
             rootappOverlay
-            czAgentGuiOverlay
             musisharkOverlay
             ruwaOverlay
             jefetchOverlay
@@ -141,9 +150,13 @@
       ];
 
       mkHost = machineModule: nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit system;
         specialArgs = {
           inherit inputs;
+          pkgsUnstable = import nixpkgs-unstable {
+            inherit system;
+            config = unstableConfig;
+          };
         };
         modules = sharedModules ++ [ machineModule ];
       };
@@ -161,7 +174,6 @@
       packages.x86_64-linux.ruwa = inputs.ruwa.packages.x86_64-linux.default;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.rootapp = inputs.rootapp.packages.x86_64-linux.default;
-      packages.x86_64-linux.cz-agent-gui = inputs.cz-agent-gui.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
     };
 }

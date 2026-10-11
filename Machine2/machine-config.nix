@@ -12,7 +12,7 @@
   boot.loader.limine.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
 
   programs.fish.enable = true;
 

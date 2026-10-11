@@ -70,7 +70,7 @@ gestures {
 }
 
 spawn-at-startup "quickshell"
-spawn-at-startup "gsr-ui"
+spawn-at-startup "gsr-ui" "launch-hide-announce"
 spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist store"
 spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist store"
 spawn-at-startup "systemctl" "--user" "restart" "hyprpolkitagent"
