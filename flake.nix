@@ -56,10 +56,6 @@
       url = "github:Matko802/sharkshell";
       flake = false;
     };
-    nix-cachyos-kernel = {
-      url = "github:xddxdd/nix-cachyos-kernel/release";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     proton-cachyos = {
       url = "github:Daaboulex/proton-cachyos-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -85,7 +81,6 @@
       rootapp,
       jefetch,
       sharkshell,
-      nix-cachyos-kernel,
       proton-cachyos,
       ...
     }@inputs:
@@ -139,7 +134,6 @@
             musisharkOverlay
             ruwaOverlay
             jefetchOverlay
-            nix-cachyos-kernel.overlays.pinned
             protonCachyosOverlay
           ];
 

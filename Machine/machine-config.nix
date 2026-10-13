@@ -24,6 +24,7 @@
     ./virtualization/kvm/kvm-config.nix
     ./flatpak/flatpak-config.nix
     ./gpu-screen-recorder/gsr-config.nix
+    ./gaming/amd-gaming-config.nix
   ];
 
   networking.hostName = "fishy";
@@ -177,7 +178,7 @@
       unstable.fetch
       fastfetch
       pear-desktop
-      godot
+      unstable.godot
       litellm
       baobab
       uv
@@ -191,16 +192,16 @@
       krita
       gimp
       inkscape
-      blender
+      unstable.blender
       blockbench
-      audacity
+      unstable.audacity
       lmms-appimage
       pandora-launcher
       rootapp
       musishark
       onlyoffice-desktopeditors
       itch
-      element-desktop
+      unstable.element-desktop
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       seahorse
     ];
@@ -231,7 +232,7 @@
     wine-wayland
     winetricks
     protontricks
-    proton-vpn
+    unstable.proton-vpn
     lutris
     unzip
     gnome-calculator
