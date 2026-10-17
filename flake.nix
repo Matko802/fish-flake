@@ -2,14 +2,16 @@
   description = "Matko's NixOS System Flake";
 
   inputs = {
-    nixpkgs.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.xz";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     nixpkgs-unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     helium-flake = {
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
+      # Pinned: upstream 1.23.3b assets were yanked (404). Last good: 1.23.2b.
+      # Unpin (back to github:youwen5/zen-browser-flake) once upstream has a working release again.
+      url = "github:youwen5/zen-browser-flake/458cd16116c362a5e92d5db6bdc3599e4e8b1f4a";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     qtengine = {
@@ -52,6 +54,10 @@
       url = "github:Matko802/rootapp-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    opencode = {
+      url = "github:Matko802/opencode-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sharkshell = {
       url = "github:Matko802/sharkshell";
       flake = false;
@@ -79,6 +85,7 @@
       ruwa,
       pandora-launcher,
       rootapp,
+      opencode,
       jefetch,
       sharkshell,
       proton-cachyos,
@@ -103,6 +110,7 @@
       ruwaOverlay = ruwa.overlays.default;
       pandoraLauncherOverlay = pandora-launcher.overlays.default;
       rootappOverlay = rootapp.overlays.default;
+      opencodeOverlay = opencode.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       protonCachyosOverlay = proton-cachyos.overlays.default;
 
@@ -115,9 +123,9 @@
             auto-optimise-store = true;
             keep-outputs = true;
             keep-derivations = true;
-            extra-substituters = [
-              "https://attic.xuyh0120.win/lantian"
-            ];
+            # attic.xuyh0120.win is down (connection refused since 2026-10-15);
+            # every nix operation stalls on it. Re-enable when it is back.
+            extra-substituters = [ ];
             extra-trusted-public-keys = [
               "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
             ];
@@ -131,6 +139,7 @@
             lmmsAppimageOverlay
             pandoraLauncherOverlay
             rootappOverlay
+            opencodeOverlay
             musisharkOverlay
             ruwaOverlay
             jefetchOverlay
@@ -168,6 +177,7 @@
       packages.x86_64-linux.ruwa = inputs.ruwa.packages.x86_64-linux.default;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.rootapp = inputs.rootapp.packages.x86_64-linux.default;
+      packages.x86_64-linux.opencode = inputs.opencode.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
     };
 }

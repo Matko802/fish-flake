@@ -114,11 +114,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791557953,
-        "narHash": "sha256-6OeKE4EqRCzic78zbOiSpzLt10H08NvZNyU9Z7qP1gI=",
+        "lastModified": 1792069502,
+        "narHash": "sha256-1kUc/KEp7HXRPEcmf0Lmkrl4Ymj5Kn3rNCzYw9I0oPY=",
         "owner": "oxcl",
         "repo": "nix-flake-helium-browser",
-        "rev": "8e75e9f639451ddaaaf1c3e68134facb09cf5ad8",
+        "rev": "3c84ccd3a45af5e954cd53ff278bd59595fa3983",
         "type": "github"
       },
       "original": {
@@ -213,15 +213,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1791765022,
-        "narHash": "sha256-TnALPKp8o/dtUYgE243iQMbRP4183ZPhWu33FD05k/4=",
-        "rev": "7993f34ee47e28a3d607a525aadc6c94b73be728",
+        "lastModified": 1791956154,
+        "narHash": "sha256-gJX2+xcImvxBCI3bp7zXKLUX2AwsdTxMgJ1UX/5Hm/o=",
+        "rev": "55bfb4d7437bd4e09ab7cba58a43bd68eb310044",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.11767.7993f34ee47e/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1092090.55bfb4d7437b/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://channels.nixos.org/nixos-26.05/nixexprs.tar.xz"
+        "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
       }
     },
     "nixpkgs-lib": {
@@ -271,15 +271,35 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1791734076,
-        "narHash": "sha256-0dNcyVeoD61zhucIpt5BAQ+ytd6JzF641Z+A9bgltLo=",
-        "rev": "7fd4004d0511991fff3a0524856a9be09e28c5f0",
+        "lastModified": 1791956154,
+        "narHash": "sha256-gJX2+xcImvxBCI3bp7zXKLUX2AwsdTxMgJ1UX/5Hm/o=",
+        "rev": "55bfb4d7437bd4e09ab7cba58a43bd68eb310044",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1090327.7fd4004d0511/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1092090.55bfb4d7437b/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
         "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
+      }
+    },
+    "opencode": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792256674,
+        "narHash": "sha256-FjIiTUKIaFbQDjFRziEqjT84edgRh3sLv3AyUIV3ONc=",
+        "owner": "Matko802",
+        "repo": "opencode-flake",
+        "rev": "c37af3abaeea0f2970620eddf8bafd67086d711c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Matko802",
+        "repo": "opencode-flake",
+        "type": "github"
       }
     },
     "pandora-launcher": {
@@ -354,6 +374,7 @@
         "musishark": "musishark",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "opencode": "opencode",
         "pandora-launcher": "pandora-launcher",
         "proton-cachyos": "proton-cachyos",
         "qtengine": "qtengine",
@@ -392,11 +413,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791908625,
-        "narHash": "sha256-K7FmKtENXwSWZaZ+VArC9S6vS8mIBVHrJ1WXYt8Ou9k=",
+        "lastModified": 1792255988,
+        "narHash": "sha256-3uPVm9cUgP5+FTq4UIUBfxpKQcy3RecXu9/J9I1/qw0=",
         "owner": "Matko802",
         "repo": "ruwa",
-        "rev": "2564124d85a3c326e84d14205b2304171e2f3808",
+        "rev": "f67e48cd386b7febb9eedb7619fae27b7c961487",
         "type": "github"
       },
       "original": {
@@ -538,6 +559,7 @@
       "original": {
         "owner": "youwen5",
         "repo": "zen-browser-flake",
+        "rev": "458cd16116c362a5e92d5db6bdc3599e4e8b1f4a",
         "type": "github"
       }
     }
