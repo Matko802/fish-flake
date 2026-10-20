@@ -613,11 +613,11 @@
     "sharkshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1792524196,
-        "narHash": "sha256-FcifYLBzTmsIFeQCyntBYNC7jXQ9+4Xvf+V3sU6JZzs=",
+        "lastModified": 1792524799,
+        "narHash": "sha256-ds/WzdKz2+TAq7h1LoYVUTIhz2St9DevY6uDnyvQx7w=",
         "owner": "Matko802",
         "repo": "sharkshell",
-        "rev": "46ecef8db0f33ed33dab4974f342ed16329651d1",
+        "rev": "07df8a9380024e3d6b1b47dc12f52eb8a268e989",
         "type": "github"
       },
       "original": {
