@@ -13,6 +13,7 @@
     Theme=Papirus-Dark
 
     [General]
+    BrowserApplication=zen-beta.desktop
     ColorScheme=MatkosAmoled
 
     [KDE]
