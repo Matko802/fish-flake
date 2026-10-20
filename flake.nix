@@ -2,69 +2,75 @@
   description = "Matko's NixOS System Flake";
 
   inputs = {
-    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     nixpkgs-unstable.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     helium-flake = {
       url = "github:oxcl/nix-flake-helium-browser";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     zen-browser = {
-      # Pinned: upstream 1.23.3b assets were yanked (404). Last good: 1.23.2b.
-      # Unpin (back to github:youwen5/zen-browser-flake) once upstream has a working release again.
-      url = "github:youwen5/zen-browser-flake/458cd16116c362a5e92d5db6bdc3599e4e8b1f4a";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     qtengine = {
       url = "github:kossLAN/qtengine";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     sharkvis = {
       url = "github:Matko802/sharkvis";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     jefetch = {
       url = "github:Matko802/jefetch";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     mocktail = {
       url = "git+https://github.com/komaruworld/mocktail?ref=main";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     shark-scrp = {
       url = "github:Matko802/shark-scrp";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     lmms-appimage = {
       url = "github:Matko802/lmms-appimage-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     musishark = {
       url = "github:Matko802/musishark";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     ruwa = {
       url = "github:Matko802/ruwa";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     pandora-launcher = {
       url = "github:Matko802/PandoraLauncher-Flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     rootapp = {
       url = "github:Matko802/rootapp-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     opencode = {
       url = "github:Matko802/opencode-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    godot-flake = {
+      url = "github:Matko802/godot-flake";
+    };
+    audacity-flake = {
+      url = "github:Matko802/audacity-flake";
     };
     sharkshell = {
       url = "github:Matko802/sharkshell";
       flake = false;
     };
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+    };
     proton-cachyos = {
       url = "github:Daaboulex/proton-cachyos-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
   };
@@ -72,7 +78,6 @@
   outputs =
     {
       self,
-      nixpkgs,
       nixpkgs-unstable,
       helium-flake,
       zen-browser,
@@ -88,21 +93,12 @@
       opencode,
       jefetch,
       sharkshell,
+      nix-cachyos-kernel,
       proton-cachyos,
       ...
     }@inputs:
     let
       system = "x86_64-linux";
-      unstableConfig = {
-        allowUnfree = true;
-        permittedInsecurePackages = [ "ventoy-1.1.17" "ventoy-1.1.12" ];
-      };
-      unstableOverlay = final: prev: {
-        unstable = import nixpkgs-unstable {
-          inherit system;
-          config = unstableConfig;
-        };
-      };
       sharkvisOverlay = sharkvis.overlays.default;
       sharkScrpOverlay = shark-scrp.overlays.default;
       lmmsAppimageOverlay = lmms-appimage.overlays.default;
@@ -123,16 +119,14 @@
             auto-optimise-store = true;
             keep-outputs = true;
             keep-derivations = true;
-            # attic.xuyh0120.win is down (connection refused since 2026-10-15);
-            # every nix operation stalls on it. Re-enable when it is back.
-            extra-substituters = [ ];
+            extra-substituters = [ "https://cache.xinux.uz" ];
             extra-trusted-public-keys = [
               "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+              "cache.xinux.uz:BXCrtqejFjWzWEB9YuGB7X2MV4ttBur1N8BkwQRdH+0="
             ];
           };
 
           nixpkgs.overlays = [
-            unstableOverlay
             helium-flake.overlays.default
             sharkvisOverlay
             sharkScrpOverlay
@@ -143,6 +137,7 @@
             musisharkOverlay
             ruwaOverlay
             jefetchOverlay
+            nix-cachyos-kernel.overlays.pinned
             protonCachyosOverlay
           ];
 
@@ -152,14 +147,10 @@
         })
       ];
 
-      mkHost = machineModule: nixpkgs.lib.nixosSystem {
+      mkHost = machineModule: nixpkgs-unstable.lib.nixosSystem {
         inherit system;
         specialArgs = {
           inherit inputs;
-          pkgsUnstable = import nixpkgs-unstable {
-            inherit system;
-            config = unstableConfig;
-          };
         };
         modules = sharedModules ++ [ machineModule ];
       };
@@ -168,7 +159,7 @@
       nixosConfigurations.machine1 = mkHost ./Machine/machine-config.nix;
       nixosConfigurations.machine2 = mkHost ./Machine2/machine-config.nix;
       packages.x86_64-linux.sharkvis = inputs.sharkvis.packages.x86_64-linux.default;
-      packages.x86_64-linux.sharkshell = (nixpkgs.legacyPackages.x86_64-linux.callPackage "${sharkshell}/packaging.nix" { }).sharkshell;
+      packages.x86_64-linux.sharkshell = (nixpkgs-unstable.legacyPackages.x86_64-linux.callPackage "${sharkshell}/packaging.nix" { }).sharkshell;
       packages.x86_64-linux.mocktail = inputs.mocktail.packages.x86_64-linux.default;
       packages.x86_64-linux.zen-browser = inputs.zen-browser.packages.x86_64-linux.default;
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;

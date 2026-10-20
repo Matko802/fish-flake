@@ -34,7 +34,7 @@
   boot.loader.limine.maxGenerations = 25;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
   services.ollama = {
     enable = true;
@@ -46,6 +46,7 @@
     enable = true;
     openFirewall = true;
     autoStart = true;
+    steam.importOXRRuntimes = true;
   };
 
   programs.steam = {
@@ -54,8 +55,6 @@
     dedicatedServer.openFirewall = true;
     extraCompatPackages = with pkgs; [ proton-cachyos proton-ge-bin ];
   };
-
-  xdg.mime.defaultApplications."inode/directory" = "org.gnome.Nautilus.desktop";
 
   programs.gamemode.enable = true;
   programs.gamescope.enable = true;
@@ -99,10 +98,10 @@
 
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
-  services.journald.extraConfig = ''
-    SystemMaxUse=1G
-    SystemMaxFileSize=100M
-  '';
+  services.journald.settings.Journal = {
+    SystemMaxUse = "1G";
+    SystemMaxFileSize = "100M";
+  };
 
   # Timezone
   time.timeZone = "Europe/Bratislava";
@@ -164,6 +163,7 @@
     shell = pkgs.fish;
     extraGroups = [ "networkmanager" "wheel" "i2c" ];
     packages = with pkgs; [
+      telegram-desktop
       ruwa
       prismlauncher
       helium
@@ -175,16 +175,15 @@
       sharkvis
       shark-scrp
       jefetch
-      unstable.fetch
+      fetch
       fastfetch
       pear-desktop
-      unstable.godot
+      inputs.godot-flake.packages.${pkgs.stdenv.hostPlatform.system}.default
       litellm
       baobab
       uv
       ffmpeg-full
       wayvr
-      xrizer
       alcom
       unityhub
       mcpelauncher-ui-qt
@@ -192,16 +191,16 @@
       krita
       gimp
       inkscape
-      unstable.blender
+      blender
       blockbench
-      unstable.audacity
       lmms-appimage
       pandora-launcher
       rootapp
+      opencode
       musishark
       onlyoffice-desktopeditors
       itch
-      unstable.element-desktop
+      element-desktop
       inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       seahorse
     ];
@@ -209,12 +208,14 @@
 
   # Allow packages that are not free
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.17" "ventoy-1.1.12" ];
+  nixpkgs.config.permittedInsecurePackages = [
+    "ventoy-1.1.18"
+  ];
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    inputs.audacity-flake.packages.${pkgs.stdenv.hostPlatform.system}.default
     nodejs
-    opencode
     python3
     clang-tools
     vesktop
@@ -232,7 +233,7 @@
     wine-wayland
     winetricks
     protontricks
-    unstable.proton-vpn
+    proton-vpn
     lutris
     unzip
     gnome-calculator
