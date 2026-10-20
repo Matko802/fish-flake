@@ -178,7 +178,7 @@
       fetch
       fastfetch
       pear-desktop
-      inputs.godot-flake.packages.${pkgs.stdenv.hostPlatform.system}.default
+      godot-flake
       litellm
       baobab
       uv
@@ -214,7 +214,7 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-    inputs.audacity-flake.packages.${pkgs.stdenv.hostPlatform.system}.default
+    audacity-flake
     nodejs
     python3
     clang-tools

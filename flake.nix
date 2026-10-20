@@ -91,6 +91,8 @@
       pandora-launcher,
       rootapp,
       opencode,
+      godot-flake,
+      audacity-flake,
       jefetch,
       sharkshell,
       nix-cachyos-kernel,
@@ -109,6 +111,8 @@
       opencodeOverlay = opencode.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       protonCachyosOverlay = proton-cachyos.overlays.default;
+      godotFlakeOverlay = godot-flake.overlays.default;
+      audacityFlakeOverlay = audacity-flake.overlays.default;
 
       sharedModules = [
         ({ ... }: {
@@ -139,6 +143,8 @@
             jefetchOverlay
             nix-cachyos-kernel.overlays.pinned
             protonCachyosOverlay
+            godotFlakeOverlay
+            audacityFlakeOverlay
           ];
 
           environment.systemPackages = [

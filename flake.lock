@@ -5,11 +5,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1792517222,
-        "narHash": "sha256-H28YWJf6ek1TBuqjguOO0CPgwHpZhCFzeZ4bTPYrCRw=",
+        "lastModified": 1792517817,
+        "narHash": "sha256-xIFYb/s3w3UEVZ9x3FACZrsgo49VnLqdgQWEawYa91k=",
         "owner": "Matko802",
         "repo": "audacity-flake",
-        "rev": "e7b5eaa4eedc8ab90efb2615c6e1c08044514b02",
+        "rev": "ddf76061dad873f657e30629d8dbe4c5e67a6431",
         "type": "github"
       },
       "original": {
@@ -164,11 +164,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1792517220,
-        "narHash": "sha256-jR6xpC/bXkJx5J3RYfTP4cv/037Jc6wUjAp78mmhKd8=",
+        "lastModified": 1792517843,
+        "narHash": "sha256-dyoh7bnHe58GrLWKUA5r/g12d4b2naTV0dGTBp351e0=",
         "owner": "Matko802",
         "repo": "godot-flake",
-        "rev": "a5a7db112ce69ea5b08b75fdb8b75e0e6d538268",
+        "rev": "9a943e5aac57de20416163a2c15b605d3e747077",
         "type": "github"
       },
       "original": {
