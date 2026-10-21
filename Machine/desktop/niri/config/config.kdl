@@ -118,7 +118,7 @@ binds {
     Mod+Escape { spawn "kitty" "--class" "btop" "-e" "btop"; }
     Mod+M { spawn "powermenu"; }
     Mod+E { spawn "nautilus"; }
-    Mod+B { spawn "zen"; }
+    Mod+B { spawn "zen-beta"; }
     Mod+Shift+B { spawn "bar"; }
     Mod+T { toggle-window-floating; }
     Mod+Period { spawn "emojipicker"; }
