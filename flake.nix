@@ -55,9 +55,6 @@
       url = "github:Matko802/opencode-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    godot-flake = {
-      url = "github:Matko802/godot-flake";
-    };
     audacity-flake = {
       url = "github:Matko802/audacity-flake";
     };
@@ -91,7 +88,6 @@
       pandora-launcher,
       rootapp,
       opencode,
-      godot-flake,
       audacity-flake,
       jefetch,
       sharkshell,
@@ -111,7 +107,6 @@
       opencodeOverlay = opencode.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       protonCachyosOverlay = proton-cachyos.overlays.default;
-      godotFlakeOverlay = godot-flake.overlays.default;
       audacityFlakeOverlay = audacity-flake.overlays.default;
 
       sharedModules = [
@@ -143,7 +138,6 @@
             jefetchOverlay
             nix-cachyos-kernel.overlays.pinned
             protonCachyosOverlay
-            godotFlakeOverlay
             audacityFlakeOverlay
           ];
 

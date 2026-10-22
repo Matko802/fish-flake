@@ -179,7 +179,7 @@
       fetch
       fastfetch
       pear-desktop
-      godot-flake
+      godot
       litellm
       baobab
       uv
@@ -231,7 +231,7 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-    audacity-flake
+    audacity
     nodejs
     python3
     clang-tools
