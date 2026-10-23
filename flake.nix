@@ -69,6 +69,10 @@
       url = "github:Daaboulex/proton-cachyos-nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    mchose-hub = {
+      url = "path:/mnt/ssd/My-Files/Projects/linux%20stuff/mchosehub-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
   };
 
@@ -93,6 +97,7 @@
       sharkshell,
       nix-cachyos-kernel,
       proton-cachyos,
+      mchose-hub,
       ...
     }@inputs:
     let

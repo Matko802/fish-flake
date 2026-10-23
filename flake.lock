@@ -124,11 +124,11 @@
         "nixpkgs-lib": "nixpkgs-lib_4"
       },
       "locked": {
-        "lastModified": 1788450739,
-        "narHash": "sha256-glZLQlzIn1fXH6PazR2iUmTo7kzzyYSshrWhLS9TqCU=",
+        "lastModified": 1790898470,
+        "narHash": "sha256-zTwuwezD0w3hpga6a6P8emidzAZFyWqlNeRBlpWOOl8=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "31729ca8cbdb4fa927b34e5f4353e6a83f39e993",
+        "rev": "024633cd702b10285db5cb19b40ad48d2399ba60",
         "type": "github"
       },
       "original": {
@@ -238,6 +238,23 @@
         "owner": "Matko802",
         "repo": "lmms-appimage-nix",
         "type": "github"
+      }
+    },
+    "mchose-hub": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792777453,
+        "narHash": "sha256-I6TxdA+40U1iWQCn3yTLh5iyqdBC867QeoK2PDRS8+Q=",
+        "path": "/mnt/ssd/My-Files/Projects/linux stuff/mchosehub-flake",
+        "type": "path"
+      },
+      "original": {
+        "path": "/mnt/ssd/My-Files/Projects/linux stuff/mchosehub-flake",
+        "type": "path"
       }
     },
     "mocktail": {
@@ -368,11 +385,11 @@
     },
     "nixpkgs-lib_4": {
       "locked": {
-        "lastModified": 1788057806,
-        "narHash": "sha256-DTQSMxzDWmT0zhguthvegnVkn7CFqGCv4IHCzk5ZUpM=",
+        "lastModified": 1790477367,
+        "narHash": "sha256-oujbxmVKDhci2E4EM3KyAbRUgp5/IsCoiA/LfEF7OOk=",
         "owner": "nix-community",
         "repo": "nixpkgs.lib",
-        "rev": "596e2e3940e09b2abbeb03f75fa1828c57fcd72c",
+        "rev": "f7cd230690d9fc982d06129f9189b101fddcfa3b",
         "type": "github"
       },
       "original": {
@@ -417,11 +434,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792593217,
-        "narHash": "sha256-j9oZJl36CpQwuhrsj5jcO72hFuiSyUmAe5ZMB7wBU5I=",
+        "lastModified": 1792763725,
+        "narHash": "sha256-boBZQJJ5l9Rw5NY7Mz3dmW/b28LaCUEeMQWJEh0KM9w=",
         "owner": "Matko802",
         "repo": "opencode-flake",
-        "rev": "49ba2923d5cec0d4a4476ab486d07210b7fd2e25",
+        "rev": "d35e81795b16ed61cdf0a102501ce2c794735db0",
         "type": "github"
       },
       "original": {
@@ -460,11 +477,11 @@
         "std": "std"
       },
       "locked": {
-        "lastModified": 1792581123,
-        "narHash": "sha256-sTJOFff53omRNmGjEaknXELdzaYrfgkkjAM2P1T+2gE=",
+        "lastModified": 1792771119,
+        "narHash": "sha256-iSgS3fPm/3+Tr/5DPVXdefsn3rUQIcthukBCJ2cJ/Bo=",
         "owner": "Daaboulex",
         "repo": "proton-cachyos-nix",
-        "rev": "58ede8818bfc1a341da58e30ddb3e2b1767a81f4",
+        "rev": "18ae349eaca562444a997fc1977d69c196a3519f",
         "type": "github"
       },
       "original": {
@@ -499,6 +516,7 @@
         "helium-flake": "helium-flake",
         "jefetch": "jefetch",
         "lmms-appimage": "lmms-appimage",
+        "mchose-hub": "mchose-hub",
         "mocktail": "mocktail",
         "musishark": "musishark",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
@@ -578,11 +596,11 @@
     "sharkshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1792524799,
-        "narHash": "sha256-ds/WzdKz2+TAq7h1LoYVUTIhz2St9DevY6uDnyvQx7w=",
+        "lastModified": 1792691055,
+        "narHash": "sha256-qk9KrCPvpH8QAsK4g8zLNWialtCtzGxP4Ymv+c5+fS4=",
         "owner": "Matko802",
         "repo": "sharkshell",
-        "rev": "07df8a9380024e3d6b1b47dc12f52eb8a268e989",
+        "rev": "7e13c15bf465b98d967c88839fc24d0e09d9b117",
         "type": "github"
       },
       "original": {
@@ -624,16 +642,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1790680785,
-        "narHash": "sha256-nF4Sl2l32ZKLQaeNIF1B7knCdN6sz5X+pid6FRxJ1XM=",
+        "lastModified": 1792764496,
+        "narHash": "sha256-432yB7L8VA2uYbgp/UP9FSlJIKLrOYmzRcq7KanccP8=",
         "owner": "Daaboulex",
         "repo": "nix-packaging-standard",
-        "rev": "e242b56100b73bac042f90bea721432ed4cda493",
+        "rev": "ada5140bf78d556e3b32d67dd4685088dd78f62e",
         "type": "github"
       },
       "original": {
         "owner": "Daaboulex",
-        "ref": "v2.40.1",
+        "ref": "release",
         "repo": "nix-packaging-standard",
         "type": "github"
       }

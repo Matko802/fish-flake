@@ -25,6 +25,7 @@
     ./flatpak/flatpak-config.nix
     ./gpu-screen-recorder/gsr-config.nix
     ./gaming/amd-gaming-config.nix
+    ./mchose/mchose-config.nix
   ];
 
   networking.hostName = "fishy";
@@ -65,6 +66,7 @@
     };
 
   services.udisks2.enable = true;
+  services.fwupd.enable = true;
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
   virtualisation.podman = {
@@ -213,25 +215,9 @@
     "ventoy-1.1.18"
   ];
 
-  xdg.mime = {
-    enable = true;
-    defaultApplications = {
-      "x-scheme-handler/http" = [ "zen-beta.desktop" ];
-      "x-scheme-handler/https" = [ "zen-beta.desktop" ];
-      "x-scheme-handler/chrome" = [ "zen-beta.desktop" ];
-      "text/html" = [ "zen-beta.desktop" ];
-      "application/x-extension-htm" = [ "zen-beta.desktop" ];
-      "application/x-extension-html" = [ "zen-beta.desktop" ];
-      "application/x-extension-shtml" = [ "zen-beta.desktop" ];
-      "application/xhtml+xml" = [ "zen-beta.desktop" ];
-      "application/x-extension-xhtml" = [ "zen-beta.desktop" ];
-      "application/x-extension-xht" = [ "zen-beta.desktop" ];
-    };
-  };
-
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-    audacity
+    audacity-flake
     nodejs
     python3
     clang-tools
