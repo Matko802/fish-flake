@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, lib, ... }:
 
 {
   environment.variables = {
@@ -19,8 +19,8 @@
     ./nautilus/nautilus-config.nix
     ./desktop/niri/niri-config.nix
     ./sharkshell/sharkshell.nix
-    ./gtk/gtk-config.nix
-    ./qtengine/qtengine-config.nix
+    ./desktop/niri/theme/gtk/gtk-config.nix
+    ./desktop/niri/theme/qtengine/qtengine-config.nix
     ./virtualization/kvm/kvm-config.nix
     ./flatpak/flatpak-config.nix
     ./gpu-screen-recorder/gsr-config.nix
@@ -35,7 +35,7 @@
   boot.loader.limine.maxGenerations = 25;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   services.ollama = {
     enable = true;
@@ -87,6 +87,8 @@
     enable = true;
     nssmdns4 = true;
     openFirewall = true;
+    publish.enable = lib.mkForce null;
+    publish.userServices = lib.mkForce null;
     settings.publish = {
       "disable-publishing" = false;
       "disable-user-service-publishing" = false;

@@ -62,9 +62,6 @@
       url = "github:Matko802/sharkshell";
       flake = false;
     };
-    nix-cachyos-kernel = {
-      url = "github:xddxdd/nix-cachyos-kernel/release";
-    };
     proton-cachyos = {
       url = "github:Daaboulex/proton-cachyos-nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -95,7 +92,6 @@
       audacity-flake,
       jefetch,
       sharkshell,
-      nix-cachyos-kernel,
       proton-cachyos,
       mchose-hub,
       ...
@@ -141,7 +137,6 @@
             musisharkOverlay
             ruwaOverlay
             jefetchOverlay
-            nix-cachyos-kernel.overlays.pinned
             protonCachyosOverlay
             audacityFlakeOverlay
           ];

@@ -14,10 +14,10 @@
 
     [General]
     BrowserApplication=zen-beta.desktop
-    ColorScheme=MatkosAmoled
+    ColorScheme=SharkDynamic
 
     [KDE]
-    ColorScheme=MatkosAmoled
+    ColorScheme=SharkDynamic
   '';
 
   systemd.user.services.qtengine-dbus-propagation = {
@@ -36,7 +36,6 @@
 
     config = {
       theme = {
-        colorScheme = "${../KDE-Colours/config/MatkosAmoled.colors}";
         iconTheme = "Papirus-Dark";
         style = "breeze";
 
