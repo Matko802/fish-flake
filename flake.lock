@@ -1,23 +1,5 @@
 {
   "nodes": {
-    "audacity-flake": {
-      "inputs": {
-        "nixpkgs": "nixpkgs"
-      },
-      "locked": {
-        "lastModified": 1792609967,
-        "narHash": "sha256-dUZyS7E3rnQZx1F6taBbcJRcUp7dd0bNQ94I5nbVDNM=",
-        "owner": "Matko802",
-        "repo": "audacity-flake",
-        "rev": "b25df035fb0bf4f2021ba307afd7dfebc897d773",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Matko802",
-        "repo": "audacity-flake",
-        "type": "github"
-      }
-    },
     "crane": {
       "locked": {
         "lastModified": 1790899423,
@@ -267,22 +249,6 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
-      "locked": {
-        "lastModified": 1792488032,
-        "narHash": "sha256-RkAXQ3+a5rHMiP97Er7AawR1kvEXX9tK1mhiWedOPTc=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "e513db7b0a65def6f6e17bb55195dfe510871944",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1785031560,
@@ -330,11 +296,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1792502884,
-        "narHash": "sha256-ij8QUxzTOHovLrNOxVRx+RAhGQFOMsJbji0veiatH5k=",
-        "rev": "02c087f3fe673c9e317f206a627cb6b910336dbe",
+        "lastModified": 1792773339,
+        "narHash": "sha256-17eNBI5Khe4JZaRkL5hRGPWf8MZ6qv+bWAr4V8YeKBw=",
+        "rev": "3ec636362e1816bc2f0888fa0fa2c69f1bc9e504",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1097682.02c087f3fe67/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1100280.3ec636362e18/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -426,7 +392,6 @@
     },
     "root": {
       "inputs": {
-        "audacity-flake": "audacity-flake",
         "helium-flake": "helium-flake",
         "jefetch": "jefetch",
         "lmms-appimage": "lmms-appimage",
@@ -509,11 +474,11 @@
     "sharkshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1792860318,
-        "narHash": "sha256-AXXiTziZjIUBSHi5odM9461TpH3jgJq3197CWd/LliQ=",
+        "lastModified": 1792911576,
+        "narHash": "sha256-3t5gSLFCbG5r0tUGtjdxcl73UBIpcyMDxkwTwBO3XkY=",
         "owner": "Matko802",
         "repo": "sharkshell",
-        "rev": "399916067998b395eb258271745141943dfb7327",
+        "rev": "9f2583c4886b9f4d60c590c795292f8ffd862bf7",
         "type": "github"
       },
       "original": {

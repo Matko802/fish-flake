@@ -55,9 +55,6 @@
       url = "github:Matko802/opencode-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    audacity-flake = {
-      url = "github:Matko802/audacity-flake";
-    };
     sharkshell = {
       url = "github:Matko802/sharkshell";
       flake = false;
@@ -89,7 +86,6 @@
       pandora-launcher,
       rootapp,
       opencode,
-      audacity-flake,
       jefetch,
       sharkshell,
       proton-cachyos,
@@ -108,7 +104,6 @@
       opencodeOverlay = opencode.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       protonCachyosOverlay = proton-cachyos.overlays.default;
-      audacityFlakeOverlay = audacity-flake.overlays.default;
 
       sharedModules = [
         ({ ... }: {
@@ -138,7 +133,6 @@
             ruwaOverlay
             jefetchOverlay
             protonCachyosOverlay
-            audacityFlakeOverlay
           ];
 
           environment.systemPackages = [
