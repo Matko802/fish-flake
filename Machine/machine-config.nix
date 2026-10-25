@@ -168,6 +168,7 @@
     shell = pkgs.fish;
     extraGroups = [ "networkmanager" "wheel" "i2c" ];
     packages = with pkgs; [
+      qbittorrent
       telegram-desktop
       ruwa
       prismlauncher
