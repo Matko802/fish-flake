@@ -155,11 +155,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792603433,
-        "narHash": "sha256-qngaVhlwlBrauJGNO6MmODAsJFYlYjoGDTbSoOGASIc=",
+        "lastModified": 1793116289,
+        "narHash": "sha256-CaF+0H9uP+0OS/sJ94cdG675a2r9V1l3oCW9sxmV3v0=",
         "owner": "Matko802",
         "repo": "jefetch",
-        "rev": "0b3f2b3fe064b9c589b647e75e93501ff0029576",
+        "rev": "913257a5cb518ac045367aa2617ff764c48e30b8",
         "type": "github"
       },
       "original": {
@@ -213,11 +213,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792327517,
-        "narHash": "sha256-8w66adh6dIF7WuB8Lh7KHEP1LtbxGVYIl/pAmyiqdOA=",
+        "lastModified": 1793105072,
+        "narHash": "sha256-kNbhqrttiND36uFvZaeSPSZ4hYBMyUbsan6QD8dQICU=",
         "ref": "main",
-        "rev": "0273401f705b236afa12a5cec79b36192a0d2c75",
-        "revCount": 158,
+        "rev": "99c8479798ae5599a905ace59921baf68a4b0370",
+        "revCount": 162,
         "type": "git",
         "url": "https://github.com/komaruworld/mocktail"
       },
@@ -357,11 +357,11 @@
         "std": "std"
       },
       "locked": {
-        "lastModified": 1792771119,
-        "narHash": "sha256-iSgS3fPm/3+Tr/5DPVXdefsn3rUQIcthukBCJ2cJ/Bo=",
+        "lastModified": 1793066473,
+        "narHash": "sha256-0TXnmflm28jHtTMTm5ywKCFJxtoec5CEebce/XlG/vE=",
         "owner": "Daaboulex",
         "repo": "proton-cachyos-nix",
-        "rev": "18ae349eaca562444a997fc1977d69c196a3519f",
+        "rev": "6b1770d6ca5ae33767f95918d86124707889ad55",
         "type": "github"
       },
       "original": {
@@ -377,11 +377,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792532445,
-        "narHash": "sha256-4R2t5HDysHJTa2+iJ+27DlJvXfbtBp5yNwBLfJc0EPg=",
+        "lastModified": 1792961407,
+        "narHash": "sha256-Zbzcs4v56x/sXeua+iTZaLNhouzeOJBsm8ke1UtNTXc=",
         "owner": "kossLAN",
         "repo": "qtengine",
-        "rev": "00db92c00f079bf68c4538f9def1b344b97ada0b",
+        "rev": "9dd87a5e5b7d417e51a6ef131d7f24146283336e",
         "type": "github"
       },
       "original": {
@@ -474,11 +474,11 @@
     "sharkshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1792911576,
-        "narHash": "sha256-3t5gSLFCbG5r0tUGtjdxcl73UBIpcyMDxkwTwBO3XkY=",
+        "lastModified": 1793196851,
+        "narHash": "sha256-ZrBA+G1vT/jx0+2MoB1AohyFMNoNwKevliRmBVaMCFM=",
         "owner": "Matko802",
         "repo": "sharkshell",
-        "rev": "9f2583c4886b9f4d60c590c795292f8ffd862bf7",
+        "rev": "e13c4021532b1a3557d880081f795e0a2b480c2b",
         "type": "github"
       },
       "original": {
@@ -494,11 +494,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792605191,
-        "narHash": "sha256-Wf8Rk78LInxJfyBqGK7Uc03F4p/M//nonfXdBLQ/hfw=",
+        "lastModified": 1793122553,
+        "narHash": "sha256-B8hpHm8+VGq8HPUo/NjdVSUXkgu9GtgvWPXiWL6R8Gk=",
         "owner": "Matko802",
         "repo": "sharkvis",
-        "rev": "62f01c5918aad19e432058c13a271ca389b891f4",
+        "rev": "329a86ff8c95ba01da47d370338807e2aac02380",
         "type": "github"
       },
       "original": {
@@ -520,11 +520,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792764496,
-        "narHash": "sha256-432yB7L8VA2uYbgp/UP9FSlJIKLrOYmzRcq7KanccP8=",
+        "lastModified": 1793049164,
+        "narHash": "sha256-dA7A15ARBFmz0mGWefh7fYukRF8xVjmtTmgbchHlhR4=",
         "owner": "Daaboulex",
         "repo": "nix-packaging-standard",
-        "rev": "ada5140bf78d556e3b32d67dd4685088dd78f62e",
+        "rev": "e36d745062640b73686ad515e1e01fcebc86ba02",
         "type": "github"
       },
       "original": {
@@ -575,11 +575,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792595242,
-        "narHash": "sha256-kH/E0uJDslOgYcnmU+c0cm6HrUjsEtvZQKZtuQ1+uvo=",
+        "lastModified": 1793063583,
+        "narHash": "sha256-avFKNlbqAAdwJtmB5gbB5W/1fQz0ftIH4ET6FQcpXu0=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "f19490ac889eabb05bdb7e8dcb85225ee75bd87b",
+        "rev": "cfb35e5835c4ca6faa811ba38a94f755ecfcb393",
         "type": "github"
       },
       "original": {
