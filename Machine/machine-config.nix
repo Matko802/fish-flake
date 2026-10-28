@@ -83,19 +83,6 @@
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
 
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-    publish.enable = lib.mkForce null;
-    publish.userServices = lib.mkForce null;
-    settings.publish = {
-      "disable-publishing" = false;
-      "disable-user-service-publishing" = false;
-      "publish-addresses" = true;
-    };
-  };
-
   services.flatpak.enable = true;
 
   # Fish
