@@ -213,11 +213,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793105072,
-        "narHash": "sha256-kNbhqrttiND36uFvZaeSPSZ4hYBMyUbsan6QD8dQICU=",
+        "lastModified": 1793139847,
+        "narHash": "sha256-V5cEufcJlJZWLUULlDOq+Rjx/xuE2+rrLb3r1UIgom8=",
         "ref": "main",
-        "rev": "99c8479798ae5599a905ace59921baf68a4b0370",
-        "revCount": 162,
+        "rev": "291a3a2d2ce7616371458db946bdc7b7266f394c",
+        "revCount": 163,
         "type": "git",
         "url": "https://github.com/komaruworld/mocktail"
       },
@@ -296,11 +296,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1792773339,
-        "narHash": "sha256-17eNBI5Khe4JZaRkL5hRGPWf8MZ6qv+bWAr4V8YeKBw=",
-        "rev": "3ec636362e1816bc2f0888fa0fa2c69f1bc9e504",
+        "lastModified": 1793110635,
+        "narHash": "sha256-yXRSdZdZZqccEL+j11lc1gFG1f7V5j8N7oPBTHwf7n4=",
+        "rev": "31ecbaca1bdefa45dffc409f0250bd8039ea0010",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1100280.3ec636362e18/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1103272.31ecbaca1bde/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -377,11 +377,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792961407,
-        "narHash": "sha256-Zbzcs4v56x/sXeua+iTZaLNhouzeOJBsm8ke1UtNTXc=",
+        "lastModified": 1793134991,
+        "narHash": "sha256-dzti6tZBSZ/ZOHcBe3rFt3iuDj5L/8B8JEsqe7xqDUQ=",
         "owner": "kossLAN",
         "repo": "qtengine",
-        "rev": "9dd87a5e5b7d417e51a6ef131d7f24146283336e",
+        "rev": "c6b3f922c8c106d3264024be15054a3117250d6b",
         "type": "github"
       },
       "original": {
@@ -575,11 +575,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793063583,
-        "narHash": "sha256-avFKNlbqAAdwJtmB5gbB5W/1fQz0ftIH4ET6FQcpXu0=",
+        "lastModified": 1793144002,
+        "narHash": "sha256-YDtNVswt0oYB7LNEzZWmFmo57MME8EVS9VxAdqWm/Co=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "cfb35e5835c4ca6faa811ba38a94f755ecfcb393",
+        "rev": "4434539379bc839480edb8b919de9b67f70cb520",
         "type": "github"
       },
       "original": {
