@@ -114,11 +114,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792675705,
-        "narHash": "sha256-vpXmfb8qlS8LBySH713mg/kj707/VOKF737ixag351A=",
+        "lastModified": 1793285847,
+        "narHash": "sha256-yy/fjT0bPM7Qi1q1Y+xov+Igd2AxvtgJFBzJ/PI/cFE=",
         "owner": "oxcl",
         "repo": "nix-flake-helium-browser",
-        "rev": "fe59343ee1fb7c25964ed3853bad3ddca10f65fe",
+        "rev": "c9f74b5dd1dabf2d6a6c5c5a0c6fa1d9af7ddf73",
         "type": "github"
       },
       "original": {
@@ -213,11 +213,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793139847,
-        "narHash": "sha256-V5cEufcJlJZWLUULlDOq+Rjx/xuE2+rrLb3r1UIgom8=",
+        "lastModified": 1793288880,
+        "narHash": "sha256-6qpiagEOxxR09ez6StnGN0HKIctIGPVHkhNJrVmlzoQ=",
         "ref": "main",
-        "rev": "291a3a2d2ce7616371458db946bdc7b7266f394c",
-        "revCount": 163,
+        "rev": "70d454ea976f8bdf5ffa0988d81ce7879aee0930",
+        "revCount": 166,
         "type": "git",
         "url": "https://github.com/komaruworld/mocktail"
       },
@@ -314,11 +314,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792763725,
-        "narHash": "sha256-boBZQJJ5l9Rw5NY7Mz3dmW/b28LaCUEeMQWJEh0KM9w=",
+        "lastModified": 1793289271,
+        "narHash": "sha256-Rcxl+QNzMvDInPqG0MpeOfIBq/0RzzDPLantXoS0bFE=",
         "owner": "Matko802",
         "repo": "opencode-flake",
-        "rev": "d35e81795b16ed61cdf0a102501ce2c794735db0",
+        "rev": "9b6bcd7fbde837bd2899d6e654703d97d7fafccc",
         "type": "github"
       },
       "original": {
@@ -575,11 +575,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793144002,
-        "narHash": "sha256-YDtNVswt0oYB7LNEzZWmFmo57MME8EVS9VxAdqWm/Co=",
+        "lastModified": 1793266122,
+        "narHash": "sha256-gFi/vqarQV/KEqJVsGQGVxZkWIbGJ23vUdJwfJKMDJ4=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "4434539379bc839480edb8b919de9b67f70cb520",
+        "rev": "0c1a3502f225d8e2888dfb130818f4cdae6d39e8",
         "type": "github"
       },
       "original": {

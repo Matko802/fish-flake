@@ -10,7 +10,6 @@
     ./disk/disk-config.nix
     ./fonts/fonts-config.nix
     ./nh/nh-config.nix
-    ./udev/udev-config.nix
     ./fish/fish-config.nix
     ./Starship/starship-config.nix
     ./kitty/kitty-config.nix
@@ -19,8 +18,8 @@
     ./nautilus/nautilus-config.nix
     ./desktop/niri/niri-config.nix
     ./sharkshell/sharkshell.nix
-    ./desktop/niri/theme/gtk/gtk-config.nix
-    ./desktop/niri/theme/qtengine/qtengine-config.nix
+    ./desktop/theme/gtk/gtk-config.nix
+    ./desktop/theme/qtengine/qtengine-config.nix
     ./virtualization/kvm/kvm-config.nix
     ./flatpak/flatpak-config.nix
     ./gpu-screen-recorder/gsr-config.nix
@@ -161,10 +160,8 @@
       prismlauncher
       helium
       kdePackages.kate
-      git
       mpv
       yt-dlp
-      fuse
       sharkvis
       shark-scrp
       jefetch
@@ -207,6 +204,8 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    fuse
+    git
     nodejs
     python3
     clang-tools
