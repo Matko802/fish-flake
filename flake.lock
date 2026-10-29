@@ -155,11 +155,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793253603,
-        "narHash": "sha256-yXcbFJGxvrHkRvL9ntSgvNtlyS//u8IPieNJJH6jIEU=",
+        "lastModified": 1793254030,
+        "narHash": "sha256-NCcdbYEQnr7TJOBRyOBYx/S7rOGKFaojUHosZ/0Lx0Y=",
         "owner": "Matko802",
         "repo": "jefetch",
-        "rev": "2743d010fa8fab318e22d0be096c16075b787238",
+        "rev": "4f752019e44dd7c5cef31413e3f64a0355b5a0f4",
         "type": "github"
       },
       "original": {
