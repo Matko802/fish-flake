@@ -155,11 +155,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793254030,
-        "narHash": "sha256-NCcdbYEQnr7TJOBRyOBYx/S7rOGKFaojUHosZ/0Lx0Y=",
+        "lastModified": 1793255901,
+        "narHash": "sha256-PtEgPgMrjWR8rtiSSZyzoFDH6xzrPmPgoTCkeRSx8xI=",
         "owner": "Matko802",
         "repo": "jefetch",
-        "rev": "4f752019e44dd7c5cef31413e3f64a0355b5a0f4",
+        "rev": "bdc9569f2252c99549b7f1ee8389607e77962467",
         "type": "github"
       },
       "original": {
@@ -236,11 +236,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1793252888,
-        "narHash": "sha256-zB13pJvcM+1zOUpZR1+VAB/xudTbITyOF7moqOssuMU=",
+        "lastModified": 1793254400,
+        "narHash": "sha256-YyaBOHb8DXARoKNBs2hn0ucCgtrFJ2dW90ENypWwN14=",
         "owner": "Matko802",
         "repo": "musishark",
-        "rev": "35ceece8244628b998b495d63ab3efcb3d276776",
+        "rev": "8815942b9c48ae633d7f1d68f53d3649deca4530",
         "type": "github"
       },
       "original": {
@@ -494,11 +494,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793253615,
-        "narHash": "sha256-T+G2bHlY1bsxEp9OQJ5lMMUBicLhPBIefCZCs0tGBX4=",
+        "lastModified": 1793255907,
+        "narHash": "sha256-AcVWhK29+4kLG5Heo3pzetW3HGaUPW6Fgm8iTe1RECM=",
         "owner": "Matko802",
         "repo": "sharkvis",
-        "rev": "bf4fe28058b5420748310c0d6b7d86cb0a9b4314",
+        "rev": "530154d32e3a03c4fcad20ed9f6e33427a5196a1",
         "type": "github"
       },
       "original": {
