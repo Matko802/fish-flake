@@ -155,11 +155,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793211688,
-        "narHash": "sha256-9FEVsTL7dDFgwMNM//gdTT+9pn0wQgm1TweXXc8/6g4=",
+        "lastModified": 1793253603,
+        "narHash": "sha256-yXcbFJGxvrHkRvL9ntSgvNtlyS//u8IPieNJJH6jIEU=",
         "owner": "Matko802",
         "repo": "jefetch",
-        "rev": "7bb350f18cd32a26058d4ba42d1b6408140bab24",
+        "rev": "2743d010fa8fab318e22d0be096c16075b787238",
         "type": "github"
       },
       "original": {
@@ -195,8 +195,8 @@
         ]
       },
       "locked": {
-        "lastModified": 1792777453,
-        "narHash": "sha256-I6TxdA+40U1iWQCn3yTLh5iyqdBC867QeoK2PDRS8+Q=",
+        "lastModified": 1793221752,
+        "narHash": "sha256-SoEI21WW9BBBJCfUsm1ykxuf0MYmit4cMllLDjgU0NE=",
         "path": "/mnt/ssd/My-Files/Projects/linux stuff/mchosehub-flake",
         "type": "path"
       },
@@ -236,11 +236,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1792601236,
-        "narHash": "sha256-whxPPSkIaLSI3hxQbpo7TMXWVOCOh+4XkHEZAW0oEw4=",
+        "lastModified": 1793252888,
+        "narHash": "sha256-zB13pJvcM+1zOUpZR1+VAB/xudTbITyOF7moqOssuMU=",
         "owner": "Matko802",
         "repo": "musishark",
-        "rev": "ff753ca1ae5519ca7e02430c2c5cbc8d8dfc3614",
+        "rev": "35ceece8244628b998b495d63ab3efcb3d276776",
         "type": "github"
       },
       "original": {
@@ -377,11 +377,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793134991,
-        "narHash": "sha256-dzti6tZBSZ/ZOHcBe3rFt3iuDj5L/8B8JEsqe7xqDUQ=",
+        "lastModified": 1793242847,
+        "narHash": "sha256-qITtV7EBgBOL59l9XvFQUUPBUnoGx0R1x8wvdPOtUC4=",
         "owner": "kossLAN",
         "repo": "qtengine",
-        "rev": "c6b3f922c8c106d3264024be15054a3117250d6b",
+        "rev": "df169d5cd3fa66f8239b76f6c8de811b1f831940",
         "type": "github"
       },
       "original": {
@@ -474,11 +474,11 @@
     "sharkshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1793196851,
-        "narHash": "sha256-ZrBA+G1vT/jx0+2MoB1AohyFMNoNwKevliRmBVaMCFM=",
+        "lastModified": 1793253380,
+        "narHash": "sha256-UrxEhWL6NJxungSbfea5vTUqXNX9X0Ydm4095zzLrM0=",
         "owner": "Matko802",
         "repo": "sharkshell",
-        "rev": "e13c4021532b1a3557d880081f795e0a2b480c2b",
+        "rev": "52e2556b7496faa677f27423f0587bec1aeb4a98",
         "type": "github"
       },
       "original": {
@@ -494,11 +494,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793206459,
-        "narHash": "sha256-NipsiOlewOfmpEmApfWb54YmnjUpilxBXjPOlq+AKUg=",
+        "lastModified": 1793253615,
+        "narHash": "sha256-T+G2bHlY1bsxEp9OQJ5lMMUBicLhPBIefCZCs0tGBX4=",
         "owner": "Matko802",
         "repo": "sharkvis",
-        "rev": "8917f295567fd9bcd1afe1bca6aab1620c791a39",
+        "rev": "bf4fe28058b5420748310c0d6b7d86cb0a9b4314",
         "type": "github"
       },
       "original": {
