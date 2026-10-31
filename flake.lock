@@ -22,11 +22,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793443590,
-        "narHash": "sha256-ElTutz8HyQFRJnk4Alv/NhYNJRWUduvO1j22KAPE1gk=",
+        "lastModified": 1793443692,
+        "narHash": "sha256-OZyjGzVg79W+5EF/NQMfoyhlqjONB6c29xJFHsnDcI0=",
         "owner": "Matko802",
         "repo": "elasmo",
-        "rev": "a9e90131698b89c11c9a852ae21fefe2fc0d010d",
+        "rev": "81ae59d7ae8bfa9a235c80d96cf32b8edf506ed4",
         "type": "github"
       },
       "original": {
