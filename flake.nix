@@ -67,6 +67,10 @@
       url = "path:/mnt/ssd/My-Files/Projects/linux%20stuff/mchosehub-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    elasmo = {
+      url = "github:Matko802/elasmo";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
   };
 
@@ -90,6 +94,7 @@
       sharkshell,
       proton-cachyos,
       mchose-hub,
+      elasmo,
       ...
     }@inputs:
     let
@@ -104,6 +109,7 @@
       opencodeOverlay = opencode.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       protonCachyosOverlay = proton-cachyos.overlays.default;
+      elasmoOverlay = elasmo.overlays.default;
 
       sharedModules = [
         ({ ... }: {
@@ -131,6 +137,7 @@
             opencodeOverlay
             musisharkOverlay
             ruwaOverlay
+            elasmoOverlay
             jefetchOverlay
             protonCachyosOverlay
           ];

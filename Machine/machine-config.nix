@@ -188,6 +188,7 @@
       rootapp
       opencode
       musishark
+      elasmo
       onlyoffice-desktopeditors
       itch
       element-desktop
