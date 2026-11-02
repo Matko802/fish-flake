@@ -188,7 +188,6 @@
       rootapp
       opencode
       musishark
-      elasmo
       onlyoffice-desktopeditors
       itch
       element-desktop
@@ -199,6 +198,7 @@
 
   # Allow packages that are not free
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.problems.handlers."gtk+".broken = "warn";
   nixpkgs.config.permittedInsecurePackages = [
     "ventoy-1.1.18"
   ];
