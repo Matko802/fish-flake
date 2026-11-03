@@ -198,10 +198,12 @@
 
   # Allow packages that are not free
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.problems.handlers."gtk+".broken = "warn";
+  nixpkgs.config.problems.handlers."gtk+".broken = "ignore";
   nixpkgs.config.permittedInsecurePackages = [
     "ventoy-1.1.18"
   ];
+
+  documentation.info.enable = false;
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
