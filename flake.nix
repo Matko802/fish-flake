@@ -51,10 +51,6 @@
       url = "github:Matko802/rootapp-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    opencode = {
-      url = "github:Matko802/opencode-flake";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     sharkshell = {
       url = "github:Matko802/sharkshell";
       flake = false;
@@ -85,7 +81,6 @@
       ruwa,
       pandora-launcher,
       rootapp,
-      opencode,
       jefetch,
       sharkshell,
       proton-cachyos,
@@ -101,7 +96,6 @@
       ruwaOverlay = ruwa.overlays.default;
       pandoraLauncherOverlay = pandora-launcher.overlays.default;
       rootappOverlay = rootapp.overlays.default;
-      opencodeOverlay = opencode.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       protonCachyosOverlay = proton-cachyos.overlays.default;
 
@@ -128,7 +122,6 @@
             lmmsAppimageOverlay
             pandoraLauncherOverlay
             rootappOverlay
-            opencodeOverlay
             musisharkOverlay
             ruwaOverlay
             jefetchOverlay
@@ -162,7 +155,6 @@
       packages.x86_64-linux.ruwa = inputs.ruwa.packages.x86_64-linux.default;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.rootapp = inputs.rootapp.packages.x86_64-linux.default;
-      packages.x86_64-linux.opencode = inputs.opencode.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
     };
 }
