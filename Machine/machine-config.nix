@@ -25,6 +25,7 @@
     ./gpu-screen-recorder/gsr-config.nix
     ./gaming/amd-gaming-config.nix
     ./mchose/mchose-config.nix
+    ./udev/udev-config.nix
   ];
 
   networking.hostName = "fishy";
@@ -77,10 +78,10 @@
   security.pam.services.login.enableGnomeKeyring = true;
   programs.dconf.enable = true;
 
-  hardware.enableRedistributableFirmware = true;
-  programs.nix-ld.enable = true;
-  hardware.graphics.enable = true;
-  hardware.graphics.enable32Bit = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
   services.flatpak.enable = true;
 
@@ -174,7 +175,7 @@
       uv
       ffmpeg-full
       wayvr
-      alcom
+      #alcom
       unityhub
       mcpelauncher-ui-qt
       obsidian
@@ -186,7 +187,7 @@
       lmms-appimage
       pandora-launcher
       rootapp
-      opencode
+      g3m
       musishark
       onlyoffice-desktopeditors
       itch
@@ -207,16 +208,14 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    goverlay
+    mangohud
     fuse
     git
     nodejs
     python3
     clang-tools
     vesktop
-    (discord.override {
-      withVencord = true;
-      withOpenASAR = true;
-    })
     usbutils
     p7zip
     appimage-run
@@ -235,8 +234,6 @@
     umu-launcher
     faugus-launcher
     setxkbmap
-    mangohud
-    mangojuice
     android-tools
     papirus-icon-theme
     adwaita-icon-theme

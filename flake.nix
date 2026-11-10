@@ -51,6 +51,10 @@
       url = "github:Matko802/rootapp-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    g3m = {
+      url = "github:Matko802/g3m-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     sharkshell = {
       url = "github:Matko802/sharkshell";
       flake = false;
@@ -81,6 +85,7 @@
       ruwa,
       pandora-launcher,
       rootapp,
+      g3m,
       jefetch,
       sharkshell,
       proton-cachyos,
@@ -89,6 +94,7 @@
     }@inputs:
     let
       system = "x86_64-linux";
+      opencodeManager = nixpkgs-unstable.legacyPackages.x86_64-linux.callPackage ./opencode/package.nix { };
       sharkvisOverlay = sharkvis.overlays.default;
       sharkScrpOverlay = shark-scrp.overlays.default;
       lmmsAppimageOverlay = lmms-appimage.overlays.default;
@@ -96,6 +102,7 @@
       ruwaOverlay = ruwa.overlays.default;
       pandoraLauncherOverlay = pandora-launcher.overlays.default;
       rootappOverlay = rootapp.overlays.default;
+      g3mOverlay = g3m.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       protonCachyosOverlay = proton-cachyos.overlays.default;
 
@@ -122,6 +129,7 @@
             lmmsAppimageOverlay
             pandoraLauncherOverlay
             rootappOverlay
+            g3mOverlay
             musisharkOverlay
             ruwaOverlay
             jefetchOverlay
@@ -130,6 +138,7 @@
 
           environment.systemPackages = [
             inputs.mocktail.packages.x86_64-linux.default
+            opencodeManager
           ];
         })
       ];
@@ -155,6 +164,8 @@
       packages.x86_64-linux.ruwa = inputs.ruwa.packages.x86_64-linux.default;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.rootapp = inputs.rootapp.packages.x86_64-linux.default;
+      packages.x86_64-linux.g3m = inputs.g3m.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
+      packages.x86_64-linux.opencode-manager = opencodeManager;
     };
 }
