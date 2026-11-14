@@ -217,11 +217,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794663584,
-        "narHash": "sha256-tRdkcRuw5lXOQZT+Tr5p6+zUCKsjcHEnh3iPRmvRqlg=",
+        "lastModified": 1794663854,
+        "narHash": "sha256-XUqOjmsT422cP7RE95ghtzXwT14DVDnwtYCmpKWOBTk=",
         "owner": "Matko802",
         "repo": "metrolist-kmp-flake",
-        "rev": "183e0de1b7a4818028680aaf317cf7962607dbe6",
+        "rev": "babd68bb60bfd357ee2941d8aa9d68a84d13982e",
         "type": "github"
       },
       "original": {
