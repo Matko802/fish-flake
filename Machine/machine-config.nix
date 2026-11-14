@@ -189,7 +189,10 @@
       rootapp
       g3m
       musishark
-      (metrolist.override { systemFont = config.custom.fontName; })
+      (metrolist-kmp-flake.override {
+        systemFont = config.custom.fontName;
+        waylandScale = builtins.toJSON config.custom.waylandScale;
+      })
       onlyoffice-desktopeditors
       itch
       element-desktop

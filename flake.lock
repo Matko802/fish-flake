@@ -225,20 +225,20 @@
         "type": "path"
       }
     },
-    "metrolist": {
+    "metrolist-kmp-flake": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs-unstable"
         ]
       },
       "locked": {
-        "lastModified": 1794641197,
-        "narHash": "sha256-5gMRQ5K72O7vtx8R2jI+jnpHYtFgHND0ZQ1yDuPEiwY=",
-        "path": "/mnt/ssd/My-Files/Projects/linux stuff/metrolist-flake",
+        "lastModified": 1794646821,
+        "narHash": "sha256-X/e5shFZ4LUAGGv5+ZlAyFBQ20Soqs3c4QnR4wLnaMw=",
+        "path": "/mnt/ssd/My-Files/Projects/linux stuff/metrolist-kmp-flake",
         "type": "path"
       },
       "original": {
-        "path": "/mnt/ssd/My-Files/Projects/linux stuff/metrolist-flake",
+        "path": "/mnt/ssd/My-Files/Projects/linux stuff/metrolist-kmp-flake",
         "type": "path"
       }
     },
@@ -414,7 +414,7 @@
         "jefetch": "jefetch",
         "lmms-flake": "lmms-flake",
         "mchose-hub": "mchose-hub",
-        "metrolist": "metrolist",
+        "metrolist-kmp-flake": "metrolist-kmp-flake",
         "mocktail": "mocktail",
         "musishark": "musishark",
         "nixpkgs-unstable": "nixpkgs-unstable",

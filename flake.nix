@@ -67,8 +67,8 @@
       url = "path:/mnt/ssd/My-Files/Projects/linux%20stuff/mchosehub-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    metrolist = {
-      url = "path:/mnt/ssd/My-Files/Projects/linux%20stuff/metrolist-flake";
+    metrolist-kmp-flake = {
+      url = "path:/mnt/ssd/My-Files/Projects/linux%20stuff/metrolist-kmp-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
@@ -94,7 +94,7 @@
       sharkshell,
       proton-cachyos,
       mchose-hub,
-      metrolist,
+      metrolist-kmp-flake,
       ...
     }@inputs:
     let
@@ -110,7 +110,7 @@
       g3mOverlay = g3m.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       protonCachyosOverlay = proton-cachyos.overlays.default;
-      metrolistOverlay = metrolist.overlays.default;
+      metrolistKmpFlakeOverlay = metrolist-kmp-flake.overlays.default;
 
       sharedModules = [
         ({ ... }: {
@@ -140,7 +140,7 @@
             ruwaOverlay
             jefetchOverlay
             protonCachyosOverlay
-            metrolistOverlay
+            metrolistKmpFlakeOverlay
           ];
 
           environment.systemPackages = [
@@ -173,8 +173,9 @@
       packages.x86_64-linux.rootapp = inputs.rootapp.packages.x86_64-linux.default;
       packages.x86_64-linux.g3m = inputs.g3m.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
-      packages.x86_64-linux.metrolist = inputs.metrolist.packages.x86_64-linux.default.override {
+      packages.x86_64-linux.metrolist-kmp-flake = inputs.metrolist-kmp-flake.packages.x86_64-linux.default.override {
         systemFont = self.nixosConfigurations.machine1.config.custom.fontName;
+        waylandScale = builtins.toJSON self.nixosConfigurations.machine1.config.custom.waylandScale;
       };
       packages.x86_64-linux.opencode-manager = opencodeManager;
     };
