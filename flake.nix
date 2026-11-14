@@ -35,10 +35,6 @@
       url = "github:Matko802/lmms-appimage-nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    musishark = {
-      url = "github:Matko802/musishark";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     ruwa = {
       url = "github:Matko802/ruwa";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -85,7 +81,6 @@
       mocktail,
       shark-scrp,
       lmms-flake,
-      musishark,
       ruwa,
       pandora-launcher,
       rootapp,
@@ -103,7 +98,6 @@
       sharkvisOverlay = sharkvis.overlays.default;
       sharkScrpOverlay = shark-scrp.overlays.default;
       lmmsFlakeOverlay = lmms-flake.overlays.default;
-      musisharkOverlay = musishark.overlays.default;
       ruwaOverlay = ruwa.overlays.default;
       pandoraLauncherOverlay = pandora-launcher.overlays.default;
       rootappOverlay = rootapp.overlays.default;
@@ -136,7 +130,6 @@
             pandoraLauncherOverlay
             rootappOverlay
             g3mOverlay
-            musisharkOverlay
             ruwaOverlay
             jefetchOverlay
             protonCachyosOverlay
@@ -167,7 +160,6 @@
       packages.x86_64-linux.zen-browser = inputs.zen-browser.packages.x86_64-linux.default;
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
       packages.x86_64-linux.lmms-flake = inputs.lmms-flake.packages.x86_64-linux.default;
-      packages.x86_64-linux.musishark = inputs.musishark.packages.x86_64-linux.default;
       packages.x86_64-linux.ruwa = inputs.ruwa.packages.x86_64-linux.default;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.rootapp = inputs.rootapp.packages.x86_64-linux.default;

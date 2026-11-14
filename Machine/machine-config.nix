@@ -175,7 +175,7 @@
       uv
       ffmpeg-full
       wayvr
-      #alcom
+      alcom
       unityhub
       mcpelauncher-ui-qt
       obsidian
@@ -188,11 +188,7 @@
       pandora-launcher
       rootapp
       g3m
-      musishark
-      (metrolist-kmp-flake.override {
-        systemFont = config.custom.fontName;
-        waylandScale = builtins.toJSON config.custom.waylandScale;
-      })
+      metrolist-kmp-flake
       onlyoffice-desktopeditors
       itch
       element-desktop
