@@ -1,4 +1,4 @@
-{ pkgs, inputs, lib, ... }:
+{ pkgs, inputs, lib, config, ... }:
 
 {
   environment.variables = {
@@ -184,11 +184,12 @@
       inkscape
       blender
       blockbench
-      lmms-appimage
+      lmms-flake
       pandora-launcher
       rootapp
       g3m
       musishark
+      (metrolist.override { systemFont = config.custom.fontName; })
       onlyoffice-desktopeditors
       itch
       element-desktop
@@ -208,7 +209,7 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
-    goverlay
+    mangojuice
     mangohud
     fuse
     git
@@ -250,7 +251,7 @@
     enable = true;
     package = pkgs.openrgb-with-all-plugins;
   };
-
+  programs.nix-ld.enable = true;
   systemd.oomd.enable = true;
   programs.appimage = {
     enable = true;

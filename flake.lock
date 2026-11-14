@@ -188,18 +188,18 @@
         "type": "github"
       }
     },
-    "lmms-appimage": {
+    "lmms-flake": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs-unstable"
         ]
       },
       "locked": {
-        "lastModified": 1790067943,
-        "narHash": "sha256-i/RPnLbyGbk26WJ+vlGTH5GVYeZage5yUs9NYW36hrw=",
+        "lastModified": 1794601012,
+        "narHash": "sha256-C86KR1kAMG357cPxhjQ+bmcTf25ka+xikrxi+r3Wmww=",
         "owner": "Matko802",
         "repo": "lmms-appimage-nix",
-        "rev": "2a1652e38487b304dd4ee7e39e352a05b6bf5f8b",
+        "rev": "65ff554c7add08425ae5b933e1b230aa074e6ef7",
         "type": "github"
       },
       "original": {
@@ -222,6 +222,23 @@
       },
       "original": {
         "path": "/mnt/ssd/My-Files/Projects/linux stuff/mchosehub-flake",
+        "type": "path"
+      }
+    },
+    "metrolist": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794641197,
+        "narHash": "sha256-5gMRQ5K72O7vtx8R2jI+jnpHYtFgHND0ZQ1yDuPEiwY=",
+        "path": "/mnt/ssd/My-Files/Projects/linux stuff/metrolist-flake",
+        "type": "path"
+      },
+      "original": {
+        "path": "/mnt/ssd/My-Files/Projects/linux stuff/metrolist-flake",
         "type": "path"
       }
     },
@@ -395,8 +412,9 @@
         "g3m": "g3m",
         "helium-flake": "helium-flake",
         "jefetch": "jefetch",
-        "lmms-appimage": "lmms-appimage",
+        "lmms-flake": "lmms-flake",
         "mchose-hub": "mchose-hub",
+        "metrolist": "metrolist",
         "mocktail": "mocktail",
         "musishark": "musishark",
         "nixpkgs-unstable": "nixpkgs-unstable",
@@ -474,11 +492,11 @@
     "sharkshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1794122601,
-        "narHash": "sha256-logp45yssVLej5pzeuPH01L1eU60eSDI0emMJL0EeQo=",
+        "lastModified": 1794584145,
+        "narHash": "sha256-t77v9V/W2UQ9U0jqjBm222X7QgdtMAobiMhEUfYYUB0=",
         "owner": "Matko802",
         "repo": "sharkshell",
-        "rev": "3f6d5548978b694cf47e25df188c1844027ccb35",
+        "rev": "d04d45bf8f9b43f1d908af4dc31219c9cc97e250",
         "type": "github"
       },
       "original": {

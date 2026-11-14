@@ -31,7 +31,7 @@
       url = "github:Matko802/shark-scrp";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    lmms-appimage = {
+    lmms-flake = {
       url = "github:Matko802/lmms-appimage-nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
@@ -67,6 +67,10 @@
       url = "path:/mnt/ssd/My-Files/Projects/linux%20stuff/mchosehub-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    metrolist = {
+      url = "path:/mnt/ssd/My-Files/Projects/linux%20stuff/metrolist-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
   };
 
@@ -80,7 +84,7 @@
       sharkvis,
       mocktail,
       shark-scrp,
-      lmms-appimage,
+      lmms-flake,
       musishark,
       ruwa,
       pandora-launcher,
@@ -90,6 +94,7 @@
       sharkshell,
       proton-cachyos,
       mchose-hub,
+      metrolist,
       ...
     }@inputs:
     let
@@ -97,7 +102,7 @@
       opencodeManager = nixpkgs-unstable.legacyPackages.x86_64-linux.callPackage ./opencode/package.nix { };
       sharkvisOverlay = sharkvis.overlays.default;
       sharkScrpOverlay = shark-scrp.overlays.default;
-      lmmsAppimageOverlay = lmms-appimage.overlays.default;
+      lmmsFlakeOverlay = lmms-flake.overlays.default;
       musisharkOverlay = musishark.overlays.default;
       ruwaOverlay = ruwa.overlays.default;
       pandoraLauncherOverlay = pandora-launcher.overlays.default;
@@ -105,6 +110,7 @@
       g3mOverlay = g3m.overlays.default;
       jefetchOverlay = jefetch.overlays.default;
       protonCachyosOverlay = proton-cachyos.overlays.default;
+      metrolistOverlay = metrolist.overlays.default;
 
       sharedModules = [
         ({ ... }: {
@@ -126,7 +132,7 @@
             helium-flake.overlays.default
             sharkvisOverlay
             sharkScrpOverlay
-            lmmsAppimageOverlay
+            lmmsFlakeOverlay
             pandoraLauncherOverlay
             rootappOverlay
             g3mOverlay
@@ -134,6 +140,7 @@
             ruwaOverlay
             jefetchOverlay
             protonCachyosOverlay
+            metrolistOverlay
           ];
 
           environment.systemPackages = [
@@ -159,13 +166,16 @@
       packages.x86_64-linux.mocktail = inputs.mocktail.packages.x86_64-linux.default;
       packages.x86_64-linux.zen-browser = inputs.zen-browser.packages.x86_64-linux.default;
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
-      packages.x86_64-linux.lmms-appimage = inputs.lmms-appimage.packages.x86_64-linux.default;
+      packages.x86_64-linux.lmms-flake = inputs.lmms-flake.packages.x86_64-linux.default;
       packages.x86_64-linux.musishark = inputs.musishark.packages.x86_64-linux.default;
       packages.x86_64-linux.ruwa = inputs.ruwa.packages.x86_64-linux.default;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.rootapp = inputs.rootapp.packages.x86_64-linux.default;
       packages.x86_64-linux.g3m = inputs.g3m.packages.x86_64-linux.default;
       packages.x86_64-linux.jefetch = inputs.jefetch.packages.x86_64-linux.default;
+      packages.x86_64-linux.metrolist = inputs.metrolist.packages.x86_64-linux.default.override {
+        systemFont = self.nixosConfigurations.machine1.config.custom.fontName;
+      };
       packages.x86_64-linux.opencode-manager = opencodeManager;
     };
 }
