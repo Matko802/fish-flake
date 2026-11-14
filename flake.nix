@@ -64,7 +64,7 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     metrolist-kmp-flake = {
-      url = "path:/mnt/ssd/My-Files/Projects/linux%20stuff/metrolist-kmp-flake";
+      url = "github:Matko802/metrolist-kmp-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
