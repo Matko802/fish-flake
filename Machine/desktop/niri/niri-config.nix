@@ -16,7 +16,15 @@
       satty
       libnotify
       cliphist
-      hyprpicker
+      (hyprpicker.overrideAttrs (old: {
+        version = "0.4.7";
+        src = fetchFromGitHub {
+          owner = "hyprwm";
+          repo = "hyprpicker";
+          tag = "v0.4.7";
+          hash = "sha256-ABumeksE8Bvtdb6g4vJ2jA9BLlYHnXU86VAuKJhBPoY=";
+        };
+      }))
       snixembed
     ];
 
