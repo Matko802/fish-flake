@@ -73,7 +73,6 @@ spawn-at-startup "quickshell"
 spawn-at-startup "gsr-ui" "launch-hide-announce"
 spawn-at-startup "sh" "-c" "wl-paste --type text --watch cliphist store"
 spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist store"
-spawn-at-startup "systemctl" "--user" "restart" "hyprpolkitagent"
 
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 

@@ -11,7 +11,6 @@
     environment.systemPackages = with pkgs; [
       wl-clipboard
       xwayland-satellite
-      hyprpolkitagent
       playerctl
       satty
       libnotify
