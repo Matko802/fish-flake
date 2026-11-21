@@ -4,7 +4,6 @@
   environment.systemPackages = with pkgs; [
     grim
     slurp
-    hyprpolkitagent
     playerctl
     satty
     wl-clipboard
