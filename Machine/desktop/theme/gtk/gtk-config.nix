@@ -109,10 +109,12 @@ in
   };
 
   system.activationScripts.matkosAmoledTheme = lib.stringAfter [ "etc" ] ''
-    mkdir -p /usr/share/icons
+    mkdir -p /usr/share/icons /usr/share/themes
     ln -sfn ${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark /usr/share/icons/Papirus-Dark
     ln -sfn ${pkgs.papirus-icon-theme}/share/icons/Papirus /usr/share/icons/Papirus
     ln -sfn ${pkgs.adwaita-icon-theme}/share/icons/Adwaita /usr/share/icons/Adwaita
+    ln -sfn ${pkgs.adw-gtk3}/share/themes/adw-gtk3 /usr/share/themes/adw-gtk3
+    ln -sfn ${pkgs.adw-gtk3}/share/themes/adw-gtk3-dark /usr/share/themes/adw-gtk3-dark
   '';
   systemd.user.targets.nixos-fake-graphical-session.wantedBy = [ "default.target" ];
 }
