@@ -4,19 +4,44 @@
 { lib, pkgs, ... }:
 
 let
+  flatpak = lib.getExe pkgs.flatpak;
+
   remoteName = "flathub";
   remoteUrl = "https://flathub.org/repo/flathub.flatpakrepo";
 
-  apps = [
-    "org.vinegarhq.Sober"
+  installArgs = [
+    "--system"
+    "--noninteractive"
+    "-y"
   ];
+
+  remoteApps = [ "org.vinegarhq.Sober" ];
+
+  bundleApps = [
+    {
+      appId = "com.hypixel.HytaleLauncher";
+      bundle = "/home/matko/Stiahnuté/hytale-launcher-latest.flatpak";
+    }
+  ];
+
+  installRemote =
+    app:
+    ''
+      if ! ${flatpak} info --system ${lib.escapeShellArg app} >/dev/null 2>&1; then
+        ${flatpak} install ${lib.escapeShellArgs installArgs} ${remoteName} ${lib.escapeShellArg app} || true
+      fi'';
+
+  installBundle =
+    { appId, bundle }:
+    ''
+      if [ -f ${lib.escapeShellArg bundle} ] && ! ${flatpak} info --system ${lib.escapeShellArg appId} >/dev/null 2>&1; then
+        ${flatpak} install ${lib.escapeShellArgs installArgs} ${lib.escapeShellArg bundle} || true
+      fi'';
 in
 {
   system.activationScripts.flatpakApps.text = ''
-    ${lib.getExe pkgs.flatpak} remote-add --if-not-exists ${remoteName} ${remoteUrl} >/dev/null 2>&1 || true
-    ${lib.concatMapStringsSep "\n" (app: ''
-      if ! ${lib.getExe pkgs.flatpak} info ${app} >/dev/null 2>&1; then
-        ${lib.getExe pkgs.flatpak} install -y ${remoteName} ${app} || true
-      fi'') apps}
+    ${flatpak} remote-add --if-not-exists ${remoteName} ${remoteUrl} >/dev/null 2>&1 || true
+    ${lib.concatMapStringsSep "\n" installRemote remoteApps}
+    ${lib.concatMapStringsSep "\n" installBundle bundleApps}
   '';
 }

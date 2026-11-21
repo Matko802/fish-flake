@@ -67,6 +67,9 @@
       url = "github:Matko802/metrolist-kmp-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+    };
 
   };
 
@@ -90,6 +93,7 @@
       proton-cachyos,
       mchose-hub,
       metrolist-kmp-flake,
+      nix-cachyos-kernel,
       ...
     }@inputs:
     let
@@ -115,9 +119,9 @@
             auto-optimise-store = true;
             keep-outputs = true;
             keep-derivations = true;
-            extra-substituters = [ "https://cache.xinux.uz" ];
+            extra-substituters = [ "https://cache.lantian.pub/lantian" "https://cache.xinux.uz" ];
             extra-trusted-public-keys = [
-              "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+              "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
               "cache.xinux.uz:BXCrtqejFjWzWEB9YuGB7X2MV4ttBur1N8BkwQRdH+0="
             ];
           };
@@ -134,6 +138,7 @@
             jefetchOverlay
             protonCachyosOverlay
             metrolistKmpFlakeOverlay
+            nix-cachyos-kernel.overlays.pinned
           ];
 
           environment.systemPackages = [

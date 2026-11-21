@@ -35,13 +35,7 @@
   boot.loader.limine.maxGenerations = 25;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" ];
-  boot.kernelPackages = pkgs.linuxPackages_zen;
-
-  services.ollama = {
-    enable = true;
-    package = pkgs.ollama-rocm;
-    rocmOverrideGfx = "10.3.0";
-  };
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3;
 
   services.wivrn = {
     enable = true;
@@ -155,6 +149,7 @@
     shell = pkgs.fish;
     extraGroups = [ "networkmanager" "wheel" "i2c" ];
     packages = with pkgs; [
+      audacity
       qbittorrent
       telegram-desktop
       ruwa
@@ -170,7 +165,6 @@
       fastfetch
       pear-desktop
       godot
-      litellm
       baobab
       uv
       ffmpeg-full
@@ -208,6 +202,7 @@
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
+    dotnet-sdk_8
     mangojuice
     mangohud
     fuse
