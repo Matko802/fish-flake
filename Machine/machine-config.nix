@@ -21,7 +21,6 @@
     ./desktop/theme/gtk/gtk-config.nix
     ./desktop/theme/qtengine/qtengine-config.nix
     ./virtualization/kvm/kvm-config.nix
-    ./flatpak/flatpak-config.nix
     ./gpu-screen-recorder/gsr-config.nix
     ./gaming/amd-gaming-config.nix
     ./mchose/mchose-config.nix
@@ -214,6 +213,7 @@
     usbutils
     p7zip
     appimage-run
+    bazaar
     rpi-imager
     steamcmd
     btop
