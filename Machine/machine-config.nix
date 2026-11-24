@@ -118,8 +118,22 @@
   # Configure console keymap
   console.keyMap = "sk-qwerty";
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
+  # Printing: CUPS with HP (hplip) drivers
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [ hplip hplipWithPlugin ];
+  };
+
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
+  hardware.sane = {
+    enable = true;
+    extraBackends = [ pkgs.hplipWithPlugin ];
+  };
 
   # Root login
   security.doas = {
