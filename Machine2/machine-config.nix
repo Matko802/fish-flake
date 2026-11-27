@@ -192,6 +192,7 @@
       blender
       blockbench
       lmms-flake
+      anker-launcher
       pandora-launcher
       rootapp
       g3m

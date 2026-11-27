@@ -192,6 +192,7 @@
       blender
       blockbench
       lmms-flake
+      anker-launcher
       pandora-launcher
       rootapp
       g3m
@@ -228,6 +229,7 @@
     p7zip
     appimage-run
     bazaar
+    warehouse
     rpi-imager
     steamcmd
     btop

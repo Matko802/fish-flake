@@ -35,6 +35,10 @@
       url = "github:Matko802/lmms-appimage-nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    anker-launcher = {
+      url = "github:Matko802/anker-launcher-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     ruwa = {
       url = "github:Matko802/ruwa";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -84,6 +88,7 @@
       mocktail,
       shark-scrp,
       lmms-flake,
+      anker-launcher,
       ruwa,
       pandora-launcher,
       rootapp,
@@ -102,6 +107,7 @@
       sharkvisOverlay = sharkvis.overlays.default;
       sharkScrpOverlay = shark-scrp.overlays.default;
       lmmsFlakeOverlay = lmms-flake.overlays.default;
+      ankerLauncherOverlay = anker-launcher.overlays.default;
       ruwaOverlay = ruwa.overlays.default;
       pandoraLauncherOverlay = pandora-launcher.overlays.default;
       rootappOverlay = rootapp.overlays.default;
@@ -131,6 +137,7 @@
             sharkvisOverlay
             sharkScrpOverlay
             lmmsFlakeOverlay
+            ankerLauncherOverlay
             pandoraLauncherOverlay
             rootappOverlay
             g3mOverlay
@@ -165,6 +172,7 @@
       packages.x86_64-linux.zen-browser = inputs.zen-browser.packages.x86_64-linux.default;
       packages.x86_64-linux.shark-scrp = inputs.shark-scrp.packages.x86_64-linux.default;
       packages.x86_64-linux.lmms-flake = inputs.lmms-flake.packages.x86_64-linux.default;
+      packages.x86_64-linux.anker-launcher = inputs.anker-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.ruwa = inputs.ruwa.packages.x86_64-linux.default;
       packages.x86_64-linux.pandora-launcher = inputs.pandora-launcher.packages.x86_64-linux.default;
       packages.x86_64-linux.rootapp = inputs.rootapp.packages.x86_64-linux.default;

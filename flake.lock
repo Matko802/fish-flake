@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "anker-launcher": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795806634,
+        "narHash": "sha256-kZxnjFDoxQKExWD2XhUqbcQllgfWIl1cxC8zSk0OlX4=",
+        "owner": "Matko802",
+        "repo": "anker-launcher-flake",
+        "rev": "094c6620cdc023d429474d80c2ab3686e3d14dfe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Matko802",
+        "repo": "anker-launcher-flake",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -153,11 +173,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795362976,
-        "narHash": "sha256-Cjl2lIBHdYQ4g+bgBzvqG+nf38PrtHjXLizX1h1BwII=",
+        "lastModified": 1795716490,
+        "narHash": "sha256-1t9mbb3lMkGY/NDqRvlHsiybCpK2TKoWRNhRYbfF9io=",
         "owner": "oxcl",
         "repo": "nix-flake-helium-browser",
-        "rev": "327481322b1caec55b8facf4fd8f5a78eb619263",
+        "rev": "e78a6de9e4c918b1b6d1bf0692f49f19e2729b1b",
         "type": "github"
       },
       "original": {
@@ -234,7 +254,7 @@
         ]
       },
       "locked": {
-        "lastModified": 1793221752,
+        "lastModified": 1795795416,
         "narHash": "sha256-SoEI21WW9BBBJCfUsm1ykxuf0MYmit4cMllLDjgU0NE=",
         "path": "/mnt/ssd/My-Files/Projects/linux stuff/mchosehub-flake",
         "type": "path"
@@ -251,11 +271,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795451960,
-        "narHash": "sha256-rFE4QB/aawXrsA/G5y1MknfwKwPDUw6aSLGtIvtEbS0=",
+        "lastModified": 1795739918,
+        "narHash": "sha256-VOwonZKDonHopfhPxxFtdOc1IsEt/qTbzYW475EK7w0=",
         "owner": "Matko802",
         "repo": "metrolist-kmp-flake",
-        "rev": "d8d5c6d48e91d7a58a0b9946fe6d413d0ed30ed5",
+        "rev": "e343a6d891f20cd8b68c1768148c9788dffc8bc3",
         "type": "github"
       },
       "original": {
@@ -293,11 +313,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1795387629,
-        "narHash": "sha256-+bXH64eCZhRm6MaMlB4lwTjUjax2aDy6yWsfTSCZlas=",
+        "lastModified": 1795741760,
+        "narHash": "sha256-HlnL2pmxTSz/ql/1AGsHhiP5Rdj26QSsI4kcm6BxAMw=",
         "owner": "xddxdd",
         "repo": "nix-cachyos-kernel",
-        "rev": "306480b9096055a06503167f975c027e244dd839",
+        "rev": "2294a3b7da84c589792b586e66d9989400977977",
         "type": "github"
       },
       "original": {
@@ -309,11 +329,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1795374673,
-        "narHash": "sha256-8YP9YTqsO6cGEZag9bDauM7q+wv/ToLTuwjlO9LMEfQ=",
+        "lastModified": 1795713569,
+        "narHash": "sha256-I0H06mgyqmKSDgT38iT09G4O5tmnCRiYhhQNNNgONg0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "616ae05a769a23c143b19746b6a3b06366a9a28f",
+        "rev": "171cb8d3b7fb1dfee5d7d4e11db06bd42201653f",
         "type": "github"
       },
       "original": {
@@ -461,6 +481,7 @@
     },
     "root": {
       "inputs": {
+        "anker-launcher": "anker-launcher",
         "g3m": "g3m",
         "helium-flake": "helium-flake",
         "jefetch": "jefetch",
@@ -508,11 +529,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794922568,
-        "narHash": "sha256-6yziPVBK/3ItTJvzjnkOU0XQtlh8IcaNXLkljcYkiDM=",
+        "lastModified": 1795717095,
+        "narHash": "sha256-VPwn+eqOgLHeHpPpHP/FdD8Ir9qCG3wMieGWFjk4MZI=",
         "owner": "Matko802",
         "repo": "ruwa",
-        "rev": "b2fa69f198ccfa3896eb22574496da999f0ecdb7",
+        "rev": "bbc5dae6d2bb2accb768180fbd9ae59268dcb973",
         "type": "github"
       },
       "original": {
@@ -544,11 +565,11 @@
     "sharkshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1795344032,
-        "narHash": "sha256-oovWAC1Z2sZa6IUYfqw03jxArGNBGAuYGMB2icAUi/4=",
+        "lastModified": 1795532810,
+        "narHash": "sha256-9grb9N6rzrWAlWlyHeJohU/MxrSFAoXbhNCwDV+0SFI=",
         "owner": "Matko802",
         "repo": "sharkshell",
-        "rev": "e04776644f749756f59e0dbb4083def01ecac39e",
+        "rev": "30deb6843de9ea62aabf34006609b4efd7891649",
         "type": "github"
       },
       "original": {
@@ -612,11 +633,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795434855,
-        "narHash": "sha256-R2BZyn0NAM3maHw1GfzEtHFpUPAuJyg4t8I6Dbuzsjg=",
+        "lastModified": 1795802018,
+        "narHash": "sha256-VOYmjnE6Ky9MbAZqJ5LGwnpO1vhRJU5x2iPpwpWvKbY=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "e2e4f8220406ce60d64395cfbf91e2189c894769",
+        "rev": "1b4434a8a6751b8a7eb4dd695ee5f645870acf99",
         "type": "github"
       },
       "original": {
