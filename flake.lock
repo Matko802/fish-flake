@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795806634,
-        "narHash": "sha256-kZxnjFDoxQKExWD2XhUqbcQllgfWIl1cxC8zSk0OlX4=",
+        "lastModified": 1795806733,
+        "narHash": "sha256-7hN55CLVRr+zyLcB2KlBJx4cjl2uHkQQXresSvNAPtA=",
         "owner": "Matko802",
         "repo": "anker-launcher-flake",
-        "rev": "094c6620cdc023d429474d80c2ab3686e3d14dfe",
+        "rev": "ba710c4a1bfe92664cc79daa7ef98bf0945b1d22",
         "type": "github"
       },
       "original": {
