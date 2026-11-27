@@ -36,8 +36,8 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
   fileSystems."/mnt/ssd" =
-    { device = "/dev/disk/by-uuid/5985a5cc-6808-46fa-ac5a-f321e2838c8f";
-      fsType = "ext4";
+    { device = "/dev/disk/by-uuid/605fe9a7-56dc-43f5-84c7-8986f94dc118";
+      fsType = "btrfs";
       options = [ "defaults" "noatime" "nofail" ];
     };
   swapDevices =
